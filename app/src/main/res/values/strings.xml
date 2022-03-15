@@ -1,22 +1,21 @@
 <resources>
-    <string name="app_name">DoubletappApp</string>
+    <string name="app_name" translatable="false">DoubletappApp</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="lorem_ipsum">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem
-    </string>
-    <string name="title_activity_add_habit">AddHabitActivity</string>
+    <string name="title_activity_add_habit">Habit</string>
     <string name="add">Add</string>
+    <string name="change">Change</string>
     <string name="habit_count">Habit count</string>
     <string name="habit_period">Habit period</string>
     <string name="habit_desc">Habit description</string>
+    <string name="enter_name_hint">Please enter a name</string>
+
     <string name="good">Good</string>
     <string name="bad">Bad</string>
     <string name="neutral">Neutral</string>
-    <string name="enter_name_hint">Please enter a name</string>
+
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+    <string name="name">Name</string>
 </resources>

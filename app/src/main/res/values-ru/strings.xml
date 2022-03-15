@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="action_settings">Настройки</string>
+    <string name="title_activity_add_habit">Привычка</string>
     <string name="add">Добавить</string>
+    <string name="change">Изменить</string>
     <string name="habit_count">Количество выполнений</string>
     <string name="habit_period">Периодичность</string>
     <string name="habit_desc">Описание</string>
+    <string name="enter_name_hint">Введите имя привычки</string>
+
     <string name="good">Хорошая</string>
     <string name="bad">Плохая</string>
     <string name="neutral">Нейтральная</string>
-    <string name="enter_name_hint">Введите имя привычки</string>
+
+    <string name="high">Высокий</string>
+    <string name="medium">Средний</string>
+    <string name="low">Низкий</string>
+
+    <string name="name">Название</string>
 </resources>

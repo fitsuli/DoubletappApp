@@ -2,17 +2,16 @@ package ru.fitsuli.doubletappapp
 
 import android.os.Parcel
 import android.os.Parcelable
-import java.io.Serializable
 
 data class HabitItem(
-    val name: String, val description: String, val priority: String,
-    val type: Int, val period: String,val count:String,
+    val name: String, val description: String, val priorityPosition: Int,
+    val type: Int, val period: String, val count: String,
     val id: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
         parcel.readString()!!,
-        parcel.readString()!!,
+        parcel.readInt(),
         parcel.readInt(),
         parcel.readString()!!,
         parcel.readString()!!,
@@ -22,7 +21,7 @@ data class HabitItem(
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)
         parcel.writeString(description)
-        parcel.writeString(priority)
+        parcel.writeInt(priorityPosition)
         parcel.writeInt(type)
         parcel.writeString(period)
         parcel.writeString(count)

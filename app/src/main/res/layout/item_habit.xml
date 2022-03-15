@@ -13,16 +13,29 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/priority"
+            style="@style/TextAppearance.Material3.LabelMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:textAllCaps="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:text="Priority" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/priority"
             tools:text="Name" />
 
         <TextView
             android:id="@+id/desc"
+            style="@style/TextAppearance.Material3.TitleMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
@@ -30,14 +43,6 @@
             app:layout_constraintTop_toBottomOf="@id/name"
             tools:text="Description" />
 
-        <TextView
-            android:id="@+id/priority"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/desc"
-            tools:text="Priority" />
 
         <TextView
             android:id="@+id/type"
@@ -45,7 +50,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/priority"
+            app:layout_constraintTop_toBottomOf="@id/desc"
             tools:text="Type" />
 
         <TextView

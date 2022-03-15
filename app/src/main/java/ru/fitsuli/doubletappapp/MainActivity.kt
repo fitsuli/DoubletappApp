@@ -3,12 +3,12 @@ package ru.fitsuli.doubletappapp
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.fitsuli.doubletappapp.Utils.Companion.HabitType
+import ru.fitsuli.doubletappapp.Utils.Companion.Priority
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -36,37 +36,41 @@ class MainActivity : AppCompatActivity() {
 
         binding.contentInclude.recycler.adapter = object : RecyclerView.Adapter<ItemHolder>() {
 
-                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                    ItemHolder(
-                        LayoutInflater.from(parent.context)
-                            .inflate(R.layout.item_habit, parent, false)
-                    )
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+                ItemHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_habit, parent, false)
+                )
 
-                override fun getItemCount(): Int = listContent.size
+            override fun getItemCount(): Int = listContent.size
 
-                override fun onBindViewHolder(holder: ItemHolder, position: Int) {
-                    holder.apply {
-                        name.text = listContent[position].name
-                        parentCard.setOnClickListener {
-                            startActivity(
-                                Intent(this@MainActivity, AddHabitActivity::class.java).apply {
-                                    putExtra("edit_mode", true)
-                                    putExtra("item_id", position)
-                                    putExtra("habit_data", listContent[position])
-                                }
-                            )
-                        }
-                        description.text = listContent[position].description
-                        priority.text = listContent[position].priority
-                        type.text = when (listContent[position].type) {
-                            HabitType.Good -> getString(R.string.good)
-                            HabitType.Bad -> getString(R.string.bad)
-                            else -> getString(R.string.neutral)
-                        }
-                        count.text = listContent[position].count
-                        period.text = listContent[position].period
+            override fun onBindViewHolder(holder: ItemHolder, position: Int) {
+                holder.apply {
+                    parentCard.setOnClickListener {
+                        startActivity(
+                            Intent(this@MainActivity, AddHabitActivity::class.java).apply {
+                                putExtra("edit_mode", true)
+                                putExtra("item_id", position)
+                                putExtra("habit_data", listContent[position])
+                            }
+                        )
                     }
+                    name.text = listContent[position].name
+                    description.text = listContent[position].description
+                    priority.text = when (listContent[position].priorityPosition) {
+                        Priority.High -> getString(R.string.high)
+                        Priority.Medium -> getString(R.string.medium)
+                        else -> getString(R.string.low)
+                    }
+                    type.text = when (listContent[position].type) {
+                        HabitType.Good -> getString(R.string.good)
+                        HabitType.Bad -> getString(R.string.bad)
+                        else -> getString(R.string.neutral)
+                    }
+                    count.text = listContent[position].count
+                    period.text = listContent[position].period
                 }
+            }
         }
 
 

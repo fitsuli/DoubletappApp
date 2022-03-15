@@ -3,13 +3,8 @@ package ru.fitsuli.doubletappapp
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import ru.fitsuli.doubletappapp.Utils.Companion.HabitType
 import ru.fitsuli.doubletappapp.databinding.ActivityAddHabitBinding
 
@@ -27,10 +22,11 @@ class AddHabitActivity : AppCompatActivity() {
         with(binding.contentInclude) {
             val isInEditMode = intent.getBooleanExtra("edit_mode", false)
             if (isInEditMode) {
+                addButton.text = getString(R.string.change)
                 intent.getParcelableExtra<HabitItem>("habit_data")?.let {
                     nameField.setText(it.name)
                     descriptionField.setText(it.description)
-                    prioritySpinner.setSelection(it.priority.toInt()) // dirty
+                    prioritySpinner.setSelection(it.priorityPosition)
                     typeGroup.check(
                         when (it.type) {
                             HabitType.Good -> R.id.radio_good
@@ -58,7 +54,7 @@ class AddHabitActivity : AppCompatActivity() {
                             if (isInEditMode) "edited_item" else "new_item", HabitItem(
                                 name = nameField.text.toString(),
                                 description = descriptionField.text.toString(),
-                                priority = "${prioritySpinner.selectedItemPosition}",
+                                priorityPosition = prioritySpinner.selectedItemPosition,
                                 type = when (typeGroup.checkedRadioButtonId) {
                                     R.id.radio_good -> HabitType.Good
                                     R.id.radio_bad -> HabitType.Bad
