@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import ru.fitsuli.doubletappapp.Utils.Companion.HabitType
@@ -60,7 +61,9 @@ class MainActivity : AppCompatActivity() {
                         parentCard.setCardBackgroundColor(it)
                     }
                     name.text = listContent[position].name
-                    description.text = listContent[position].description
+                    description.text = listContent[position].description.also {
+                        description.isVisible = it.isNotEmpty()
+                    }
                     priority.text = when (listContent[position].priorityPosition) {
                         Priority.High -> getString(R.string.high)
                         Priority.Medium -> getString(R.string.medium)
@@ -71,8 +74,13 @@ class MainActivity : AppCompatActivity() {
                         HabitType.Bad -> getString(R.string.bad)
                         else -> getString(R.string.neutral)
                     }
-                    count.text = listContent[position].count
-                    period.text = listContent[position].period
+                    count.text =
+                        listContent[position].count.also { count.isVisible = it.isNotEmpty() }
+
+                    period.text = getString(
+                        R.string.every_x,
+                        listContent[position].period
+                            .also { period.isVisible = it.isNotEmpty() })
                 }
             }
         }

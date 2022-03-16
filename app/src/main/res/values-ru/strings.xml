@@ -19,4 +19,6 @@
 
     <string name="name">Название</string>
     <string name="cur_color">Выбранный цвет</string>
+    <string name="every">Каждый(-ую)</string>
+    <string name="every_x">Каждый(-ую) %1$s</string>
 </resources>

@@ -112,6 +112,7 @@
             android:id="@+id/period_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            app:prefixText="@string/every"
             android:hint="@string/habit_period"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/count_layout"
@@ -121,7 +122,7 @@
                 android:id="@+id/period_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
+                android:inputType="textShortMessage"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
