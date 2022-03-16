@@ -14,18 +14,18 @@
             android:id="@+id/name_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:hint="@string/name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:hint="@string/name">
+            app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name_field"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:imeOptions="actionGo"
                 android:inputType="textCapSentences|textShortMessage"
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -34,10 +34,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:hint="@string/habit_desc"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/name_layout"
-            android:hint="@string/habit_desc">
+            app:layout_constraintTop_toBottomOf="@id/name_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/description_field"
@@ -54,8 +54,8 @@
             android:id="@+id/priority_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/priority"
             android:layout_marginTop="16dp"
+            android:entries="@array/priority"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description_layout" />
 
@@ -94,17 +94,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:hint="@string/habit_count"
             app:layout_constraintEnd_toStartOf="@id/period_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/type_group"
-            android:hint="@string/habit_count">
+            app:layout_constraintTop_toBottomOf="@id/type_group">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/count_field"
-                android:inputType="number"
-                android:maxLines="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,28 +112,82 @@
             android:id="@+id/period_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:hint="@string/habit_period"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/count_layout"
-            app:layout_constraintTop_toTopOf="@id/count_layout"
-            android:hint="@string/habit_period">
+            app:layout_constraintTop_toTopOf="@id/count_layout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/period_field"
-                android:inputType="number"
-                android:maxLines="1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <HorizontalScrollView
+            android:id="@+id/colors_scroll_view"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_marginTop="16dp"
+            android:scrollbars="none"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/count_layout">
+
+            <LinearLayout
+                android:id="@+id/colors_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:divider="@drawable/div_transparent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="42dp"
+                android:showDividers="middle" />
+
+        </HorizontalScrollView>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_current_selected"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/colors_scroll_view">
+
+            <LinearLayout
+                android:id="@+id/selected_info_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/selected_color_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/cur_color" />
+
+                <ImageView
+                    android:id="@+id/selected_color"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <Button
+            android:id="@+id/add_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/add"
-            android:id="@+id/add_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/period_layout" />
+            app:layout_constraintTop_toBottomOf="@id/card_current_selected" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

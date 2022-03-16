@@ -1,5 +1,10 @@
 package ru.fitsuli.doubletappapp
 
+import android.content.Context
+import android.graphics.Color
+import android.util.TypedValue
+
+
 class Utils {
     companion object {
         object HabitType {
@@ -13,5 +18,18 @@ class Utils {
             const val Medium = 1
             const val Low = 2
         }
+
+        fun Context.dpToPx(dpVal: Float) =
+            TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, resources.displayMetrics)
+
+        val HUE_COLORS = intArrayOf(
+            Color.RED,
+            Color.YELLOW,
+            Color.GREEN,
+            Color.CYAN,
+            Color.BLUE,
+            Color.MAGENTA,
+            Color.RED
+        )
     }
 }

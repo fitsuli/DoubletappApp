@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import ru.fitsuli.doubletappapp.Utils.Companion.HabitType
 import ru.fitsuli.doubletappapp.Utils.Companion.Priority
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
     private val listContent = mutableListOf<HabitItem>()
 
     inner class ItemHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var parentCard: View = view.findViewById(R.id.card_view)
+        var parentCard: MaterialCardView = view.findViewById(R.id.card_view)
         var name: TextView = view.findViewById(R.id.name)
         var description: TextView = view.findViewById(R.id.desc)
         var priority: TextView = view.findViewById(R.id.priority)
@@ -55,6 +56,9 @@ class MainActivity : AppCompatActivity() {
                             }
                         )
                     }
+                    listContent[position].srgbColor?.let {
+                        parentCard.setCardBackgroundColor(it)
+                    }
                     name.text = listContent[position].name
                     description.text = listContent[position].description
                     priority.text = when (listContent[position].priorityPosition) {
@@ -88,9 +92,9 @@ class MainActivity : AppCompatActivity() {
             listContent.add(it)
             binding.contentInclude.recycler.adapter?.notifyItemChanged(it.id)
         }
-        intent?.getParcelableExtra<HabitItem>("edited_item")?.let { item ->
-            listContent[item.id] = item
-            binding.contentInclude.recycler.adapter?.notifyItemChanged(item.id)
+        intent?.getParcelableExtra<HabitItem>("edited_item")?.let {
+            listContent[it.id] = it
+            binding.contentInclude.recycler.adapter?.notifyItemChanged(it.id)
         }
 
         super.onNewIntent(intent)

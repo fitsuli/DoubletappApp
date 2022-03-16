@@ -2,11 +2,12 @@ package ru.fitsuli.doubletappapp
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.ColorInt
 
 data class HabitItem(
     val name: String, val description: String, val priorityPosition: Int,
     val type: Int, val period: String, val count: String,
-    val id: Int
+    @ColorInt val srgbColor: Int? = null, val id: Int
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString()!!,
@@ -15,6 +16,7 @@ data class HabitItem(
         parcel.readInt(),
         parcel.readString()!!,
         parcel.readString()!!,
+        parcel.readValue(Int::class.java.classLoader) as? Int,
         parcel.readInt()
     )
 
@@ -25,6 +27,7 @@ data class HabitItem(
         parcel.writeInt(type)
         parcel.writeString(period)
         parcel.writeString(count)
+        parcel.writeValue(srgbColor)
         parcel.writeInt(id)
     }
 

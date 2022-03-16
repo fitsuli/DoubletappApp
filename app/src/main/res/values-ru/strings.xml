@@ -18,4 +18,5 @@
     <string name="low">Низкий</string>
 
     <string name="name">Название</string>
+    <string name="cur_color">Выбранный цвет</string>
 </resources>

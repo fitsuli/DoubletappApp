@@ -18,4 +18,6 @@
     <string name="medium">Medium</string>
     <string name="low">Low</string>
     <string name="name">Name</string>
+    <string name="color_results" translatable="false">HSL: %1$f %2$.3f %3$.3f\nRGB: %4$d %5$d %6$d</string>
+    <string name="cur_color">Current color</string>
 </resources>
