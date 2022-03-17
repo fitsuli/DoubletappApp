@@ -13,12 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DoubletappApp"
         tools:targetApi="31">
-        <activity
-            android:name=".AddHabitActivity"
-            android:exported="false"
-            android:launchMode="singleTask"
-            android:label="@string/title_activity_add_habit" />
-        <activity
+
+    <activity
             android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask">

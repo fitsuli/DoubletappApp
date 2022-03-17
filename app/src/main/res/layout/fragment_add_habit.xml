@@ -112,11 +112,11 @@
             android:id="@+id/period_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:prefixText="@string/every"
             android:hint="@string/habit_period"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/count_layout"
-            app:layout_constraintTop_toTopOf="@id/count_layout">
+            app:layout_constraintTop_toTopOf="@id/count_layout"
+            app:prefixText="@string/every">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/period_field"

@@ -1,6 +1,5 @@
-package ru.fitsuli.doubletappapp
+package ru.fitsuli.doubletappapp.fragments
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -9,32 +8,37 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.ColorInt
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.get
-import androidx.core.view.WindowCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.doOnNextLayout
-import ru.fitsuli.doubletappapp.Utils.Companion.HUE_COLORS
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
+import androidx.navigation.fragment.findNavController
+import ru.fitsuli.doubletappapp.HabitItem
+import ru.fitsuli.doubletappapp.R
+import ru.fitsuli.doubletappapp.Utils
 import ru.fitsuli.doubletappapp.Utils.Companion.HabitType
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
-import ru.fitsuli.doubletappapp.databinding.ActivityAddHabitBinding
+import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
 
-class AddHabitActivity : AppCompatActivity() {
+class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
-    private lateinit var binding: ActivityAddHabitBinding
+    private var _binding: FragmentAddHabitBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        super.onCreate(savedInstanceState)
-        binding = ActivityAddHabitBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentAddHabitBinding.bind(view)
 
-        with(binding.contentInclude) {
+        val ctx = requireContext()
+        with(binding) {
             var itemRgb: Int? = null
 
+            val isInEditMode = false // TODO: fix
+/*
             val isInEditMode = intent.getBooleanExtra("edit_mode", false)
             if (isInEditMode) {
                 addButton.text = getString(R.string.change)
@@ -56,16 +60,16 @@ class AddHabitActivity : AppCompatActivity() {
                         setSelectedColorInt(color)
                     }
                 }
-            }
+            }*/
 
 
-            val wh = dpToPx(48f).toInt()
+            val wh = ctx.dpToPx(48f).toInt()
             val half = wh / 2
             val ids = mutableListOf<Int>()
             repeat(16) { _ ->
                 val vId = View.generateViewId().also { ids += it }
                 colorsLinear.addView(
-                    ImageView(this@AddHabitActivity).apply {
+                    ImageView(ctx).apply {
                         setImageResource(R.drawable.rect)
                         id = vId
                         layoutParams = ViewGroup.LayoutParams(wh, wh)
@@ -75,9 +79,9 @@ class AddHabitActivity : AppCompatActivity() {
 
             colorsLinear.background = GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT,
-                HUE_COLORS
+                Utils.HUE_COLORS
             ).apply {
-                cornerRadius = dpToPx(4f)
+                cornerRadius = requireContext().dpToPx(4f)
             }
 
             colorsLinear.doOnNextLayout {
@@ -87,7 +91,7 @@ class AddHabitActivity : AppCompatActivity() {
                     colorsLinear.measuredHeight
                 )
                 repeat(16) { i ->
-                    findViewById<ImageView>(ids[i]).let {
+                    view.findViewById<ImageView>(ids[i]).let {
                         val pixel =
                             gradient[it.x.toInt() + half, it.y.toInt() + half]
 
@@ -104,14 +108,37 @@ class AddHabitActivity : AppCompatActivity() {
             addButton.setOnClickListener {
                 if (nameField.text.isNullOrEmpty()) {
                     Toast.makeText(
-                        this@AddHabitActivity,
+                        requireContext(),
                         getString(R.string.enter_name_hint),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@setOnClickListener
                 }
+                setFragmentResult(
+                    "item_from_habit",
+                    bundleOf(
+                        (if (isInEditMode) "edited_item" else "new_item") to HabitItem(
+                            name = nameField.text.toString(),
+                            description = descriptionField.text.toString(),
+                            priorityPosition = prioritySpinner.selectedItemPosition,
+                            type = when (typeGroup.checkedRadioButtonId) {
+                                R.id.radio_good -> HabitType.Good
+                                R.id.radio_bad -> HabitType.Bad
+                                else -> HabitType.Neutral
+                            },
+                            count = countField.text.toString(),
+                            period = periodField.text.toString(),
+                            srgbColor = itemRgb,
+                            id = 0
+                            //intent.getIntExtra("item_id", 0)
+                        )
+                    )
+                )
+                findNavController().popBackStack()
+
+/*
                 startActivity(
-                    Intent(this@AddHabitActivity, MainActivity::class.java).apply {
+                    Intent(requireContext(), MainActivity::class.java).apply {
                         putExtra(
                             if (isInEditMode) "edited_item" else "new_item", HabitItem(
                                 name = nameField.text.toString(),
@@ -125,17 +152,19 @@ class AddHabitActivity : AppCompatActivity() {
                                 count = countField.text.toString(),
                                 period = periodField.text.toString(),
                                 srgbColor = itemRgb,
-                                id = intent.getIntExtra("item_id", 0)
+                                id = 0
+                                //intent.getIntExtra("item_id", 0)
                             )
                         )
                     }
                 )
+*/
             }
         }
     }
 
     private fun setSelectedColorInt(@ColorInt pixel: Int) {
-        binding.contentInclude.selectedColor.setImageDrawable(
+        binding.selectedColor.setImageDrawable(
             pixel.toDrawable()
         )
         val hsl = floatArrayOf(0f, 0f, 0f)
@@ -143,9 +172,14 @@ class AddHabitActivity : AppCompatActivity() {
             pixel, hsl
         )
 
-        binding.contentInclude.selectedColorText.text = getString(
+        binding.selectedColorText.text = getString(
             R.string.color_results, hsl[0], hsl[1], hsl[2],
             Color.red(pixel), Color.green(pixel), Color.blue(pixel)
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

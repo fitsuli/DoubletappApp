@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/MainFragment">
+
+    <fragment
+        android:id="@+id/MainFragment"
+        android:name="ru.fitsuli.doubletappapp.fragments.MainFragment"
+        android:label="@string/title_habits"
+        tools:layout="@layout/fragment_main">
+
+        <action
+            android:id="@+id/action_main_to_add_habit"
+            app:destination="@id/HabitFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/HabitFragment"
+        android:name="ru.fitsuli.doubletappapp.fragments.AddHabitFragment"
+        android:label="@string/title_add_habit"
+        tools:layout="@layout/fragment_add_habit">
+
+        <action
+            android:id="@+id/action_add_habit_to_main"
+            app:destination="@id/MainFragment" />
+    </fragment>
+</navigation>
