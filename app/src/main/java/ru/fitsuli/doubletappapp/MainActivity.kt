@@ -1,6 +1,5 @@
 package ru.fitsuli.doubletappapp
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,8 +16,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    private val listContent = mutableListOf<HabitItem>()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
@@ -29,22 +26,6 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
-
-/*
-        binding.fab.setOnClickListener {
-            startActivity(
-                Intent(this, AddHabitActivity::class.java).apply {
-                    putExtra("item_id", listContent.size)
-                }
-            )
-        }
-*/
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-
-
-        super.onNewIntent(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

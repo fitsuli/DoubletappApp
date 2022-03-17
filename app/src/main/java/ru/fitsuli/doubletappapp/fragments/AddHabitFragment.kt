@@ -20,7 +20,10 @@ import androidx.navigation.fragment.findNavController
 import ru.fitsuli.doubletappapp.HabitItem
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDITED_ITEM_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.FRAGMENT_REQUEST_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.NEW_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.Priority
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
@@ -40,19 +43,17 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
         with(binding) {
             var itemRgb: Int? = null
 
-            val isInEditMode = false // TODO: fix
-/*
-            val isInEditMode = intent.getBooleanExtra("edit_mode", false)
+            val isInEditMode = arguments?.getBoolean(EDIT_MODE_KEY, false) == true
             if (isInEditMode) {
                 addButton.text = getString(R.string.change)
-                intent.getParcelableExtra<HabitItem>("habit_data")?.let {
+                arguments?.getParcelable<HabitItem>(HABIT_ITEM_KEY)?.let {
                     nameField.setText(it.name)
                     descriptionField.setText(it.description)
-                    prioritySpinner.setSelection(it.priorityPosition)
+                    prioritySpinner.setSelection(it.priority.ordinal)
                     typeGroup.check(
                         when (it.type) {
-                            HabitType.Good -> R.id.radio_good
-                            HabitType.Bad -> R.id.radio_bad
+                            Type.GOOD -> R.id.radio_good
+                            Type.BAD -> R.id.radio_bad
                             else -> R.id.radio_neutral
                         }
                     )
@@ -63,7 +64,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                         setSelectedColorInt(color)
                     }
                 }
-            }*/
+            }
 
 
             val wh = ctx.dpToPx(48f).toInt()
@@ -123,7 +124,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                         (if (isInEditMode) EDITED_ITEM_KEY else NEW_ITEM_KEY) to HabitItem(
                             name = nameField.text.toString(),
                             description = descriptionField.text.toString(),
-                            priorityPosition = Priority.values()[prioritySpinner.selectedItemPosition],
+                            priority = Priority.values()[prioritySpinner.selectedItemPosition],
                             type = when (typeGroup.checkedRadioButtonId) {
                                 R.id.radio_good -> Type.GOOD
                                 R.id.radio_bad -> Type.BAD
@@ -132,36 +133,11 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                             count = countField.text.toString(),
                             period = periodField.text.toString(),
                             srgbColor = itemRgb,
-                            id = 0
-                            //intent.getIntExtra("item_id", 0)
+                            id = arguments?.getInt(ITEM_ID_KEY, 0) ?: 0
                         )
                     )
                 )
                 findNavController().popBackStack()
-
-/*
-                startActivity(
-                    Intent(requireContext(), MainActivity::class.java).apply {
-                        putExtra(
-                            if (isInEditMode) "edited_item" else "new_item", HabitItem(
-                                name = nameField.text.toString(),
-                                description = descriptionField.text.toString(),
-                                priorityPosition = prioritySpinner.selectedItemPosition,
-                                type = when (typeGroup.checkedRadioButtonId) {
-                                    R.id.radio_good -> HabitType.Good
-                                    R.id.radio_bad -> HabitType.Bad
-                                    else -> HabitType.Neutral
-                                },
-                                count = countField.text.toString(),
-                                period = periodField.text.toString(),
-                                srgbColor = itemRgb,
-                                id = 0
-                                //intent.getIntExtra("item_id", 0)
-                            )
-                        )
-                    }
-                )
-*/
             }
         }
     }

@@ -2,13 +2,15 @@ package ru.fitsuli.doubletappapp
 
 import android.os.Parcelable
 import androidx.annotation.ColorInt
+import androidx.annotation.Keep
 import kotlinx.parcelize.Parcelize
 import ru.fitsuli.doubletappapp.Utils.Companion.Priority
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 
+@Keep
 @Parcelize
 data class HabitItem(
-    val name: String, val description: String, val priorityPosition: Priority,
+    val name: String, val description: String, val priority: Priority,
     val type: Type, val period: String, val count: String,
     @ColorInt val srgbColor: Int? = null, val id: Int
 ) : Parcelable

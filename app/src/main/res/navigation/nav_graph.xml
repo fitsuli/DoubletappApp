@@ -24,5 +24,16 @@
         <action
             android:id="@+id/action_add_habit_to_main"
             app:destination="@id/MainFragment" />
+        <argument
+            android:name="edit_mode"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="item_id"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="habit_data"
+            app:argType="ru.fitsuli.doubletappapp.HabitItem" />
     </fragment>
 </navigation>

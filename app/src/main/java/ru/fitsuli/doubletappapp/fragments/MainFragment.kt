@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -14,7 +15,10 @@ import com.google.android.material.card.MaterialCardView
 import ru.fitsuli.doubletappapp.HabitItem
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDITED_ITEM_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.FRAGMENT_REQUEST_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.NEW_ITEM_KEY
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
 
@@ -41,7 +45,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         with(binding) {
 
             fab.setOnClickListener {
-                findNavController().navigate(R.id.action_main_to_add_habit)
+                findNavController().navigate(
+                    R.id.action_main_to_add_habit, bundleOf(
+                        ITEM_ID_KEY to listContent.size
+                    )
+                )
             }
             recycler.adapter = object : RecyclerView.Adapter<ItemHolder>() {
 
@@ -56,14 +64,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 override fun onBindViewHolder(holder: ItemHolder, position: Int) {
                     holder.apply {
                         parentCard.setOnClickListener {
-                            findNavController().navigate(R.id.action_main_to_add_habit)
-/*                            startActivity(
-                                Intent(this@MainActivity, AddHabitActivity::class.java).apply {
-                                    putExtra("edit_mode", true)
-                                    putExtra("item_id", position)
-                                    putExtra("habit_data", listContent[position])
-                                }
-                            )*/
+                            findNavController().navigate(
+                                R.id.action_main_to_add_habit, bundleOf(
+                                    EDIT_MODE_KEY to true,
+                                    ITEM_ID_KEY to position,
+                                    HABIT_ITEM_KEY to listContent[position]
+                                )
+                            )
                         }
                         listContent[position].srgbColor?.let {
                             parentCard.setCardBackgroundColor(it)
@@ -72,7 +79,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                         description.text = listContent[position].description.also {
                             description.isVisible = it.isNotEmpty()
                         }
-                        priority.text = getString(listContent[position].priorityPosition.resId)
+                        priority.text = getString(listContent[position].priority.resId)
                         type.text = getString(listContent[position].type.resId)
                         count.text =
                             listContent[position].count.also { count.isVisible = it.isNotEmpty() }
