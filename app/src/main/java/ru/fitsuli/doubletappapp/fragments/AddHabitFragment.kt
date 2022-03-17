@@ -19,8 +19,11 @@ import androidx.fragment.app.setFragmentResult
 import androidx.navigation.fragment.findNavController
 import ru.fitsuli.doubletappapp.HabitItem
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.Utils
-import ru.fitsuli.doubletappapp.Utils.Companion.HabitType
+import ru.fitsuli.doubletappapp.Utils.Companion.EDITED_ITEM_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.FRAGMENT_REQUEST_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.NEW_ITEM_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.Priority
+import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
 
@@ -79,7 +82,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
             colorsLinear.background = GradientDrawable(
                 GradientDrawable.Orientation.LEFT_RIGHT,
-                Utils.HUE_COLORS
+                HUE_COLORS
             ).apply {
                 cornerRadius = requireContext().dpToPx(4f)
             }
@@ -115,16 +118,16 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     return@setOnClickListener
                 }
                 setFragmentResult(
-                    "item_from_habit",
+                    FRAGMENT_REQUEST_KEY,
                     bundleOf(
-                        (if (isInEditMode) "edited_item" else "new_item") to HabitItem(
+                        (if (isInEditMode) EDITED_ITEM_KEY else NEW_ITEM_KEY) to HabitItem(
                             name = nameField.text.toString(),
                             description = descriptionField.text.toString(),
-                            priorityPosition = prioritySpinner.selectedItemPosition,
+                            priorityPosition = Priority.values()[prioritySpinner.selectedItemPosition],
                             type = when (typeGroup.checkedRadioButtonId) {
-                                R.id.radio_good -> HabitType.Good
-                                R.id.radio_bad -> HabitType.Bad
-                                else -> HabitType.Neutral
+                                R.id.radio_good -> Type.GOOD
+                                R.id.radio_bad -> Type.BAD
+                                else -> Type.NEUTRAL
                             },
                             count = countField.text.toString(),
                             period = periodField.text.toString(),
@@ -181,5 +184,17 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object {
+        private val HUE_COLORS = intArrayOf(
+            Color.RED,
+            Color.YELLOW,
+            Color.GREEN,
+            Color.CYAN,
+            Color.BLUE,
+            Color.MAGENTA,
+            Color.RED
+        )
     }
 }

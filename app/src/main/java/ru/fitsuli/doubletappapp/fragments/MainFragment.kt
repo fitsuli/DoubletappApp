@@ -13,8 +13,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import ru.fitsuli.doubletappapp.HabitItem
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.Utils.Companion.HabitType
-import ru.fitsuli.doubletappapp.Utils.Companion.Priority
+import ru.fitsuli.doubletappapp.Utils.Companion.EDITED_ITEM_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.FRAGMENT_REQUEST_KEY
+import ru.fitsuli.doubletappapp.Utils.Companion.NEW_ITEM_KEY
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
 
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -71,16 +72,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                         description.text = listContent[position].description.also {
                             description.isVisible = it.isNotEmpty()
                         }
-                        priority.text = when (listContent[position].priorityPosition) {
-                            Priority.High -> getString(R.string.high)
-                            Priority.Medium -> getString(R.string.medium)
-                            else -> getString(R.string.low)
-                        }
-                        type.text = when (listContent[position].type) {
-                            HabitType.Good -> getString(R.string.good)
-                            HabitType.Bad -> getString(R.string.bad)
-                            else -> getString(R.string.neutral)
-                        }
+                        priority.text = getString(listContent[position].priorityPosition.resId)
+                        type.text = getString(listContent[position].type.resId)
                         count.text =
                             listContent[position].count.also { count.isVisible = it.isNotEmpty() }
 
@@ -92,12 +85,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 }
             }
 
-            setFragmentResultListener("item_from_habit") { requestKey, bundle ->
-                bundle.getParcelable<HabitItem>("new_item")?.let {
+            setFragmentResultListener(FRAGMENT_REQUEST_KEY) { _, bundle ->
+                bundle.getParcelable<HabitItem>(NEW_ITEM_KEY)?.let {
                     listContent.add(it)
                     recycler.adapter?.notifyItemChanged(it.id)
                 }
-                bundle.getParcelable<HabitItem>("edited_item")?.let {
+                bundle.getParcelable<HabitItem>(EDITED_ITEM_KEY)?.let {
                     listContent[it.id] = it
                     recycler.adapter?.notifyItemChanged(it.id)
                 }
