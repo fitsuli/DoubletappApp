@@ -16,6 +16,16 @@
             app:destination="@id/HabitFragment" />
     </fragment>
     <fragment
+        android:id="@+id/RecyclerFragment"
+        android:name="ru.fitsuli.doubletappapp.fragments.RecyclerFragment"
+        android:label="@string/title_habits"
+        tools:layout="@layout/fragment_recycler">
+
+        <action
+            android:id="@+id/action_recycler_to_add_habit"
+            app:destination="@id/HabitFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/HabitFragment"
         android:name="ru.fitsuli.doubletappapp.fragments.AddHabitFragment"
         android:label="@string/title_add_habit"
@@ -23,7 +33,7 @@
 
         <action
             android:id="@+id/action_add_habit_to_main"
-            app:destination="@id/MainFragment" />
+            app:destination="@id/RecyclerFragment" />
         <argument
             android:name="edit_mode"
             android:defaultValue="false"
@@ -35,5 +45,13 @@
         <argument
             android:name="habit_data"
             app:argType="ru.fitsuli.doubletappapp.HabitItem" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AboutAppHabit"
+        android:name="ru.fitsuli.doubletappapp.fragments.AboutAppFragment"
+        android:label="@string/title_about"
+        tools:layout="@layout/fragment_about_app">
+
     </fragment>
 </navigation>

@@ -3,6 +3,7 @@
     <string name="action_settings">Настройки</string>
     <string name="title_add_habit">Привычка</string>
     <string name="title_habits">Мои привычки</string>
+    <string name="title_about">О приложении</string>
     <string name="add">Добавить</string>
     <string name="change">Изменить</string>
     <string name="habit_count">Количество выполнений</string>
@@ -22,4 +23,7 @@
     <string name="cur_color">Выбранный цвет</string>
     <string name="every">Каждый(-ую)</string>
     <string name="every_x">Каждый(-ую) %1$s</string>
+    <string name="developed_by">Разработано fitsuli</string>
+    <string name="link_open_error">Не получается открыть ссылку</string>
+
 </resources>

@@ -1,11 +1,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="ru.fitsuli.doubletappapp.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        android:visible="false"
-        app:showAsAction="never" />
+        android:id="@+id/action_home"
+        android:icon="@drawable/ic_round_bookmark_24"
+        android:title="@string/title_habits" />
+    <item
+        android:id="@+id/action_about"
+        android:icon="@drawable/ic_round_info_24"
+        android:title="@string/title_about" />
 </menu>

@@ -71,15 +71,9 @@
             <RadioButton
                 android:id="@+id/radio_good"
                 android:layout_width="wrap_content"
+                android:checked="true"
                 android:layout_height="wrap_content"
                 android:text="@string/good" />
-
-            <RadioButton
-                android:id="@+id/radio_neutral"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/neutral" />
 
             <RadioButton
                 android:id="@+id/radio_bad"

@@ -85,7 +85,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 GradientDrawable.Orientation.LEFT_RIGHT,
                 HUE_COLORS
             ).apply {
-                cornerRadius = requireContext().dpToPx(4f)
+                cornerRadius = ctx.dpToPx(4f)
             }
 
             colorsLinear.doOnNextLayout {
@@ -112,24 +112,24 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
             addButton.setOnClickListener {
                 if (nameField.text.isNullOrEmpty()) {
                     Toast.makeText(
-                        requireContext(),
+                        ctx,
                         getString(R.string.enter_name_hint),
                         Toast.LENGTH_SHORT
                     ).show()
                     return@setOnClickListener
                 }
+                val type = when (typeGroup.checkedRadioButtonId) {
+                    R.id.radio_good -> Type.GOOD
+                    else -> Type.BAD
+                }
                 setFragmentResult(
-                    FRAGMENT_REQUEST_KEY,
+                    "$FRAGMENT_REQUEST_KEY${type.name}",
                     bundleOf(
                         (if (isInEditMode) EDITED_ITEM_KEY else NEW_ITEM_KEY) to HabitItem(
                             name = nameField.text.toString(),
                             description = descriptionField.text.toString(),
                             priority = Priority.values()[prioritySpinner.selectedItemPosition],
-                            type = when (typeGroup.checkedRadioButtonId) {
-                                R.id.radio_good -> Type.GOOD
-                                R.id.radio_bad -> Type.BAD
-                                else -> Type.NEUTRAL
-                            },
+                            type = type,
                             count = countField.text.toString(),
                             period = periodField.text.toString(),
                             srgbColor = itemRgb,
