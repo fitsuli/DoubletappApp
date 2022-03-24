@@ -7,18 +7,15 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResultListener
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import ru.fitsuli.doubletappapp.HabitHolder
 import ru.fitsuli.doubletappapp.HabitItem
+import ru.fitsuli.doubletappapp.MainActivity
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.Utils.Companion.EDITED_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
-import ru.fitsuli.doubletappapp.Utils.Companion.FRAGMENT_REQUEST_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
-import ru.fitsuli.doubletappapp.Utils.Companion.NEW_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentRecyclerBinding
 
@@ -27,7 +24,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
     companion object {
         private const val ARG_TYPE_NAME = "args_type_name"
 
-        fun newInstance(type: Type) = RecyclerFragment().apply {
+        fun newInstance(type: Type = Type.GOOD) = RecyclerFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_TYPE_NAME, type)
             }
@@ -36,27 +33,30 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = _binding!!
-    private val listContent = mutableListOf<HabitItem>()
+    private lateinit var listContent: List<HabitItem>
+    private lateinit var adapter: RecyclerView.Adapter<HabitHolder>
     private var type: Type? = null
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        retainInstance = true
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentRecyclerBinding.bind(view)
-        arguments?.let {
-            type = it.getParcelable(ARG_TYPE_NAME)
+        listContent = (activity as MainActivity).listContent.toList()
+        arguments?.let { bundle ->
+            bundle.getParcelable<Type>(ARG_TYPE_NAME)?.let { type ->
+                this.type = type
+                //listContent= listContent.filter { it.type == type }
+            }
         }
 
         with(binding) {
 
-            fab.setOnClickListener {
-                findNavController().navigate(
-                    R.id.action_main_to_add_habit, bundleOf(
-                        ITEM_ID_KEY to listContent.size
-                    )
-                )
-            }
-            recycler.adapter = object : RecyclerView.Adapter<HabitHolder>() {
+            adapter = object : RecyclerView.Adapter<HabitHolder>() {
 
                 override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
                     HabitHolder(
@@ -96,18 +96,18 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
                     }
                 }
             }
-
-            setFragmentResultListener("$FRAGMENT_REQUEST_KEY${type?.name}") { _, bundle ->
-                bundle.getParcelable<HabitItem>(NEW_ITEM_KEY)?.let {
-                    listContent.add(it)
-                    recycler.adapter?.notifyItemChanged(it.id)
-                }
-                bundle.getParcelable<HabitItem>(EDITED_ITEM_KEY)?.let {
-                    listContent[it.id] = it
-                    recycler.adapter?.notifyItemChanged(it.id)
-                }
-            }
+            recycler.adapter = adapter
         }
+    }
+
+    fun addNewItemToList(newList: List<HabitItem>, position: Int) {
+        listContent = newList
+        adapter.notifyItemInserted(position)
+    }
+
+    fun changeItemInList(newList: List<HabitItem>, position: Int) {
+        listContent = newList
+        adapter.notifyItemChanged(position)
     }
 
     override fun onDestroyView() {

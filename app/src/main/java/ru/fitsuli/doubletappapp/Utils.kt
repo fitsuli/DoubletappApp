@@ -9,6 +9,9 @@ import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.core.net.toUri
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.parcelize.Parcelize
 
 
@@ -48,3 +51,11 @@ fun Context.openLink(url: String) {
         Toast.makeText(this, getString(R.string.link_open_error), Toast.LENGTH_SHORT).show()
     }
 }
+
+fun ViewPager2.findCurrentFragment(fragmentManager: FragmentManager): Fragment? =
+    fragmentManager.findFragmentByTag("f$currentItem")
+
+fun findFragmentAtPosition(
+    fragmentManager: FragmentManager,
+    position: Int
+): Fragment? = fragmentManager.findFragmentByTag("f$position")
