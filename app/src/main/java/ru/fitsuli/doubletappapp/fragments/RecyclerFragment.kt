@@ -50,7 +50,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
         arguments?.let { bundle ->
             bundle.getParcelable<Type>(ARG_TYPE_NAME)?.let { type ->
                 this.type = type
-                //listContent= listContent.filter { it.type == type }
+                listContent = listContent.filter { it.type == type }
             }
         }
 
@@ -101,12 +101,12 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
     }
 
     fun addNewItemToList(newList: List<HabitItem>, position: Int) {
-        listContent = newList
+        listContent = if (type == null) newList else newList.filter { it.type == type }
         adapter.notifyItemInserted(position)
     }
 
-    fun changeItemInList(newList: List<HabitItem>, position: Int) {
-        listContent = newList
+    fun updateItemInList(newList: List<HabitItem>, position: Int) {
+        listContent = if (type == null) newList else newList.filter { it.type == type }
         adapter.notifyItemChanged(position)
     }
 

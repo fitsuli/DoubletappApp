@@ -65,18 +65,22 @@ class MainActivity : AppCompatActivity(), AddHabitFragment.SendInfo {
 
     override fun addItemToList(item: HabitItem) {
         listContent.add(item)
-        (findVp2FragmentAtPosition(supportFragmentManager, 0) as RecyclerFragment)
-            .addNewItemToList(
-                listContent, item.id
-            )
+        repeat(2) {
+            (findVp2FragmentAtPosition(supportFragmentManager, it) as RecyclerFragment)
+                .addNewItemToList(
+                    listContent, item.id
+                )
+        }
     }
 
     override fun updateItemInList(item: HabitItem) {
         listContent[item.id] = item
-        (findVp2FragmentAtPosition(supportFragmentManager, 0) as RecyclerFragment)
-            .changeItemInList(
-                listContent, item.id
-            )
+        repeat(2) {
+            (findVp2FragmentAtPosition(supportFragmentManager, it) as RecyclerFragment)
+                .updateItemInList(
+                    listContent, item.id
+                )
+        }
     }
 
 }
