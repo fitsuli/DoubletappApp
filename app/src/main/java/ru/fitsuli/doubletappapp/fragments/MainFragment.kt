@@ -28,7 +28,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
 
-        (activity as MainActivity).let { activity ->
+        activity?.let { activity ->
 
             with(binding) {
 
@@ -42,7 +42,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 fab.setOnClickListener {
                     findNavController().navigate(
                         R.id.action_main_to_add_habit, bundleOf(
-                            Utils.ITEM_ID_KEY to activity.listContent.size
+                            Utils.ITEM_ID_KEY to (activity as MainActivity).listContent.size
                         )
                     )
                 }

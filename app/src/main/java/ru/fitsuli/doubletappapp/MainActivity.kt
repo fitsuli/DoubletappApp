@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), AddHabitFragment.SendInfo {
 
     override fun addItemToList(item: HabitItem) {
         listContent.add(item)
-        (findFragmentAtPosition(supportFragmentManager, 0) as RecyclerFragment)
+        (findVp2FragmentAtPosition(supportFragmentManager, 0) as RecyclerFragment)
             .addNewItemToList(
                 listContent, item.id
             )
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity(), AddHabitFragment.SendInfo {
 
     override fun updateItemInList(item: HabitItem) {
         listContent[item.id] = item
-        (findFragmentAtPosition(supportFragmentManager, 0) as RecyclerFragment)
+        (findVp2FragmentAtPosition(supportFragmentManager, 0) as RecyclerFragment)
             .changeItemInList(
                 listContent, item.id
             )

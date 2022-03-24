@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Parcelable
 import android.util.TypedValue
 import android.widget.Toast
+import androidx.annotation.IdRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.core.net.toUri
@@ -25,15 +26,12 @@ class Utils {
 
         @Keep
         @Parcelize
-        enum class Type(@StringRes val resId: Int) :
-            Parcelable { BAD(R.string.bad), GOOD(R.string.good) }
+        enum class Type(@StringRes val resId: Int, @IdRes val buttonIdRes: Int) :
+            Parcelable { BAD(R.string.bad, R.id.radio_bad), GOOD(R.string.good, R.id.radio_good) }
 
         fun Context.dpToPx(dpVal: Float) =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, resources.displayMetrics)
 
-        const val NEW_ITEM_KEY = "new_item"
-        const val EDITED_ITEM_KEY = "edited_item"
-        const val FRAGMENT_REQUEST_KEY = "item_from_habit"
         const val EDIT_MODE_KEY = "edit_mode"
         const val ITEM_ID_KEY = "item_id"
         const val HABIT_ITEM_KEY = "habit_data"
@@ -55,7 +53,7 @@ fun Context.openLink(url: String) {
 fun ViewPager2.findCurrentFragment(fragmentManager: FragmentManager): Fragment? =
     fragmentManager.findFragmentByTag("f$currentItem")
 
-fun findFragmentAtPosition(
+fun findVp2FragmentAtPosition(
     fragmentManager: FragmentManager,
     position: Int
 ): Fragment? = fragmentManager.findFragmentByTag("f$position")

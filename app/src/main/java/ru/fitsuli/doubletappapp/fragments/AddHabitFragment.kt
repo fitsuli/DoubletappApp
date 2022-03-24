@@ -39,20 +39,17 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
         val ctx = requireContext()
         with(binding) {
             var itemRgb: Int? = null
+            var prevHabit: HabitItem? = null
 
             val isInEditMode = arguments?.getBoolean(EDIT_MODE_KEY, false) == true
             if (isInEditMode) {
                 addButton.text = getString(R.string.change)
                 arguments?.getParcelable<HabitItem>(HABIT_ITEM_KEY)?.let {
+                    prevHabit = it
                     nameField.setText(it.name)
                     descriptionField.setText(it.description)
                     prioritySpinner.setSelection(it.priority.ordinal)
-                    typeGroup.check(
-                        when (it.type) {
-                            Type.GOOD -> R.id.radio_good
-                            else -> R.id.radio_bad
-                        }
-                    )
+                    typeGroup.check(it.type.buttonIdRes)
                     countField.setText(it.count)
                     periodField.setText(it.period)
                     it.srgbColor?.let { color ->
@@ -114,20 +111,28 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     ).show()
                     return@setOnClickListener
                 }
-                val type = when (typeGroup.checkedRadioButtonId) {
-                    R.id.radio_good -> Type.GOOD
-                    else -> Type.BAD
-                }
                 val habit = HabitItem(
                     name = nameField.text.toString(),
                     description = descriptionField.text.toString(),
                     priority = Priority.values()[prioritySpinner.selectedItemPosition],
-                    type = type,
+                    type = Type.values().find { it.buttonIdRes == typeGroup.checkedRadioButtonId }
+                        ?: Type.GOOD,
                     count = countField.text.toString(),
                     period = periodField.text.toString(),
                     srgbColor = itemRgb,
                     id = arguments?.getInt(ITEM_ID_KEY, 0) ?: 0
                 )
+
+                if (prevHabit == habit) {
+                    Toast.makeText(
+                        ctx,
+                        getString(R.string.no_changes_made),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    findNavController().popBackStack()
+                    return@setOnClickListener
+                }
 
                 if (isInEditMode) sendInterface?.updateItemInList(habit)
                 else sendInterface?.addItemToList(habit)
@@ -160,6 +165,11 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         sendInterface = activity as SendInfo
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        sendInterface = null
     }
 
     override fun onDestroyView() {
