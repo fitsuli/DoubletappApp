@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +33,6 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = _binding!!
     private lateinit var listContent: List<HabitItem>
-    private lateinit var adapter: RecyclerView.Adapter<HabitHolder>
     private var type: Type? = null
 
 
@@ -54,60 +52,39 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
             }
         }
 
-        with(binding) {
+        binding.recycler.adapter = object : RecyclerView.Adapter<HabitHolder>() {
 
-            adapter = object : RecyclerView.Adapter<HabitHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+                HabitHolder(
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.item_habit, parent, false)
+                )
 
-                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                    HabitHolder(
-                        LayoutInflater.from(parent.context)
-                            .inflate(R.layout.item_habit, parent, false)
-                    )
+            override fun getItemCount(): Int = listContent.size
 
-                override fun getItemCount(): Int = listContent.size
-
-                override fun onBindViewHolder(holder: HabitHolder, position: Int) {
-                    holder.apply {
-                        parentCard.setOnClickListener {
-                            findNavController().navigate(
-                                R.id.action_main_to_add_habit, bundleOf(
-                                    EDIT_MODE_KEY to true,
-                                    ITEM_ID_KEY to position,
-                                    HABIT_ITEM_KEY to listContent[position]
-                                )
+            override fun onBindViewHolder(holder: HabitHolder, position: Int) {
+                holder.onBind(requireContext(), listContent[position],
+                    onCardClick = {
+                        findNavController().navigate(
+                            R.id.action_main_to_add_habit, bundleOf(
+                                EDIT_MODE_KEY to true,
+                                ITEM_ID_KEY to position,
+                                HABIT_ITEM_KEY to listContent[position]
                             )
-                        }
-                        listContent[position].srgbColor?.let {
-                            parentCard.setCardBackgroundColor(it)
-                        }
-                        name.text = listContent[position].name
-                        description.text = listContent[position].description.also {
-                            description.isVisible = it.isNotEmpty()
-                        }
-                        priority.text = getString(listContent[position].priority.resId)
-                        type.text = getString(listContent[position].type.resId)
-                        count.text =
-                            listContent[position].count.also { count.isVisible = it.isNotEmpty() }
-
-                        period.text = getString(
-                            R.string.every_x,
-                            listContent[position].period
-                                .also { period.isVisible = it.isNotEmpty() })
-                    }
-                }
+                        )
+                    })
             }
-            recycler.adapter = adapter
         }
     }
 
     fun addNewItemToList(newList: List<HabitItem>, position: Int) {
         listContent = if (type == null) newList else newList.filter { it.type == type }
-        adapter.notifyItemInserted(position)
+        binding.recycler.adapter?.notifyItemInserted(position)
     }
 
     fun updateItemInList(newList: List<HabitItem>, position: Int) {
         listContent = if (type == null) newList else newList.filter { it.type == type }
-        adapter.notifyItemChanged(position)
+        binding.recycler.adapter?.notifyItemChanged(position)
     }
 
     override fun onDestroyView() {

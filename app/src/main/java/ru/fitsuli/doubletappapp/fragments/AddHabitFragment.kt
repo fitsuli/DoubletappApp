@@ -164,7 +164,9 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        sendInterface = activity as SendInfo
+        (activity as? SendInfo).let {
+            sendInterface = it
+        }
     }
 
     override fun onDetach() {
