@@ -49,7 +49,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     nameField.setText(it.name)
                     descriptionField.setText(it.description)
                     prioritySpinner.setSelection(it.priority.ordinal)
-                    typeGroup.check(it.type.buttonIdRes)
+                    typeGroup.check(it.type.buttonResId)
                     countField.setText(it.count)
                     periodField.setText(it.period)
                     it.srgbColor?.let { color ->
@@ -115,7 +115,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     name = nameField.text.toString(),
                     description = descriptionField.text.toString(),
                     priority = Priority.values()[prioritySpinner.selectedItemPosition],
-                    type = Type.values().find { it.buttonIdRes == typeGroup.checkedRadioButtonId }
+                    type = Type.values().find { it.buttonResId == typeGroup.checkedRadioButtonId }
                         ?: Type.GOOD,
                     count = countField.text.toString(),
                     period = periodField.text.toString(),

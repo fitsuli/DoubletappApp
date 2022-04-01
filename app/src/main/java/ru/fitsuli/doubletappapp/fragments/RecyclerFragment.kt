@@ -1,15 +1,12 @@
 package ru.fitsuli.doubletappapp.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
-import ru.fitsuli.doubletappapp.HabitHolder
 import ru.fitsuli.doubletappapp.HabitItem
+import ru.fitsuli.doubletappapp.HabitRecyclerViewAdapter
 import ru.fitsuli.doubletappapp.MainActivity
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
@@ -32,7 +29,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = _binding!!
-    private lateinit var listContent: List<HabitItem>
+    private lateinit var adapter: HabitRecyclerViewAdapter
     private var type: Type? = null
 
 
@@ -44,7 +41,8 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentRecyclerBinding.bind(view)
-        listContent = (activity as MainActivity).listContent.toList()
+
+        var listContent = (activity as MainActivity).listContent.toList()
         arguments?.let { bundle ->
             bundle.getParcelable<Type>(ARG_TYPE_NAME)?.let { type ->
                 this.type = type
@@ -52,39 +50,30 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
             }
         }
 
-        binding.recycler.adapter = object : RecyclerView.Adapter<HabitHolder>() {
-
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-                HabitHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_habit, parent, false)
+        adapter = HabitRecyclerViewAdapter(
+            requireContext(),
+            listContent,
+            onCardClick = { position, item ->
+                findNavController().navigate(
+                    R.id.action_main_to_add_habit, bundleOf(
+                        EDIT_MODE_KEY to true,
+                        ITEM_ID_KEY to position,
+                        HABIT_ITEM_KEY to item
+                    )
                 )
-
-            override fun getItemCount(): Int = listContent.size
-
-            override fun onBindViewHolder(holder: HabitHolder, position: Int) {
-                holder.onBind(requireContext(), listContent[position],
-                    onCardClick = {
-                        findNavController().navigate(
-                            R.id.action_main_to_add_habit, bundleOf(
-                                EDIT_MODE_KEY to true,
-                                ITEM_ID_KEY to position,
-                                HABIT_ITEM_KEY to listContent[position]
-                            )
-                        )
-                    })
             }
-        }
+        )
+        binding.recycler.adapter = adapter
     }
 
     fun addNewItemToList(newList: List<HabitItem>, position: Int) {
-        listContent = if (type == null) newList else newList.filter { it.type == type }
-        binding.recycler.adapter?.notifyItemInserted(position)
+        adapter.listContent = if (type == null) newList else newList.filter { it.type == type }
+        adapter.notifyItemInserted(position)
     }
 
     fun updateItemInList(newList: List<HabitItem>, position: Int) {
-        listContent = if (type == null) newList else newList.filter { it.type == type }
-        binding.recycler.adapter?.notifyItemChanged(position)
+        adapter.listContent = if (type == null) newList else newList.filter { it.type == type }
+        adapter.notifyItemChanged(position)
     }
 
     override fun onDestroyView() {

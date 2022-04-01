@@ -16,24 +16,24 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
     val count: TextView = view.findViewById(R.id.count)
     val period: TextView = view.findViewById(R.id.period)
 
-    fun onBind(context: Context, habitItem: HabitItem, onCardClick: ((View) -> Unit)? = null) {
-        onCardClick?.let { parentCard.setOnClickListener(it) }
+    fun onBind(context: Context, habit: HabitItem, onClick: (View) -> Unit) {
+        parentCard.setOnClickListener(onClick)
 
-        habitItem.srgbColor?.let {
+        habit.srgbColor?.let {
             parentCard.setCardBackgroundColor(it)
         }
-        name.text = habitItem.name
-        description.text = habitItem.description.also {
+        name.text = habit.name
+        description.text = habit.description.also {
             description.isVisible = it.isNotEmpty()
         }
-        priority.text = context.getString(habitItem.priority.resId)
-        type.text = context.getString(habitItem.type.resId)
+        priority.text = context.getString(habit.priority.stringResId)
+        type.text = context.getString(habit.type.stringResId)
         count.text =
-            habitItem.count.also { count.isVisible = it.isNotEmpty() }
+            habit.count.also { count.isVisible = it.isNotEmpty() }
 
         period.text = context.getString(
             R.string.every_x,
-            habitItem.period
+            habit.period
                 .also { period.isVisible = it.isNotEmpty() })
     }
 }

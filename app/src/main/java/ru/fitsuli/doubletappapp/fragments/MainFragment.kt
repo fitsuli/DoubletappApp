@@ -36,7 +36,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 viewPager.offscreenPageLimit = 1
                 TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                     tab.text = getString(
-                        if (position == 0) Type.GOOD.resId else Type.BAD.resId
+                        if (position == 0) Type.GOOD.stringResId else Type.BAD.stringResId
                     )
                 }.attach()
 

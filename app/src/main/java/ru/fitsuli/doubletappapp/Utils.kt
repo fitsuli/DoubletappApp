@@ -21,12 +21,12 @@ class Utils {
 
         @Keep
         @Parcelize
-        enum class Priority(@StringRes val resId: Int) :
+        enum class Priority(@StringRes val stringResId: Int) :
             Parcelable { HIGH(R.string.high), MEDIUM(R.string.medium), LOW(R.string.low) }
 
         @Keep
         @Parcelize
-        enum class Type(@StringRes val resId: Int, @IdRes val buttonIdRes: Int) :
+        enum class Type(@StringRes val stringResId: Int, @IdRes val buttonResId: Int) :
             Parcelable { BAD(R.string.bad, R.id.radio_bad), GOOD(R.string.good, R.id.radio_good) }
 
         fun Context.dpToPx(dpVal: Float) =
