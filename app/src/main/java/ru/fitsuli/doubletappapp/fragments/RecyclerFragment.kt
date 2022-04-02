@@ -29,9 +29,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 
     private var _binding: FragmentRecyclerBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: HabitRecyclerViewAdapter
     private var type = Type.GOOD
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +47,9 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
             }
         }
 
-        adapter = HabitRecyclerViewAdapter(
+        val adapter = HabitRecyclerViewAdapter(
             requireContext(),
-            onCardClick = { position, item ->
+            onCardClick = { item ->
                 findNavController().navigate(
                     R.id.action_main_to_add_habit, bundleOf(
                         EDIT_MODE_KEY to true,
@@ -63,10 +61,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
         )
         binding.recycler.adapter = adapter
         viewModel.listContent.observe(viewLifecycleOwner) {
-            adapter.listContent =
-                viewModel.getFilteredList(type)!! // TODO: is it okay not to use a given list?
-            adapter.notifyDataSetChanged()
-            // TODO: diffutil?
+            adapter.submitList(viewModel.getFilteredList(type)) // TODO: is it okay not to use a given list?
         }
     }
 

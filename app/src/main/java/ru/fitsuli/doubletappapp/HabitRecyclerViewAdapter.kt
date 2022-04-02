@@ -3,13 +3,12 @@ package ru.fitsuli.doubletappapp
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 
 class HabitRecyclerViewAdapter(
     private val context: Context,
-    var listContent: List<HabitItem> = listOf(),
-    private val onCardClick: ((position: Int, item: HabitItem) -> Unit)? = null
-) : RecyclerView.Adapter<HabitHolder>() {
+    private val onCardClick: ((item: HabitItem) -> Unit)? = null
+) : ListAdapter<HabitItem, HabitHolder>(HabitCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         HabitHolder(
             LayoutInflater.from(parent.context)
@@ -17,10 +16,8 @@ class HabitRecyclerViewAdapter(
         )
 
     override fun onBindViewHolder(holder: HabitHolder, position: Int) {
-        holder.onBind(context, listContent[position],
-            onClick = { onCardClick?.invoke(position, listContent[position]) }
+        holder.onBind(context, getItem(position),
+            onClick = { onCardClick?.invoke(getItem(position)) }
         )
     }
-
-    override fun getItemCount(): Int = listContent.size
 }

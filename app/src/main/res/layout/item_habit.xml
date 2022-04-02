@@ -45,23 +45,13 @@
             app:layout_constraintTop_toBottomOf="@id/name"
             tools:text="Description" />
 
-
-        <TextView
-            android:id="@+id/type"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/desc"
-            tools:text="Type" />
-
         <TextView
             android:id="@+id/count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@id/period"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/type"
+            app:layout_constraintTop_toBottomOf="@id/desc"
             tools:text="Count" />
         <TextView
             android:id="@+id/period"
@@ -69,7 +59,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/count"
-            app:layout_constraintTop_toBottomOf="@id/type"
+            app:layout_constraintTop_toBottomOf="@id/desc"
             tools:text="Period" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
