@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class HabitRecyclerViewAdapter(
     private val context: Context,
-    var listContent: List<HabitItem>,
+    var listContent: List<HabitItem> = listOf(),
     private val onCardClick: ((position: Int, item: HabitItem) -> Unit)? = null
 ) : RecyclerView.Adapter<HabitHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =

@@ -9,10 +9,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
-import ru.fitsuli.doubletappapp.fragments.AddHabitFragment
-import ru.fitsuli.doubletappapp.fragments.RecyclerFragment
 
-class MainActivity : AppCompatActivity(), AddHabitFragment.SendInfo {
+class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val saveList = "SAVE_HABITS"
@@ -20,7 +18,6 @@ class MainActivity : AppCompatActivity(), AddHabitFragment.SendInfo {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
-    var listContent = mutableListOf<HabitItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -47,6 +44,8 @@ class MainActivity : AppCompatActivity(), AddHabitFragment.SendInfo {
         }
     }
 
+    // TODO: viewmodel instance save
+/*
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putParcelableArrayList(saveList, listContent.toCollection(ArrayList()))
@@ -58,29 +57,9 @@ class MainActivity : AppCompatActivity(), AddHabitFragment.SendInfo {
             savedInstanceState.getParcelableArrayList<HabitItem>(saveList)?.toMutableList()
                 ?: mutableListOf()
     }
+*/
 
     override fun onSupportNavigateUp() =
         findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
-
-    override fun addItemToList(item: HabitItem) {
-        listContent.add(item)
-        repeat(2) {
-            (findVp2FragmentAtPosition(supportFragmentManager, it) as RecyclerFragment)
-                .addNewItemToList(
-                    listContent, item.id
-                )
-        }
-    }
-
-    override fun updateItemInList(item: HabitItem) {
-        listContent[item.id] = item
-        repeat(2) {
-            (findVp2FragmentAtPosition(supportFragmentManager, it) as RecyclerFragment)
-                .updateItemInList(
-                    listContent, item.id
-                )
-        }
-    }
-
 }

@@ -7,11 +7,11 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.fitsuli.doubletappapp.HomeListsPagerAdapter
-import ru.fitsuli.doubletappapp.MainActivity
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
+import java.util.*
 
 // Contains ViewPager's fragments
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -43,7 +43,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 fab.setOnClickListener {
                     findNavController().navigate(
                         R.id.action_main_to_add_habit, bundleOf(
-                            Utils.ITEM_ID_KEY to (activity as MainActivity).listContent.size
+                            Utils.ITEM_ID_KEY to UUID.randomUUID().mostSignificantBits
                         )
                     )
                 }

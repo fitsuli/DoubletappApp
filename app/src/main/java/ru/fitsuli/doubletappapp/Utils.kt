@@ -10,9 +10,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.viewpager2.widget.ViewPager2
+import androidx.lifecycle.MutableLiveData
 import kotlinx.parcelize.Parcelize
 
 
@@ -50,10 +48,14 @@ fun Context.openLink(url: String) {
     }
 }
 
-fun ViewPager2.findCurrentFragment(fragmentManager: FragmentManager): Fragment? =
-    fragmentManager.findFragmentByTag("f$currentItem")
+operator fun <T> MutableLiveData<MutableList<T>>.plusAssign(item: T) {
+    val value = this.value ?: mutableListOf()
+    value.add(item)
+    this.value = value
+}
 
-fun findVp2FragmentAtPosition(
-    fragmentManager: FragmentManager,
-    position: Int
-): Fragment? = fragmentManager.findFragmentByTag("f$position")
+operator fun <T> MutableLiveData<MutableList<T>>.set(index: Int, item: T) {
+    val value = this.value ?: mutableListOf()
+    value[index] = item
+    this.value = value
+}

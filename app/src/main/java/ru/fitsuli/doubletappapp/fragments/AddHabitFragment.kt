@@ -1,6 +1,5 @@
 package ru.fitsuli.doubletappapp.fragments
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -15,8 +14,10 @@ import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.get
 import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.fitsuli.doubletappapp.HabitItem
+import ru.fitsuli.doubletappapp.HabitViewModel
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
@@ -25,16 +26,17 @@ import ru.fitsuli.doubletappapp.Utils.Companion.Priority
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
+import java.util.*
 
 class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
     private var _binding: FragmentAddHabitBinding? = null
     private val binding get() = _binding!!
-    var sendInterface: SendInfo? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddHabitBinding.bind(view)
+        val viewModel = ViewModelProvider(requireActivity())[HabitViewModel::class.java]
 
         val ctx = requireContext()
         with(binding) {
@@ -120,7 +122,8 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     count = countField.text.toString(),
                     period = periodField.text.toString(),
                     srgbColor = itemRgb,
-                    id = arguments?.getInt(ITEM_ID_KEY, 0) ?: 0
+                    id = arguments?.getLong(ITEM_ID_KEY, 0L)
+                        ?: UUID.randomUUID().mostSignificantBits
                 )
 
                 if (prevHabit == habit) {
@@ -134,8 +137,8 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     return@setOnClickListener
                 }
 
-                if (isInEditMode) sendInterface?.updateItemInList(habit)
-                else sendInterface?.addItemToList(habit)
+                if (isInEditMode) viewModel.updateItemInList(habit)
+                else viewModel.addItemToList(habit)
 
                 findNavController().popBackStack()
             }
@@ -155,23 +158,6 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
             R.string.color_results, hsl[0], hsl[1], hsl[2],
             Color.red(pixel), Color.green(pixel), Color.blue(pixel)
         )
-    }
-
-    interface SendInfo {
-        fun addItemToList(item: HabitItem)
-        fun updateItemInList(item: HabitItem)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity as? SendInfo).let {
-            sendInterface = it
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        sendInterface = null
     }
 
     override fun onDestroyView() {

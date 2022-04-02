@@ -12,5 +12,5 @@ import ru.fitsuli.doubletappapp.Utils.Companion.Type
 data class HabitItem(
     val name: String, val description: String, val priority: Priority,
     val type: Type, val period: String, val count: String,
-    @ColorInt val srgbColor: Int? = null, val id: Int
+    @ColorInt val srgbColor: Int? = null, val id: Long
 ) : Parcelable
