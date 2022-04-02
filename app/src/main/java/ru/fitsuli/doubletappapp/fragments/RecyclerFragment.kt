@@ -6,7 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import ru.fitsuli.doubletappapp.HabitRecyclerViewAdapter
+import ru.fitsuli.doubletappapp.HabitRecyclerAdapter
 import ru.fitsuli.doubletappapp.HabitViewModel
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
@@ -47,7 +47,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
             }
         }
 
-        val adapter = HabitRecyclerViewAdapter(
+        val adapter = HabitRecyclerAdapter(
             requireContext(),
             onCardClick = { item ->
                 findNavController().navigate(

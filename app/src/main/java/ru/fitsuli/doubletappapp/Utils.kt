@@ -44,9 +44,11 @@ fun Context.openLink(url: String) {
             }
         )
     } catch (e: ActivityNotFoundException) {
-        Toast.makeText(this, getString(R.string.link_open_error), Toast.LENGTH_SHORT).show()
+        shortToast(getString(R.string.link_open_error))
     }
 }
+
+fun Context.shortToast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
 
 operator fun <T> MutableLiveData<MutableList<T>>.plusAssign(item: T) {
     val value = this.value ?: mutableListOf()

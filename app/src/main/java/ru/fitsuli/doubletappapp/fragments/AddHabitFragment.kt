@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import androidx.core.graphics.drawable.toBitmap
@@ -26,6 +25,7 @@ import ru.fitsuli.doubletappapp.Utils.Companion.Priority
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
+import ru.fitsuli.doubletappapp.shortToast
 import java.util.*
 
 class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
@@ -106,11 +106,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
             addButton.setOnClickListener {
                 if (nameField.text.isNullOrEmpty()) {
-                    Toast.makeText(
-                        ctx,
-                        getString(R.string.enter_name_hint),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    ctx.shortToast(getString(R.string.enter_name_hint))
                     return@setOnClickListener
                 }
                 val habit = HabitItem(
@@ -127,11 +123,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 )
 
                 if (prevHabit == habit) {
-                    Toast.makeText(
-                        ctx,
-                        getString(R.string.no_changes_made),
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    ctx.shortToast(getString(R.string.no_changes_made))
 
                     findNavController().popBackStack()
                     return@setOnClickListener

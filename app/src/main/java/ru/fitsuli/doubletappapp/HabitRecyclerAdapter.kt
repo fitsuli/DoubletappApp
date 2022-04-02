@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 
-class HabitRecyclerViewAdapter(
+class HabitRecyclerAdapter(
     private val context: Context,
     private val onCardClick: ((item: HabitItem) -> Unit)? = null
 ) : ListAdapter<HabitItem, HabitHolder>(HabitCallback()) {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         HabitHolder(
             LayoutInflater.from(parent.context)

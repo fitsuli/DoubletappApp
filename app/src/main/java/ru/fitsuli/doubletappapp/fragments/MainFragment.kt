@@ -6,7 +6,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
-import ru.fitsuli.doubletappapp.HomeListsPagerAdapter
+import ru.fitsuli.doubletappapp.HomePagerAdapter
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
@@ -32,7 +32,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
             with(binding) {
 
-                viewPager.adapter = HomeListsPagerAdapter(activity)
+                viewPager.adapter = HomePagerAdapter(activity)
                 viewPager.offscreenPageLimit = 1
                 TabLayoutMediator(tabLayout, viewPager) { tab, position ->
                     tab.text = getString(
