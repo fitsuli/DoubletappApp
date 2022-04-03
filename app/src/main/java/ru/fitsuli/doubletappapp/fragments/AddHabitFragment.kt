@@ -15,8 +15,8 @@ import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import ru.fitsuli.doubletappapp.AddHabitViewModel
 import ru.fitsuli.doubletappapp.HabitItem
-import ru.fitsuli.doubletappapp.HabitViewModel
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
@@ -36,7 +36,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentAddHabitBinding.bind(view)
-        val viewModel = ViewModelProvider(requireActivity())[HabitViewModel::class.java]
+        val viewModel = ViewModelProvider(requireActivity())[AddHabitViewModel::class.java]
 
         val ctx = requireContext()
         with(binding) {
