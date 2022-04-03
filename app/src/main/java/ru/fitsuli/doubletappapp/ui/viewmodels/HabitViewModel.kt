@@ -1,9 +1,10 @@
-package ru.fitsuli.doubletappapp
+package ru.fitsuli.doubletappapp.ui.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
+import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 
 class HabitViewModel : ViewModel() {

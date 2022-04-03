@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.fragments
+package ru.fitsuli.doubletappapp.ui.fragments
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -15,8 +15,6 @@ import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import ru.fitsuli.doubletappapp.AddHabitViewModel
-import ru.fitsuli.doubletappapp.HabitItem
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
@@ -25,7 +23,9 @@ import ru.fitsuli.doubletappapp.Utils.Companion.Priority
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
+import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.shortToast
+import ru.fitsuli.doubletappapp.ui.viewmodels.AddHabitViewModel
 import java.util.*
 
 class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {

@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.fragments
+package ru.fitsuli.doubletappapp.ui.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -6,14 +6,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import ru.fitsuli.doubletappapp.HabitRecyclerAdapter
-import ru.fitsuli.doubletappapp.HabitViewModel
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentRecyclerBinding
+import ru.fitsuli.doubletappapp.ui.adapter.HabitRecyclerAdapter
+import ru.fitsuli.doubletappapp.ui.viewmodels.HabitViewModel
 
 class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 

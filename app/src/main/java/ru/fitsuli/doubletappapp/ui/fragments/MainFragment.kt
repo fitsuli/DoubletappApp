@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.fragments
+package ru.fitsuli.doubletappapp.ui.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -6,11 +6,11 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
-import ru.fitsuli.doubletappapp.HomePagerAdapter
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
+import ru.fitsuli.doubletappapp.ui.adapter.HomePagerAdapter
 import java.util.*
 
 // Contains ViewPager's fragments

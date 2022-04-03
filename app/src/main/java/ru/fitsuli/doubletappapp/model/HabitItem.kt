@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp
+package ru.fitsuli.doubletappapp.model
 
 import android.os.Parcelable
 import androidx.annotation.ColorInt
