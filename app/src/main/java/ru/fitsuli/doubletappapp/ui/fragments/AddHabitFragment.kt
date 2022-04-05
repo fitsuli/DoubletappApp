@@ -59,6 +59,8 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                         setSelectedColorInt(color)
                     }
                 }
+            } else {
+                nameField.requestFocus()
             }
 
 
@@ -112,13 +114,14 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 val habit = HabitItem(
                     name = nameField.text.toString(),
                     description = descriptionField.text.toString(),
-                    priority = Priority.values()[prioritySpinner.selectedItemPosition],
+                    priority = Priority.values().getOrNull(prioritySpinner.selectedItemPosition)
+                        ?: Priority.HIGH,
                     type = Type.values().find { it.buttonResId == typeGroup.checkedRadioButtonId }
                         ?: Type.GOOD,
                     count = countField.text.toString(),
                     period = periodField.text.toString(),
                     srgbColor = itemRgb,
-                    id = arguments?.getLong(ITEM_ID_KEY, 0L)
+                    id = arguments?.getLong(ITEM_ID_KEY, UUID.randomUUID().mostSignificantBits)
                         ?: UUID.randomUUID().mostSignificantBits
                 )
 

@@ -31,11 +31,6 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
     private val binding get() = _binding!!
     private var type = Type.GOOD
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        retainInstance = true
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val viewModel = ViewModelProvider(requireActivity())[HabitViewModel::class.java]
@@ -60,8 +55,8 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
             }
         )
         binding.recycler.adapter = adapter
-        viewModel.repoContent.observe(viewLifecycleOwner) {
-            adapter.submitList(viewModel.getFilteredList(type)) // TODO: is it okay not to use a given list?
+        viewModel.mediator.observe(viewLifecycleOwner) {
+            adapter.submitList(viewModel.getFilteredByTypeList(type)) // TODO: is it okay not to use a given list?
         }
     }
 

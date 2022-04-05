@@ -28,5 +28,7 @@
     <string name="developed_by">Developed by fitsuli</string>
     <string name="link_open_error">Can\'t open the link</string>
     <string name="no_changes_made">No changes were made</string>
-
+    <string name="filters">Filters</string>
+    <string name="search">Search</string>
+    <string name="sort_by_name">Sort by name</string>
 </resources>

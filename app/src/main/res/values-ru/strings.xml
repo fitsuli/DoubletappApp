@@ -26,5 +26,8 @@
     <string name="developed_by">Разработано fitsuli</string>
     <string name="link_open_error">Не получается открыть ссылку</string>
     <string name="no_changes_made">Не было внесено изменений</string>
+    <string name="filters">Фильтры</string>
+    <string name="search">Поиск</string>
+    <string name="sort_by_name">Сортировать по имени</string>
 
 </resources>

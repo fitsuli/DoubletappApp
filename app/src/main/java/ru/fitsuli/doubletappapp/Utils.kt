@@ -10,7 +10,10 @@ import androidx.annotation.IdRes
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.core.net.toUri
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import kotlinx.parcelize.Parcelize
 
 
@@ -60,4 +63,13 @@ operator fun <T> MutableLiveData<MutableList<T>>.set(index: Int, item: T) {
     val value = this.value ?: mutableListOf()
     value[index] = item
     this.value = value
+}
+
+fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, observer: Observer<T>) {
+    observe(lifecycleOwner, object : Observer<T> {
+        override fun onChanged(t: T?) {
+            observer.onChanged(t)
+            removeObserver(this)
+        }
+    })
 }
