@@ -30,6 +30,10 @@ class Utils {
         enum class Type(@StringRes val stringResId: Int, @IdRes val buttonResId: Int) :
             Parcelable { BAD(R.string.bad, R.id.radio_bad), GOOD(R.string.good, R.id.radio_good) }
 
+        @Keep
+        @Parcelize
+        enum class SortBy : Parcelable { ASCENDING, DESCENDING, NONE }
+
         fun Context.dpToPx(dpVal: Float) =
             TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, resources.displayMetrics)
 

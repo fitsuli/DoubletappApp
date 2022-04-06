@@ -10,9 +10,9 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Utils
+import ru.fitsuli.doubletappapp.Utils.Companion.SortBy
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
-import ru.fitsuli.doubletappapp.observeOnce
 import ru.fitsuli.doubletappapp.ui.adapter.HomePagerAdapter
 import ru.fitsuli.doubletappapp.ui.viewmodels.HabitViewModel
 import java.util.*
@@ -47,11 +47,18 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     )
                 }
 
-                viewModel.searchStr.observeOnce(viewLifecycleOwner) {
-                    filters.searchEditText.setText(it)
-                }
+                filters.searchEditText.setText(viewModel.searchStr.value)
                 filters.searchEditText.doAfterTextChanged {
                     viewModel.setFilterName(it.toString())
+                }
+                filters.byAscendingIcon.setOnClickListener {
+                    viewModel.setSorting(SortBy.ASCENDING)
+                }
+                filters.byDefaultIcon.setOnClickListener {
+                    viewModel.setSorting(SortBy.NONE)
+                }
+                filters.byDescendingIcon.setOnClickListener {
+                    viewModel.setSorting(SortBy.DESCENDING)
                 }
 
             }

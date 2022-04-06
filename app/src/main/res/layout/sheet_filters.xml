@@ -69,12 +69,23 @@
         android:padding="8dp"
         android:src="@drawable/ic_round_keyboard_arrow_up_24"
         app:layout_constraintBottom_toBottomOf="@id/sort_by_name_text"
+        app:layout_constraintEnd_toStartOf="@id/by_default_icon"
+        app:layout_constraintTop_toTopOf="@id/sort_by_name_text"
+        app:tint="?attr/colorOnSurface" />
+
+    <ImageButton
+        android:id="@+id/by_default_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        android:src="@drawable/ic_round_search_off_24"
+        app:layout_constraintBottom_toBottomOf="@id/sort_by_name_text"
         app:layout_constraintEnd_toStartOf="@id/by_descending_icon"
         app:layout_constraintTop_toTopOf="@id/sort_by_name_text"
         app:tint="?attr/colorOnSurface" />
 
     <ImageButton
-
         android:id="@+id/by_descending_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
