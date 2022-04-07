@@ -14,7 +14,7 @@ import ru.fitsuli.doubletappapp.Utils.Companion.SortBy
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
 import ru.fitsuli.doubletappapp.ui.adapter.HomePagerAdapter
-import ru.fitsuli.doubletappapp.ui.viewmodels.HabitViewModel
+import ru.fitsuli.doubletappapp.ui.viewmodels.ListViewModel
 import java.util.*
 
 // Contains ViewPager's fragments
@@ -26,7 +26,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
-        val viewModel = ViewModelProvider(requireActivity())[HabitViewModel::class.java]
+        val viewModel = ViewModelProvider(requireActivity())[ListViewModel::class.java]
 
         activity?.let { activity ->
 

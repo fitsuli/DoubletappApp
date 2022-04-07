@@ -13,7 +13,7 @@ import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentRecyclerBinding
 import ru.fitsuli.doubletappapp.ui.adapter.HabitRecyclerAdapter
-import ru.fitsuli.doubletappapp.ui.viewmodels.HabitViewModel
+import ru.fitsuli.doubletappapp.ui.viewmodels.ListViewModel
 
 class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 
@@ -33,7 +33,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val viewModel = ViewModelProvider(requireActivity())[HabitViewModel::class.java]
+        val viewModel = ViewModelProvider(requireActivity())[ListViewModel::class.java]
         _binding = FragmentRecyclerBinding.bind(view)
 
         arguments?.let { bundle ->

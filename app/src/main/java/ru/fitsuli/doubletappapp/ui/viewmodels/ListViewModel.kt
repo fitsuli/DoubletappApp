@@ -10,7 +10,7 @@ import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 
-class HabitViewModel : ViewModel() {
+class ListViewModel : ViewModel() {
     private val _repoContent: MutableLiveData<MutableList<HabitItem>> =
         HabitLocalRepository.listContent
 
