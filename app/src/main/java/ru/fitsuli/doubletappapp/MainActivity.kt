@@ -12,10 +12,6 @@ import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    companion object {
-        private const val saveList = "SAVE_HABITS"
-    }
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -44,20 +40,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    // TODO: viewmodel instance save
-/*
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList(saveList, listContent.toCollection(ArrayList()))
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        listContent =
-            savedInstanceState.getParcelableArrayList<HabitItem>(saveList)?.toMutableList()
-                ?: mutableListOf()
-    }
-*/
 
     override fun onSupportNavigateUp() =
         findNavController(R.id.nav_host_fragment).navigateUp(appBarConfiguration)

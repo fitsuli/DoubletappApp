@@ -25,22 +25,27 @@ class ListViewModel : ViewModel() {
                 viewModelScope.launch {
                     postValue(
                         HabitLocalRepository.getFilteredSortedList(
-                            _searchStr.value!!,
-                            _sortBy.value!!
+                            _searchStr.value.orEmpty(),
+                            _sortBy.value ?: SortBy.NONE
                         )
                     )
                 }
             }
             addSource(_searchStr) { s ->
                 viewModelScope.launch {
-                    postValue(HabitLocalRepository.getFilteredSortedList(s, _sortBy.value!!))
+                    postValue(
+                        HabitLocalRepository.getFilteredSortedList(
+                            s,
+                            _sortBy.value ?: SortBy.NONE
+                        )
+                    )
                 }
             }
             addSource(_sortBy) { sortBy ->
                 viewModelScope.launch {
                     postValue(
                         HabitLocalRepository.getFilteredSortedList(
-                            _searchStr.value!!,
+                            _searchStr.value.orEmpty(),
                             sortBy
                         )
                     )

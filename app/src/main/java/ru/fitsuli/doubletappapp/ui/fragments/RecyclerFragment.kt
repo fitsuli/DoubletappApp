@@ -56,7 +56,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
         )
         binding.recycler.adapter = adapter
         viewModel.mediator.observe(viewLifecycleOwner) {
-            adapter.submitList(viewModel.getFilteredByTypeList(type)) // TODO: is it okay not to use a given list?
+            adapter.submitList(viewModel.getFilteredByTypeList(type))
         }
     }
 
