@@ -47,7 +47,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                     )
                 }
 
-                filters.searchEditText.setText(viewModel.searchStr.value)
                 filters.searchEditText.doAfterTextChanged {
                     viewModel.setFilterName(it.toString())
                 }

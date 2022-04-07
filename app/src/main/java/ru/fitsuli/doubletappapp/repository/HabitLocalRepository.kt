@@ -1,50 +1,14 @@
 package ru.fitsuli.doubletappapp.repository
 
 import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.Utils.Companion.SortBy
 import ru.fitsuli.doubletappapp.model.HabitItem
 
 object HabitLocalRepository {
     val listContent: MutableLiveData<MutableList<HabitItem>> = MutableLiveData(
-        mutableListOf(/*
-            HabitItem(
-                "ddd",
-                "fgh",
-                Priority.MEDIUM,
-                GOOD,
-                "",
-                "",
-                id = UUID.randomUUID().mostSignificantBits
-            ),
-            HabitItem(
-                "bbb",
-                "fgh",
-                Priority.MEDIUM,
-                GOOD,
-                "",
-                "",
-                id = UUID.randomUUID().mostSignificantBits
-            ),
-            HabitItem(
-                "aaa",
-                "fgh",
-                Priority.MEDIUM,
-                GOOD,
-                "",
-                "",
-                id = UUID.randomUUID().mostSignificantBits
-            ),
-            HabitItem(
-                "ccc",
-                "fgh",
-                Priority.MEDIUM,
-                GOOD,
-                "",
-                "",
-                id = UUID.randomUUID().mostSignificantBits
-            ),
-        */
-        )
+        mutableListOf()
     )
 
     private fun List<HabitItem>.getFilteredList(searchStr: String) =
@@ -62,6 +26,8 @@ object HabitLocalRepository {
         else -> listContent.value
     }
 
-    fun getFilteredSortedList(searchStr: String, sortBy: SortBy) =
-        getSortedList(sortBy)?.getFilteredList(searchStr)
+    suspend fun getFilteredSortedList(searchStr: String, sortBy: SortBy) =
+        withContext(IO) {
+            getSortedList(sortBy)?.getFilteredList(searchStr)
+        }
 }

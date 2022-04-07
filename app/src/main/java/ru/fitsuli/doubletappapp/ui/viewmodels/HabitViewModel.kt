@@ -1,9 +1,10 @@
 package ru.fitsuli.doubletappapp.ui.viewmodels
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import ru.fitsuli.doubletappapp.Utils.Companion.SortBy
 import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.model.HabitItem
@@ -14,8 +15,6 @@ class HabitViewModel : ViewModel() {
         HabitLocalRepository.listContent
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
-    val searchStr: LiveData<String> = _searchStr
-
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
 
     val mediator = MediatorLiveData<List<HabitItem>>()
@@ -23,14 +22,29 @@ class HabitViewModel : ViewModel() {
     init {
         mediator.apply {
             addSource(_repoContent) {
-                value =
-                    HabitLocalRepository.getFilteredSortedList(_searchStr.value!!, _sortBy.value!!)
+                viewModelScope.launch {
+                    postValue(
+                        HabitLocalRepository.getFilteredSortedList(
+                            _searchStr.value!!,
+                            _sortBy.value!!
+                        )
+                    )
+                }
             }
             addSource(_searchStr) { s ->
-                value = HabitLocalRepository.getFilteredSortedList(s, _sortBy.value!!)
+                viewModelScope.launch {
+                    postValue(HabitLocalRepository.getFilteredSortedList(s, _sortBy.value!!))
+                }
             }
             addSource(_sortBy) { sortBy ->
-                value = HabitLocalRepository.getFilteredSortedList(_searchStr.value!!, sortBy)
+                viewModelScope.launch {
+                    postValue(
+                        HabitLocalRepository.getFilteredSortedList(
+                            _searchStr.value!!,
+                            sortBy
+                        )
+                    )
+                }
             }
         }
     }
