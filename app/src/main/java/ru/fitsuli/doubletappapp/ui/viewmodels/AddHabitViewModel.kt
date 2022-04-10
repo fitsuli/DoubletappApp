@@ -1,23 +1,20 @@
 package ru.fitsuli.doubletappapp.ui.viewmodels
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import ru.fitsuli.doubletappapp.model.HabitItem
-import ru.fitsuli.doubletappapp.plusAssign
 import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
-import ru.fitsuli.doubletappapp.set
 
-class AddHabitViewModel : ViewModel() {
-    private val _repoContent: MutableLiveData<MutableList<HabitItem>> =
-        HabitLocalRepository.listContent
+class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
+    private val _repo = HabitLocalRepository(application.applicationContext)
+
+    private val _repoContent = _repo.listContent
 
     fun addItemToList(item: HabitItem) {
-        _repoContent += item
+        _repo.db.habitDao().insert(item)
     }
 
     fun updateItemInList(item: HabitItem) {
-        _repoContent.value?.let { list ->
-            _repoContent[list.indexOfFirst { it.id == item.id }] = item
-        }
+        _repo.db.habitDao().update(item)
     }
 }

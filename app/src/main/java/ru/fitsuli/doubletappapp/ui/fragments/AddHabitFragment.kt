@@ -15,12 +15,12 @@ import androidx.core.view.doOnNextLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import ru.fitsuli.doubletappapp.Priority
 import ru.fitsuli.doubletappapp.R
+import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
-import ru.fitsuli.doubletappapp.Utils.Companion.Priority
-import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
 import ru.fitsuli.doubletappapp.model.HabitItem

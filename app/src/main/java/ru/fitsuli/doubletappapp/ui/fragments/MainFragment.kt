@@ -9,9 +9,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.fitsuli.doubletappapp.R
+import ru.fitsuli.doubletappapp.SortBy
+import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.Utils
-import ru.fitsuli.doubletappapp.Utils.Companion.SortBy
-import ru.fitsuli.doubletappapp.Utils.Companion.Type
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
 import ru.fitsuli.doubletappapp.ui.adapter.HomePagerAdapter
 import ru.fitsuli.doubletappapp.ui.viewmodels.ListViewModel

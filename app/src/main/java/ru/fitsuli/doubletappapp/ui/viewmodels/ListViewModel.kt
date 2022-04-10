@@ -1,18 +1,20 @@
 package ru.fitsuli.doubletappapp.ui.viewmodels
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
-import ru.fitsuli.doubletappapp.Utils.Companion.SortBy
-import ru.fitsuli.doubletappapp.Utils.Companion.Type
+import ru.fitsuli.doubletappapp.SortBy
+import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 
-class ListViewModel : ViewModel() {
-    private val _repoContent: MutableLiveData<MutableList<HabitItem>> =
-        HabitLocalRepository.listContent
+class ListViewModel(application: Application) : AndroidViewModel(application) {
+    private val _repo = HabitLocalRepository(application.applicationContext)
+
+    private val _repoContent = _repo.listContent
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
@@ -24,7 +26,7 @@ class ListViewModel : ViewModel() {
             addSource(_repoContent) {
                 viewModelScope.launch {
                     postValue(
-                        HabitLocalRepository.getFilteredSortedList(
+                        _repo.getFilteredSortedList(
                             _searchStr.value.orEmpty(),
                             _sortBy.value ?: SortBy.NONE
                         )
@@ -34,7 +36,7 @@ class ListViewModel : ViewModel() {
             addSource(_searchStr) { s ->
                 viewModelScope.launch {
                     postValue(
-                        HabitLocalRepository.getFilteredSortedList(
+                        _repo.getFilteredSortedList(
                             s,
                             _sortBy.value ?: SortBy.NONE
                         )
@@ -44,7 +46,7 @@ class ListViewModel : ViewModel() {
             addSource(_sortBy) { sortBy ->
                 viewModelScope.launch {
                     postValue(
-                        HabitLocalRepository.getFilteredSortedList(
+                        _repo.getFilteredSortedList(
                             _searchStr.value.orEmpty(),
                             sortBy
                         )

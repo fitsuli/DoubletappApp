@@ -2,7 +2,7 @@ package ru.fitsuli.doubletappapp.ui.adapter
 
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import ru.fitsuli.doubletappapp.Utils.Companion.Type
+import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.ui.fragments.RecyclerFragment
 
 class HomePagerAdapter(activity: FragmentActivity) : FragmentStateAdapter(activity) {
