@@ -9,7 +9,7 @@ import ru.fitsuli.doubletappapp.model.HabitItem
 class HabitLocalRepository(context: Context) {
     val db = AppDatabase.getInstance(context)
 
-    val listContent = db.habitDao().getAll()
+    val content = db.habitDao().getAll()
 
     private fun List<HabitItem>.getFilteredList(searchStr: String) =
         if (searchStr.isNotBlank()) this.filter { item ->
@@ -28,6 +28,6 @@ class HabitLocalRepository(context: Context) {
 
     suspend fun getFilteredSortedList(searchStr: String, sortBy: SortBy) =
         withContext(IO) {
-            listContent.value?.getSortedList(sortBy)?.getFilteredList(searchStr)
+            content.value?.getSortedList(sortBy)?.getFilteredList(searchStr)
         }
 }

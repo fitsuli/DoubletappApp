@@ -14,7 +14,7 @@ import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 class ListViewModel(application: Application) : AndroidViewModel(application) {
     private val _repo = HabitLocalRepository(application.applicationContext)
 
-    private val _repoContent = _repo.listContent
+    private val _repoContent = _repo.content
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)

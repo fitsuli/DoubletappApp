@@ -12,6 +12,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.get
 import androidx.core.view.doOnNextLayout
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -135,6 +136,14 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 if (isInEditMode) viewModel.updateItemInList(habit)
                 else viewModel.addItemToList(habit)
 
+                findNavController().popBackStack()
+            }
+
+            removeButton.isVisible = prevHabit != null
+            removeButton.setOnClickListener {
+                if (prevHabit != null) {
+                    viewModel.removeItemFromList(prevHabit!!)
+                }
                 findNavController().popBackStack()
             }
         }

@@ -6,6 +6,7 @@
     <string name="title_about">О приложении</string>
     <string name="add">Добавить</string>
     <string name="change">Изменить</string>
+    <string name="remove">Удалить</string>
     <string name="habit_count">Количество выполнений</string>
     <string name="habit_period">Периодичность</string>
     <string name="habit_desc">Описание</string>

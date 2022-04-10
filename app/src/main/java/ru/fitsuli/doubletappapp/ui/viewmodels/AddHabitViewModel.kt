@@ -8,10 +8,12 @@ import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
     private val _repo = HabitLocalRepository(application.applicationContext)
 
-    private val _repoContent = _repo.listContent
-
     fun addItemToList(item: HabitItem) {
         _repo.db.habitDao().insert(item)
+    }
+
+    fun removeItemFromList(item: HabitItem) {
+        _repo.db.habitDao().delete(item)
     }
 
     fun updateItemInList(item: HabitItem) {

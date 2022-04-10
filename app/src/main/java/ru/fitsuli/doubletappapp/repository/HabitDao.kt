@@ -28,6 +28,6 @@ interface HabitDao {
     @Delete
     fun delete(habit: HabitItem)
 
-    @Update
+    @Update(onConflict = OnConflictStrategy.REPLACE)
     fun update(habit: HabitItem)
 }
