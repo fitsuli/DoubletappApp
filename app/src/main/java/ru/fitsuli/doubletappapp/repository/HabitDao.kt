@@ -16,6 +16,9 @@ interface HabitDao {
     @Query("SELECT * FROM habits WHERE name LIKE :name LIMIT 1")
     fun findByName(name: String): HabitItem
 
+    @Query("SELECT * FROM habits WHERE name LIKE '%' || :name || '%'")
+    fun filterByNameList(name: String): List<HabitItem>
+
     @Query("SELECT * FROM habits WHERE type LIKE :type LIMIT 1")
     fun findByType(type: Type): HabitItem
 

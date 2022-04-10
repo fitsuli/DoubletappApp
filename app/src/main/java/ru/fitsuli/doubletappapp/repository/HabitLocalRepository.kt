@@ -11,14 +11,9 @@ class HabitLocalRepository(context: Context) {
 
     val content = db.habitDao().getAll()
 
-    private fun List<HabitItem>.getFilteredList(searchStr: String) =
-        if (searchStr.isNotBlank()) this.filter { item ->
-            item.name.contains(
-                searchStr,
-                ignoreCase = true
-            )
-        }
-        else this
+    private fun getFilteredList(searchStr: String) =
+        if (searchStr.isNotBlank()) db.habitDao().filterByNameList(searchStr)
+        else content.value.orEmpty()
 
     private fun List<HabitItem>.getSortedList(sortBy: SortBy) = when (sortBy) {
         SortBy.ASCENDING -> this.sortedBy { it.name }
@@ -28,6 +23,7 @@ class HabitLocalRepository(context: Context) {
 
     suspend fun getFilteredSortedList(searchStr: String, sortBy: SortBy) =
         withContext(IO) {
-            content.value?.getSortedList(sortBy)?.getFilteredList(searchStr)
+            // TODO: move to one big query
+            getFilteredList(searchStr).getSortedList(sortBy)
         }
 }
