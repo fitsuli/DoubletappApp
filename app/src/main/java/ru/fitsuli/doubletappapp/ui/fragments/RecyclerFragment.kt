@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
-import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.databinding.FragmentRecyclerBinding
 import ru.fitsuli.doubletappapp.ui.adapter.HabitRecyclerAdapter
@@ -48,8 +47,7 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
                 findNavController().navigate(
                     R.id.action_main_to_add_habit, bundleOf(
                         EDIT_MODE_KEY to true,
-                        ITEM_ID_KEY to item.id,
-                        HABIT_ITEM_KEY to item
+                        ITEM_ID_KEY to item.id
                     )
                 )
             }

@@ -46,9 +46,6 @@
             android:name="item_id"
             android:defaultValue="0L"
             app:argType="long" />
-        <argument
-            android:name="habit_data"
-            app:argType="ru.fitsuli.doubletappapp.model.HabitItem" />
     </fragment>
 
     <fragment

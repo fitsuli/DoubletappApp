@@ -19,4 +19,6 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
     fun updateItemInList(item: HabitItem) {
         _repo.db.habitDao().update(item)
     }
+
+    fun findItemById(id: Long) = _repo.db.habitDao().findById(id)
 }

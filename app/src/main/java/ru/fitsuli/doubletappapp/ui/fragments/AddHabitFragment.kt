@@ -20,7 +20,6 @@ import ru.fitsuli.doubletappapp.Priority
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
-import ru.fitsuli.doubletappapp.Utils.Companion.HABIT_ITEM_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
@@ -47,17 +46,19 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
             val isInEditMode = arguments?.getBoolean(EDIT_MODE_KEY, false) == true
             if (isInEditMode) {
                 addButton.text = getString(R.string.change)
-                arguments?.getParcelable<HabitItem>(HABIT_ITEM_KEY)?.let {
-                    prevHabit = it
-                    nameField.setText(it.name)
-                    descriptionField.setText(it.description)
-                    prioritySpinner.setSelection(it.priority.ordinal)
-                    typeGroup.check(it.type.buttonResId)
-                    countField.setText(it.count)
-                    periodField.setText(it.period)
-                    it.srgbColor?.let { color ->
-                        itemRgb = color
-                        setSelectedColorInt(color)
+                arguments?.getLong(ITEM_ID_KEY, 0L)?.let { id ->
+                    viewModel.findItemById(id)?.let {
+                        prevHabit = it
+                        nameField.setText(it.name)
+                        descriptionField.setText(it.description)
+                        prioritySpinner.setSelection(it.priority.ordinal)
+                        typeGroup.check(it.type.buttonResId)
+                        countField.setText(it.count)
+                        periodField.setText(it.period)
+                        it.srgbColor?.let { color ->
+                            itemRgb = color
+                            setSelectedColorInt(color)
+                        }
                     }
                 }
             } else {

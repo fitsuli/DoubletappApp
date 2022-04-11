@@ -36,7 +36,6 @@ class Utils {
 
         const val EDIT_MODE_KEY = "edit_mode"
         const val ITEM_ID_KEY = "item_id"
-        const val HABIT_ITEM_KEY = "habit_data"
     }
 }
 
