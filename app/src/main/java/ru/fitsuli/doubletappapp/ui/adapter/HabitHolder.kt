@@ -1,6 +1,7 @@
 package ru.fitsuli.doubletappapp.ui.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -24,9 +25,7 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
             }
         }
 
-        habit.srgbColor?.let {
-            parentCard.setCardBackgroundColor(it)
-        }
+        parentCard.setCardBackgroundColor(habit.srgbColor ?: Color.TRANSPARENT)
         name.text = habit.name
         description.text = habit.description.also {
             description.isVisible = it.isNotEmpty()
