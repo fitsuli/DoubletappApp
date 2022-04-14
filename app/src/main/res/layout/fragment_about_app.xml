@@ -33,11 +33,13 @@
             android:id="@+id/source_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:layout_marginTop="16dp"
             android:padding="16dp"
             android:src="@drawable/ic_round_source_24"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/developed_by" />
+            app:layout_constraintTop_toBottomOf="@id/developed_by"
+            app:tint="?colorOnSurface" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>
