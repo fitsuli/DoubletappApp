@@ -3,14 +3,15 @@ package ru.fitsuli.doubletappapp.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.ListAdapter
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.model.HabitItem
 
 class HabitRecyclerAdapter(
     private val context: Context,
-    private val onCardClick: ((item: HabitItem) -> Unit)? = null
-) : ListAdapter<HabitItem, HabitHolder>(HabitCallback()) {
+    private val onCardClick: ((id: Long) -> Unit)? = null
+) : ListAdapter<HabitItem, HabitHolder>(AsyncDifferConfig.Builder(HabitCallback()).build()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         HabitHolder(
@@ -19,8 +20,9 @@ class HabitRecyclerAdapter(
         )
 
     override fun onBindViewHolder(holder: HabitHolder, position: Int) {
-        holder.onBind(context, getItem(position),
-            onClick = { onCardClick?.invoke(getItem(position)) }
+        holder.onBind(
+            context, getItem(position),
+            onClick = onCardClick
         )
     }
 }

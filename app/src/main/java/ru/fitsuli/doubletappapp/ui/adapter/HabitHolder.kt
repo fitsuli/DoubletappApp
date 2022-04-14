@@ -17,8 +17,12 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val count: TextView = view.findViewById(R.id.count)
     private val period: TextView = view.findViewById(R.id.period)
 
-    fun onBind(context: Context, habit: HabitItem, onClick: (View) -> Unit) {
-        parentCard.setOnClickListener(onClick)
+    fun onBind(context: Context, habit: HabitItem, onClick: ((id: Long) -> Unit)? = null) {
+        if (onClick != null) {
+            parentCard.setOnClickListener {
+                onClick(habit.id)
+            }
+        }
 
         habit.srgbColor?.let {
             parentCard.setCardBackgroundColor(it)
