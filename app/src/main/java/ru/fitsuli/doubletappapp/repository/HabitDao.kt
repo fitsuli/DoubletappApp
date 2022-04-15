@@ -12,16 +12,16 @@ interface HabitDao {
     fun getAll(): LiveData<List<HabitItem>>
 
     @Query("SELECT * FROM habits WHERE id IN (:habitIds)")
-    fun loadAllByIds(habitIds: IntArray): List<HabitItem>
+    suspend fun loadAllByIds(habitIds: IntArray): List<HabitItem>
 
     @Query("SELECT * FROM habits WHERE id LIKE :id LIMIT 1")
-    fun findById(id: Long): HabitItem?
+    suspend fun findById(id: Long): HabitItem?
 
     @Query("SELECT * FROM habits WHERE type LIKE :type")
-    fun filterByType(type: Type): List<HabitItem>
+    suspend fun filterByType(type: Type): List<HabitItem>
 
     @Query("SELECT * FROM habits WHERE name LIKE '%' || :name || '%'")
-    fun filterByName(name: String): List<HabitItem>
+    suspend fun filterByName(name: String): List<HabitItem>
 
     @Query(
         "SELECT * FROM habits " +
@@ -30,17 +30,17 @@ interface HabitDao {
                 "CASE WHEN :sortBy = 'ASCENDING' THEN name END ASC, " +
                 "CASE WHEN :sortBy = 'DESCENDING' THEN name END DESC "
     )
-    fun filterAndSort(name: String, sortBy: SortBy): List<HabitItem>
+    suspend fun filterAndSort(name: String, sortBy: SortBy): List<HabitItem>
 
     @Insert
-    fun insertAll(vararg habits: HabitItem)
+    suspend fun insertAll(vararg habits: HabitItem)
 
     @Insert
-    fun insert(habit: HabitItem)
+    suspend fun insert(habit: HabitItem)
 
     @Delete
-    fun delete(habit: HabitItem)
+    suspend fun delete(habit: HabitItem)
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun update(habit: HabitItem)
+    suspend fun update(habit: HabitItem)
 }
