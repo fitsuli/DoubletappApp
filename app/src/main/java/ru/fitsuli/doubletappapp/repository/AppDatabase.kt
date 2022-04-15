@@ -16,12 +16,11 @@ abstract class AppDatabase : RoomDatabase() {
         private var dbInstance: AppDatabase? = null
 
         fun getInstance(context: Context): AppDatabase {
-            if (dbInstance == null) dbInstance = Room.databaseBuilder(
-                context.applicationContext,
-                AppDatabase::class.java, DB_NAME
-            )
-                .allowMainThreadQueries() // TODO: get rid of
-                .build()
+            if (dbInstance == null)
+                dbInstance = Room.databaseBuilder(
+                    context.applicationContext,
+                    AppDatabase::class.java, DB_NAME
+                ).build()
 
             return dbInstance!!
         }

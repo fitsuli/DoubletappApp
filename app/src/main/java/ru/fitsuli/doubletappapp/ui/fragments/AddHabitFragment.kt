@@ -47,19 +47,24 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
             if (isInEditMode) {
                 addButton.text = getString(R.string.change)
                 arguments?.getLong(ITEM_ID_KEY, 0L)?.let { id ->
-                    viewModel.findItemById(id)?.let {
-                        prevHabit = it
-                        nameField.setText(it.name)
-                        descriptionField.setText(it.description)
-                        prioritySpinner.setSelection(it.priority.ordinal)
-                        typeGroup.check(it.type.buttonResId)
-                        countField.setText(it.count)
-                        periodField.setText(it.period)
-                        it.srgbColor?.let { color ->
+                    viewModel.selectedItem.observe(viewLifecycleOwner) { item ->
+                        if (item == null) return@observe
+                        prevHabit = item
+                        removeButton.isVisible = true
+
+                        nameField.setText(item.name)
+                        descriptionField.setText(item.description)
+                        prioritySpinner.setSelection(item.priority.ordinal)
+                        typeGroup.check(item.type.buttonResId)
+                        countField.setText(item.count)
+                        periodField.setText(item.period)
+                        item.srgbColor?.let { color ->
                             itemRgb = color
                             setSelectedColorInt(color)
                         }
                     }
+
+                    viewModel.runFindItemById(id)
                 }
             } else {
                 nameField.requestFocus()
@@ -134,16 +139,15 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     return@setOnClickListener
                 }
 
-                if (isInEditMode) viewModel.updateItemInList(habit)
-                else viewModel.addItemToList(habit)
+                if (isInEditMode) viewModel.update(habit)
+                else viewModel.add(habit)
 
                 findNavController().popBackStack()
             }
 
-            removeButton.isVisible = prevHabit != null
             removeButton.setOnClickListener {
                 if (prevHabit != null) {
-                    viewModel.removeItemFromList(prevHabit!!)
+                    viewModel.remove(prevHabit!!)
                 }
                 findNavController().popBackStack()
             }
