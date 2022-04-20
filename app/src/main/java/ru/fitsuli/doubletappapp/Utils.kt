@@ -3,6 +3,9 @@ package ru.fitsuli.doubletappapp
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Parcelable
 import android.util.TypedValue
 import android.widget.Toast
@@ -36,6 +39,8 @@ class Utils {
 
         const val EDIT_MODE_KEY = "edit_mode"
         const val ITEM_ID_KEY = "item_id"
+
+        const val AUTH_TOKEN = "591d7ae2-6ed9-459d-a733-c3eb3e863796"
     }
 }
 
@@ -64,3 +69,20 @@ operator fun <T> MutableLiveData<MutableList<T>>.set(index: Int, item: T) {
     value[index] = item
     this.value = value
 }
+
+val Context.isOnline: Boolean
+    get() {
+        val connectivityManager =
+            this.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+                    ?: return false
+            return capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                    capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
+        } else {
+            return connectivityManager.activeNetworkInfo?.isConnected == true
+        }
+    }
