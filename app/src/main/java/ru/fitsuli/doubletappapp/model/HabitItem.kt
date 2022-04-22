@@ -13,12 +13,30 @@ import ru.fitsuli.doubletappapp.Type
 @Serializable
 @Entity(tableName = "habits")
 data class HabitItem(
-    @SerialName("title") val name: String,
+    @SerialName("title")
+    val name: String,
+
+    @SerialName("description")
     val description: String,
+
+    @SerialName("priority")
     val priority: Priority,
+
+    @SerialName("type")
     val type: Type,
-    @SerialName("frequency") val period: String,
+
+    @SerialName("frequency")
+    val period: String,
+
+    @SerialName("count")
     val count: String,
-    @SerialName("color") @ColorInt val srgbColor: Int? = null,
-    @SerialName("uid") @PrimaryKey val id: Long
+
+    @SerialName("color")
+    @ColorInt val srgbColor: Int? = null,
+
+    @SerialName("uid")
+    @PrimaryKey val id: String,
+
+    @SerialName("done_dates")
+    val doneDates: List<Int>? = null
 )

@@ -128,8 +128,8 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     count = countField.text.toString(),
                     period = periodField.text.toString(),
                     srgbColor = itemRgb,
-                    id = arguments?.getLong(ITEM_ID_KEY, UUID.randomUUID().mostSignificantBits)
-                        ?: UUID.randomUUID().mostSignificantBits
+                    id = (arguments?.getLong(ITEM_ID_KEY, UUID.randomUUID().mostSignificantBits)
+                        ?: UUID.randomUUID().mostSignificantBits).toString()
                 )
 
                 if (prevHabit == habit) {

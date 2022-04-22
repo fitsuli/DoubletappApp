@@ -10,7 +10,7 @@ import ru.fitsuli.doubletappapp.model.HabitItem
 
 class HabitRecyclerAdapter(
     private val context: Context,
-    private val onCardClick: ((id: Long) -> Unit)? = null
+    private val onCardClick: ((id: String) -> Unit)? = null
 ) : ListAdapter<HabitItem, HabitHolder>(AsyncDifferConfig.Builder(HabitCallback()).build()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
