@@ -32,6 +32,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
     private var _binding: FragmentAddHabitBinding? = null
     private val binding get() = _binding!!
+    private var itemRgb: Int? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -40,7 +41,6 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
         val ctx = requireContext()
         with(binding) {
-            var itemRgb: Int? = null
             var prevHabit: HabitItem? = null
 
             val isInEditMode = arguments?.getBoolean(EDIT_MODE_KEY, false) == true
@@ -52,16 +52,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                         prevHabit = item
                         removeButton.isVisible = true
 
-                        nameField.setText(item.name)
-                        descriptionField.setText(item.description)
-                        prioritySpinner.setSelection(item.priority.ordinal)
-                        typeGroup.check(item.type.buttonResId)
-                        countField.setText(item.count)
-                        periodField.setText(item.period)
-                        item.srgbColor?.let { color ->
-                            itemRgb = color
-                            setSelectedColorInt(color)
-                        }
+                        restoreFromItem(item)
                     }
 
                     viewModel.runFindItemById(id)
@@ -73,16 +64,17 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
             val wh = ctx.dpToPx(48f).toInt()
             val half = wh / 2
-            val ids = mutableListOf<Int>()
-            repeat(16) { _ ->
-                val vId = View.generateViewId().also { ids += it }
-                colorsLinear.addView(
-                    ImageView(ctx).apply {
-                        setImageResource(R.drawable.rect)
-                        id = vId
-                        layoutParams = ViewGroup.LayoutParams(wh, wh)
-                    }
-                )
+            val ids = buildList(capacity = 16) {
+                repeat(16) { _ ->
+                    val vId = View.generateViewId().also { add(it) }
+                    colorsLinear.addView(
+                        ImageView(ctx).apply {
+                            setImageResource(R.drawable.rect)
+                            id = vId
+                            layoutParams = ViewGroup.LayoutParams(wh, wh)
+                        }
+                    )
+                }
             }
 
             colorsLinear.background = GradientDrawable(
@@ -167,6 +159,19 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
             R.string.color_results, hsl[0], hsl[1], hsl[2],
             Color.red(pixel), Color.green(pixel), Color.blue(pixel)
         )
+    }
+
+    private fun restoreFromItem(item: HabitItem) = with(binding) {
+        nameField.setText(item.name)
+        descriptionField.setText(item.description)
+        prioritySpinner.setSelection(item.priority.ordinal)
+        typeGroup.check(item.type.buttonResId)
+        countField.setText(item.count)
+        periodField.setText(item.period)
+        item.srgbColor?.let { color ->
+            itemRgb = color
+            setSelectedColorInt(color)
+        }
     }
 
     override fun onDestroyView() {

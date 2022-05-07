@@ -10,11 +10,12 @@ import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
+import ru.fitsuli.doubletappapp.repository.HabitNetworkRepository
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _repo = HabitLocalRepository(application.applicationContext)
+    private val _repoLocal = HabitLocalRepository(application.applicationContext)
 
-    private val _repoContent = _repo.content
+    val _api = HabitNetworkRepository().habitApi
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
@@ -23,10 +24,10 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         mediator.apply {
-            addSource(_repoContent) {
+            addSource(_repoLocal.content) {
                 viewModelScope.launch {
                     postValue(
-                        _repo.getFilteredSortedList(
+                        _repoLocal.getFilteredSortedList(
                             _searchStr.value.orEmpty(),
                             _sortBy.value ?: SortBy.NONE
                         )
@@ -36,7 +37,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             addSource(_searchStr) { s ->
                 viewModelScope.launch {
                     postValue(
-                        _repo.getFilteredSortedList(
+                        _repoLocal.getFilteredSortedList(
                             s,
                             _sortBy.value ?: SortBy.NONE
                         )
@@ -46,7 +47,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             addSource(_sortBy) { sortBy ->
                 viewModelScope.launch {
                     postValue(
-                        _repo.getFilteredSortedList(
+                        _repoLocal.getFilteredSortedList(
                             _searchStr.value.orEmpty(),
                             sortBy
                         )

@@ -4,7 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import ru.fitsuli.doubletappapp.model.HabitItem
 
-interface NetworkHabitService {
+interface HabitApi {
     @GET("habit")
     suspend fun getHabits(@Header("Authorization") authorization: String): List<HabitItem>
 
