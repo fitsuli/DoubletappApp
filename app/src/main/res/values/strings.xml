@@ -24,7 +24,8 @@
     <string name="color_results" translatable="false">HSL: %1$f %2$.3f %3$.3f\nRGB: %4$d %5$d %6$d</string>
     <string name="cur_color">Current color</string>
     <string name="every">Every</string>
-    <string name="every_x">Every %1$s</string>
+    <string name="days">days</string>
+    <string name="every_x">Every %1$s days</string>
 
     <string name="developed_by">Developed by fitsuli</string>
     <string name="link_open_error">Can\'t open the link</string>

@@ -1,5 +1,6 @@
 package ru.fitsuli.doubletappapp.repository
 
+import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -28,6 +29,7 @@ class RetrofitRequestApi {
                 val retrofit = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttp)
+                    .addCallAdapterFactory(NetworkResponseAdapterFactory())
                     .addConverterFactory(Json.asConverterFactory(contentType))
                     .build()
                 apiInstance = retrofit.create(HabitApi::class.java)

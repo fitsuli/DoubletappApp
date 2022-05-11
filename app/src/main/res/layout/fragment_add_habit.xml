@@ -112,13 +112,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/count_layout"
             app:layout_constraintTop_toTopOf="@id/count_layout"
-            app:prefixText="@string/every">
+            app:prefixText="@string/every"
+            app:suffixText="@string/days">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/period_field"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textShortMessage"
+                android:inputType="number"
                 android:maxLines="1" />
 
         </com.google.android.material.textfield.TextInputLayout>
