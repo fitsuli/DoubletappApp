@@ -58,6 +58,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 viewModel.setSorting(SortBy.DESCENDING)
             }
 
+            viewModel.isLoading.observe(viewLifecycleOwner) {
+                if (it) progressIndicator.show()
+                else progressIndicator.hide()
+            }
+
         }
     }
 }

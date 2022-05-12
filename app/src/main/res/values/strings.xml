@@ -36,4 +36,5 @@
     <string name="sort_by_name">Sort by name</string>
     <string name="update_list">Update list</string>
 
+    <string name="offline_hint">You are offline</string>
 </resources>

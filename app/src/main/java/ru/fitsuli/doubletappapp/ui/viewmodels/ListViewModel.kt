@@ -1,10 +1,7 @@
 package ru.fitsuli.doubletappapp.ui.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
@@ -18,6 +15,9 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
+
+    private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
+    val isLoading: LiveData<Boolean> = _isLoading
 
     val mediator = MediatorLiveData<List<HabitItem>>()
 
@@ -57,10 +57,14 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun updateHabitsFromNet() = viewModelScope.launch {
+        _isLoading.postValue(true)
+
         _net.fetchAllHabits(onSuccess = {
             _local.removeAll()
             _local.addAll(it)
         })
+
+        _isLoading.postValue(false)
     }
 
     fun getFilteredByTypeList(type: Type) = mediator.value?.filter { it.type == type }

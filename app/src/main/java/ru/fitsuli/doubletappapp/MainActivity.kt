@@ -64,6 +64,9 @@ class MainActivity : AppCompatActivity() {
             placeholder(R.drawable.ic_round_downloading_24)
             error(R.drawable.ic_round_error_outline_24)
         }
+
+        // TODO: send event in a viewmodel
+        if (!isOnline) shortToast(getString(R.string.offline_hint))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
