@@ -26,6 +26,7 @@ import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.shortToast
 import ru.fitsuli.doubletappapp.ui.viewmodels.AddHabitViewModel
+import java.time.OffsetDateTime
 import java.util.*
 
 class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
@@ -46,7 +47,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
             val isInEditMode = arguments?.getBoolean(EDIT_MODE_KEY, false) == true
             if (isInEditMode) {
                 addButton.text = getString(R.string.change)
-                arguments?.getLong(ITEM_ID_KEY, 0L)?.let { id ->
+                arguments?.getString(ITEM_ID_KEY, "0aaa")?.let { id ->
                     viewModel.selectedItem.observe(viewLifecycleOwner) { item ->
                         if (item == null) return@observe
                         prevHabit = item
@@ -117,9 +118,10 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                         ?: Priority.HIGH,
                     type = Type.values().find { it.buttonResId == typeGroup.checkedRadioButtonId }
                         ?: Type.GOOD,
-                    count = countField.text.toString(),
-                    period = periodField.text.toString(),
+                    count = countField.text.toString().toIntOrNull() ?: 0,
+                    period = periodField.text.toString().toIntOrNull() ?: 0,
                     srgbColor = itemRgb,
+                    createdDate = if (isInEditMode) prevHabit!!.createdDate else OffsetDateTime.now(),
                     id = (arguments?.getLong(ITEM_ID_KEY, UUID.randomUUID().mostSignificantBits)
                         ?: UUID.randomUUID().mostSignificantBits).toString()
                 )
@@ -131,15 +133,36 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     return@setOnClickListener
                 }
 
-                if (isInEditMode) viewModel.update(habit)
-                else viewModel.add(habit)
+                if (isInEditMode) viewModel.updateWithRemote(habit)
+                else viewModel.addWithRemote(habit)
 
                 findNavController().popBackStack()
             }
 
+            send.setOnClickListener {
+                val habit = HabitItem(
+                    name = nameField.text.toString(),
+                    description = descriptionField.text.toString(),
+                    priority = Priority.values().getOrNull(prioritySpinner.selectedItemPosition)
+                        ?: Priority.HIGH,
+                    type = Type.values().find { it.buttonResId == typeGroup.checkedRadioButtonId }
+                        ?: Type.GOOD,
+                    count = countField.text.toString().toIntOrNull() ?: 0,
+                    period = periodField.text.toString().toIntOrNull() ?: 0,
+                    srgbColor = itemRgb,
+                    createdDate = if (isInEditMode) prevHabit!!.createdDate else OffsetDateTime.now(),
+                    id = (arguments?.getString(
+                        ITEM_ID_KEY,
+                        UUID.randomUUID().mostSignificantBits.toString()
+                    )
+                        ?: UUID.randomUUID().mostSignificantBits).toString()
+                )
+                viewModel.addWithRemote(habit)
+            }
+
             removeButton.setOnClickListener {
                 if (prevHabit != null) {
-                    viewModel.remove(prevHabit!!)
+                    viewModel.deleteWithRemote(prevHabit!!)
                 }
                 findNavController().popBackStack()
             }
@@ -166,8 +189,8 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
         descriptionField.setText(item.description)
         prioritySpinner.setSelection(item.priority.ordinal)
         typeGroup.check(item.type.buttonResId)
-        countField.setText(item.count)
-        periodField.setText(item.period)
+        countField.setText(item.count.toString())
+        periodField.setText(item.period.toString())
         item.srgbColor?.let { color ->
             itemRgb = color
             setSelectedColorInt(color)

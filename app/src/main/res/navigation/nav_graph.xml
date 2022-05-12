@@ -44,8 +44,8 @@
             app:argType="boolean" />
         <argument
             android:name="item_id"
-            android:defaultValue="0L"
-            app:argType="long" />
+            android:defaultValue="0aaa"
+            app:argType="string" />
     </fragment>
 
     <fragment

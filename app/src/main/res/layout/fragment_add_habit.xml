@@ -187,6 +187,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/card_current_selected" />
 
+        <!-- TODO: remove? -->
+        <Button
+            android:id="@+id/send"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Send to remote"
+            app:layout_constraintTop_toBottomOf="@id/remove_button" />
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/remove_button"
             android:layout_width="0dp"

@@ -42,7 +42,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 fab.setOnClickListener {
                     findNavController().navigate(
                         R.id.action_main_to_add_habit, bundleOf(
-                            Utils.ITEM_ID_KEY to UUID.randomUUID().mostSignificantBits
+                            Utils.ITEM_ID_KEY to UUID.randomUUID().mostSignificantBits.toString()
                         )
                     )
                 }
@@ -58,6 +58,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 }
                 filters.byDescendingIcon.setOnClickListener {
                     viewModel.setSorting(SortBy.DESCENDING)
+                }
+                filters.updateha.setOnClickListener {
+                    viewModel.updateHabitsFromNet()
                 }
 
             }

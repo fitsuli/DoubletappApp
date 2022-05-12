@@ -13,9 +13,8 @@ import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 import ru.fitsuli.doubletappapp.repository.HabitNetworkRepository
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _repoLocal = HabitLocalRepository(application.applicationContext)
-
-    val _api = HabitNetworkRepository().habitApi
+    private val _local = HabitLocalRepository(application.applicationContext)
+    private val _net = HabitNetworkRepository()
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
@@ -24,10 +23,10 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         mediator.apply {
-            addSource(_repoLocal.content) {
+            addSource(_local.content) {
                 viewModelScope.launch {
                     postValue(
-                        _repoLocal.getFilteredSortedList(
+                        _local.getFilteredSortedList(
                             _searchStr.value.orEmpty(),
                             _sortBy.value ?: SortBy.NONE
                         )
@@ -37,7 +36,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             addSource(_searchStr) { s ->
                 viewModelScope.launch {
                     postValue(
-                        _repoLocal.getFilteredSortedList(
+                        _local.getFilteredSortedList(
                             s,
                             _sortBy.value ?: SortBy.NONE
                         )
@@ -47,7 +46,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             addSource(_sortBy) { sortBy ->
                 viewModelScope.launch {
                     postValue(
-                        _repoLocal.getFilteredSortedList(
+                        _local.getFilteredSortedList(
                             _searchStr.value.orEmpty(),
                             sortBy
                         )
@@ -55,6 +54,12 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
                 }
             }
         }
+    }
+
+    fun updateHabitsFromNet() = viewModelScope.launch {
+        _net.fetchAllHabits(onSuccess = {
+            _local.addAllLocal(it)
+        })
     }
 
     fun getFilteredByTypeList(type: Type) = mediator.value?.filter { it.type == type }

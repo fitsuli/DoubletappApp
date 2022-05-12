@@ -8,6 +8,8 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import ru.fitsuli.doubletappapp.Priority
 import ru.fitsuli.doubletappapp.Type
+import ru.fitsuli.doubletappapp.repository.DateTimeUTCSerializer
+import java.time.OffsetDateTime
 
 @Keep
 @Serializable
@@ -26,17 +28,21 @@ data class HabitItem(
     val type: Type,
 
     @SerialName("frequency")
-    val period: String,
+    val period: Int,
 
     @SerialName("count")
-    val count: String,
+    val count: Int,
 
     @SerialName("color")
     @ColorInt val srgbColor: Int? = null,
+
+    @SerialName("date")
+    @Serializable(with = DateTimeUTCSerializer::class)
+    val createdDate: OffsetDateTime,
 
     @SerialName("uid")
     @PrimaryKey val id: String,
 
     @SerialName("done_dates")
-    val doneDates: List<Int>? = null
+    val doneDates: List<Int> = listOf()
 )

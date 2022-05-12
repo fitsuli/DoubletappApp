@@ -9,8 +9,8 @@ import ru.fitsuli.doubletappapp.model.HabitItem
 
 private const val DB_NAME = "habits"
 
-@Database(entities = [HabitItem::class], version = 2)
-@TypeConverters(DoneDatesConverter::class)
+@Database(entities = [HabitItem::class], version = 5)
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitDao(): HabitDao
 

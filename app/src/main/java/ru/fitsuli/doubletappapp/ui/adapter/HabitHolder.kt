@@ -32,11 +32,11 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
         priority.text = context.getString(habit.priority.stringResId)
         count.text =
-            habit.count.also { count.isVisible = it.isNotEmpty() }
+            habit.count.toString().also { count.isVisible = it.isNotEmpty() }
 
         period.text = context.getString(
             R.string.every_x,
-            habit.period
+            habit.period.toString()
                 .also { period.isVisible = it.isNotEmpty() })
     }
 }

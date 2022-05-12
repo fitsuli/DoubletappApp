@@ -9,33 +9,45 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
+import ru.fitsuli.doubletappapp.repository.HabitNetworkRepository
 
 class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
     private val _repo = HabitLocalRepository(application.applicationContext)
+    private val _network = HabitNetworkRepository()
     private val _selectedItem: MutableLiveData<HabitItem?> = MutableLiveData()
     val selectedItem: LiveData<HabitItem?> = _selectedItem
 
-    fun add(item: HabitItem) {
+
+    fun runFindItemById(id: String) {
         viewModelScope.launch(IO) {
-            _repo.db.habitDao().insert(item)
+            _repo.findById(id) {
+                _selectedItem.postValue(it)
+            }
         }
     }
 
-    fun remove(item: HabitItem) {
-        viewModelScope.launch(IO) {
-            _repo.db.habitDao().delete(item)
+    fun addWithRemote(habit: HabitItem) {
+        viewModelScope.launch {
+            _network.add(habit, onSuccess = { uid ->
+                _repo.addLocal(habit.copy(id = uid))
+            })
         }
     }
 
-    fun update(item: HabitItem) {
-        viewModelScope.launch(IO) {
-            _repo.db.habitDao().update(item)
+    fun updateWithRemote(habit: HabitItem) {
+        viewModelScope.launch {
+            _network.update(habit, onSuccess = {
+                _repo.updateLocal(habit)
+            })
         }
     }
 
-    fun runFindItemById(id: Long) {
-        viewModelScope.launch(IO) {
-            _selectedItem.postValue(_repo.db.habitDao().findById(id))
+    fun deleteWithRemote(habit: HabitItem) {
+        viewModelScope.launch {
+            _network.delete(habit, onSuccess = {
+                _repo.removeLocal(habit)
+            })
         }
     }
+
 }

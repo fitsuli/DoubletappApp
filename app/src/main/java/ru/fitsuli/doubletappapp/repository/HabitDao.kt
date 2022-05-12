@@ -15,7 +15,7 @@ interface HabitDao {
     suspend fun loadAllByIds(habitIds: IntArray): List<HabitItem>
 
     @Query("SELECT * FROM habits WHERE id LIKE :id LIMIT 1")
-    suspend fun findById(id: Long): HabitItem?
+    suspend fun findById(id: String): HabitItem?
 
     @Query("SELECT * FROM habits WHERE type LIKE :type")
     suspend fun filterByType(type: Type): List<HabitItem>
@@ -32,10 +32,10 @@ interface HabitDao {
     )
     suspend fun filterAndSort(name: String, sortBy: SortBy): List<HabitItem>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg habits: HabitItem)
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(habit: HabitItem)
 
     @Delete
