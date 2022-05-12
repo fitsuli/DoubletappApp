@@ -28,42 +28,36 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         _binding = FragmentMainBinding.bind(view)
         val viewModel = ViewModelProvider(requireActivity())[ListViewModel::class.java]
 
-        activity?.let { activity ->
+        with(binding) {
 
-            with(binding) {
-
-                viewPager.adapter = HomePagerAdapter(activity)
-                viewPager.offscreenPageLimit = 1
-                TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                    tab.text = getString(
-                        if (position == 0) Type.GOOD.stringResId else Type.BAD.stringResId
+            viewPager.adapter = HomePagerAdapter(requireActivity())
+            viewPager.offscreenPageLimit = 1
+            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+                tab.text = getString(
+                    if (position == 0) Type.GOOD.stringResId else Type.BAD.stringResId
+                )
+            }.attach()
+            fab.setOnClickListener {
+                findNavController().navigate(
+                    R.id.action_main_to_add_habit, bundleOf(
+                        Utils.ITEM_ID_KEY to UUID.randomUUID().mostSignificantBits.toString()
                     )
-                }.attach()
-                fab.setOnClickListener {
-                    findNavController().navigate(
-                        R.id.action_main_to_add_habit, bundleOf(
-                            Utils.ITEM_ID_KEY to UUID.randomUUID().mostSignificantBits.toString()
-                        )
-                    )
-                }
-
-                filters.searchEditText.doAfterTextChanged {
-                    viewModel.setFilterName(it.toString())
-                }
-                filters.byAscendingIcon.setOnClickListener {
-                    viewModel.setSorting(SortBy.ASCENDING)
-                }
-                filters.byDefaultIcon.setOnClickListener {
-                    viewModel.setSorting(SortBy.NONE)
-                }
-                filters.byDescendingIcon.setOnClickListener {
-                    viewModel.setSorting(SortBy.DESCENDING)
-                }
-                filters.updateha.setOnClickListener {
-                    viewModel.updateHabitsFromNet()
-                }
-
+                )
             }
+
+            filters.searchEditText.doAfterTextChanged {
+                viewModel.setFilterName(it.toString())
+            }
+            filters.byAscendingIcon.setOnClickListener {
+                viewModel.setSorting(SortBy.ASCENDING)
+            }
+            filters.byDefaultIcon.setOnClickListener {
+                viewModel.setSorting(SortBy.NONE)
+            }
+            filters.byDescendingIcon.setOnClickListener {
+                viewModel.setSorting(SortBy.DESCENDING)
+            }
+
         }
     }
 }

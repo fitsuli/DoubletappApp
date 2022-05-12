@@ -11,6 +11,7 @@
     <string name="habit_period">Периодичность</string>
     <string name="habit_desc">Описание</string>
     <string name="enter_name_hint">Введите имя привычки</string>
+    <string name="enter_desc_hint">Введите описание</string>
 
     <string name="good">Хорошая</string>
     <string name="bad">Плохая</string>
@@ -31,5 +32,6 @@
     <string name="filters">Фильтры</string>
     <string name="search">Поиск</string>
     <string name="sort_by_name">Сортировать по имени</string>
+    <string name="update_list">Обновить список</string>
 
 </resources>

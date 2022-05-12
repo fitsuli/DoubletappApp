@@ -14,6 +14,8 @@ import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.core.net.toUri
 import androidx.lifecycle.MutableLiveData
+import com.haroldadmin.cnradapter.NetworkResponse
+import com.haroldadmin.cnradapter.executeWithRetry
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 import ru.fitsuli.doubletappapp.repository.PrioritySerializer
@@ -62,6 +64,15 @@ fun Context.openLink(url: String) {
 }
 
 fun Context.shortToast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+
+suspend inline fun <T : Any, U : Any> executeWithConfiguredRetry(
+    times: Int = 10,
+    initialDelay: Long = 1000, // 2s
+    maxDelay: Long = 10000, // 10s
+    factor: Double = 2.0,
+    @Suppress("REDUNDANT_INLINE_SUSPEND_FUNCTION_TYPE")
+    block: suspend () -> NetworkResponse<T, U>
+): NetworkResponse<T, U> = executeWithRetry(times, initialDelay, maxDelay, factor, block)
 
 operator fun <T> MutableLiveData<MutableList<T>>.plusAssign(item: T) {
     val value = this.value ?: mutableListOf()

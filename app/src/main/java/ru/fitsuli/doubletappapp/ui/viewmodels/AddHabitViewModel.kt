@@ -29,7 +29,7 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
     fun addWithRemote(habit: HabitItem) {
         viewModelScope.launch {
             _network.add(habit, onSuccess = { uid ->
-                _repo.addLocal(habit.copy(id = uid))
+                _repo.add(habit.copy(id = uid))
             })
         }
     }
@@ -37,7 +37,7 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
     fun updateWithRemote(habit: HabitItem) {
         viewModelScope.launch {
             _network.update(habit, onSuccess = {
-                _repo.updateLocal(habit)
+                _repo.update(habit)
             })
         }
     }
@@ -45,7 +45,7 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
     fun deleteWithRemote(habit: HabitItem) {
         viewModelScope.launch {
             _network.delete(habit, onSuccess = {
-                _repo.removeLocal(habit)
+                _repo.remove(habit)
             })
         }
     }

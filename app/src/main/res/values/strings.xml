@@ -12,6 +12,7 @@
     <string name="habit_period">Habit period</string>
     <string name="habit_desc">Habit description</string>
     <string name="enter_name_hint">Please enter a name</string>
+    <string name="enter_desc_hint">Please enter a description</string>
 
     <string name="good">Good</string>
     <string name="bad">Bad</string>
@@ -33,4 +34,6 @@
     <string name="filters">Filters</string>
     <string name="search">Search</string>
     <string name="sort_by_name">Sort by name</string>
+    <string name="update_list">Update list</string>
+
 </resources>

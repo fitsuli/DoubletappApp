@@ -21,19 +21,23 @@ class HabitLocalRepository(context: Context) {
         }
     }
 
-    suspend fun addLocal(item: HabitItem) = withContext(IO) {
+    suspend fun add(item: HabitItem) = withContext(IO) {
         db.habitDao().insert(item)
     }
 
-    suspend fun addAllLocal(items: List<HabitItem>) = withContext(IO) {
+    suspend fun addAll(items: List<HabitItem>) = withContext(IO) {
         db.habitDao().insertAll(*items.toTypedArray())
     }
 
-    suspend fun removeLocal(item: HabitItem) = withContext(IO) {
+    suspend fun remove(item: HabitItem) = withContext(IO) {
         db.habitDao().delete(item)
     }
 
-    suspend fun updateLocal(item: HabitItem) = withContext(IO) {
+    suspend fun removeAll() = withContext(IO) {
+        db.habitDao().deleteAll()
+    }
+
+    suspend fun update(item: HabitItem) = withContext(IO) {
         db.habitDao().update(item)
     }
 }

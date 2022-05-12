@@ -41,6 +41,9 @@ interface HabitDao {
     @Delete
     suspend fun delete(habit: HabitItem)
 
+    @Query("DELETE FROM habits")
+    suspend fun deleteAll()
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun update(habit: HabitItem)
 }

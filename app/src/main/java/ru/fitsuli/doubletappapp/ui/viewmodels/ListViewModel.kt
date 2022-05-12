@@ -58,7 +58,8 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateHabitsFromNet() = viewModelScope.launch {
         _net.fetchAllHabits(onSuccess = {
-            _local.addAllLocal(it)
+            _local.removeAll()
+            _local.addAll(it)
         })
     }
 

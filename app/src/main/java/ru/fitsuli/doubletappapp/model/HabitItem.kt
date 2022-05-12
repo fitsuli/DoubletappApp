@@ -38,7 +38,7 @@ data class HabitItem(
 
     @SerialName("date")
     @Serializable(with = DateTimeUTCSerializer::class)
-    val createdDate: OffsetDateTime,
+    val modifiedDate: OffsetDateTime,
 
     @SerialName("uid")
     @PrimaryKey val id: String,

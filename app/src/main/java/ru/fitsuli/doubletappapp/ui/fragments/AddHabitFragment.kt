@@ -111,6 +111,11 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     ctx.shortToast(getString(R.string.enter_name_hint))
                     return@setOnClickListener
                 }
+                if (descriptionField.text.isNullOrEmpty()) {
+                    ctx.shortToast(getString(R.string.enter_desc_hint))
+                    return@setOnClickListener
+                }
+
                 val habit = HabitItem(
                     name = nameField.text.toString(),
                     description = descriptionField.text.toString(),
@@ -121,9 +126,10 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     count = countField.text.toString().toIntOrNull() ?: 0,
                     period = periodField.text.toString().toIntOrNull() ?: 0,
                     srgbColor = itemRgb,
-                    createdDate = if (isInEditMode) prevHabit!!.createdDate else OffsetDateTime.now(),
-                    id = (arguments?.getLong(ITEM_ID_KEY, UUID.randomUUID().mostSignificantBits)
-                        ?: UUID.randomUUID().mostSignificantBits).toString()
+                    modifiedDate = OffsetDateTime.now(),
+                    id = UUID.randomUUID().mostSignificantBits.toString().let { uuid ->
+                        arguments?.getString(ITEM_ID_KEY, uuid) ?: uuid
+                    }
                 )
 
                 if (prevHabit == habit) {
@@ -137,27 +143,6 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 else viewModel.addWithRemote(habit)
 
                 findNavController().popBackStack()
-            }
-
-            send.setOnClickListener {
-                val habit = HabitItem(
-                    name = nameField.text.toString(),
-                    description = descriptionField.text.toString(),
-                    priority = Priority.values().getOrNull(prioritySpinner.selectedItemPosition)
-                        ?: Priority.HIGH,
-                    type = Type.values().find { it.buttonResId == typeGroup.checkedRadioButtonId }
-                        ?: Type.GOOD,
-                    count = countField.text.toString().toIntOrNull() ?: 0,
-                    period = periodField.text.toString().toIntOrNull() ?: 0,
-                    srgbColor = itemRgb,
-                    createdDate = if (isInEditMode) prevHabit!!.createdDate else OffsetDateTime.now(),
-                    id = (arguments?.getString(
-                        ITEM_ID_KEY,
-                        UUID.randomUUID().mostSignificantBits.toString()
-                    )
-                        ?: UUID.randomUUID().mostSignificantBits).toString()
-                )
-                viewModel.addWithRemote(habit)
             }
 
             removeButton.setOnClickListener {

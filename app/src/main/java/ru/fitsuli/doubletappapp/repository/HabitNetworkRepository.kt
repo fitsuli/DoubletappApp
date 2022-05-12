@@ -1,48 +1,64 @@
 package ru.fitsuli.doubletappapp.repository
 
-import androidx.lifecycle.MutableLiveData
 import com.haroldadmin.cnradapter.invoke
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.Utils.Companion.AUTH_TOKEN
+import ru.fitsuli.doubletappapp.executeWithConfiguredRetry
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.model.HabitUid
 
 class HabitNetworkRepository {
     private val habitApi = RetrofitRequestApi.getInstance()
-    var habits = MutableLiveData(listOf<HabitItem>())
 
-    // TODO: onError callbacks
-
-    suspend fun fetchAllHabits(onSuccess: suspend (List<HabitItem>) -> Unit = {}) =
+    suspend fun fetchAllHabits(
+        onSuccess: suspend (List<HabitItem>) -> Unit = {},
+        onError: suspend () -> Unit = {}
+    ) =
         withContext(IO) {
-            habitApi.getAll(AUTH_TOKEN).invoke()?.let {
-                habits.postValue(it)
+            executeWithConfiguredRetry {
+                habitApi.getAll(AUTH_TOKEN)
+            }()?.let {
                 onSuccess(it)
-            }
+            } ?: onError()
         }
 
-    suspend fun add(habit: HabitItem, onSuccess: suspend (uid: String) -> Unit = {}) =
+    suspend fun add(
+        habit: HabitItem,
+        onSuccess: suspend (uid: String) -> Unit = {},
+        onError: suspend () -> Unit = {}
+    ) =
         withContext(IO) {
-            habitApi.add(
-                AUTH_TOKEN, habit.copy(id = "") // required by API
-            ).invoke()?.let {
+            executeWithConfiguredRetry {
+                habitApi.add(
+                    AUTH_TOKEN, habit.copy(id = "") // required by the API
+                )
+            }()?.let {
                 fetchAllHabits()
                 onSuccess(it.uid)
-            }
+            } ?: onError()
         }
 
-    suspend fun update(habit: HabitItem, onSuccess: suspend (uid: String) -> Unit = {}) =
+    suspend fun update(
+        habit: HabitItem,
+        onSuccess: suspend (uid: String) -> Unit = {},
+        onError: suspend () -> Unit = {}
+    ) =
         withContext(IO) {
-            habitApi.add(AUTH_TOKEN, habit).invoke()?.let {
+            executeWithConfiguredRetry { habitApi.add(AUTH_TOKEN, habit) }()?.let {
                 fetchAllHabits()
                 onSuccess(it.uid)
-            }
+            } ?: onError()
         }
 
-    suspend fun delete(habit: HabitItem, onSuccess: suspend () -> Unit = {}) = withContext(IO) {
-        habitApi.delete(AUTH_TOKEN, HabitUid(habit.id)).invoke()?.let {
-            onSuccess()
+    suspend fun delete(
+        habit: HabitItem,
+        onSuccess: suspend () -> Unit = {},
+        onError: suspend () -> Unit = {}
+    ) =
+        withContext(IO) {
+            executeWithConfiguredRetry { habitApi.delete(AUTH_TOKEN, HabitUid(habit.id)) }()?.let {
+                onSuccess()
+            } ?: onError()
         }
-    }
 }
