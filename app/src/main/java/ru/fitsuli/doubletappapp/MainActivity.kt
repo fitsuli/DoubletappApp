@@ -11,7 +11,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import coil.ImageLoader
+import coil.load
+import coil.size.ViewSizeResolver
+import com.google.android.material.imageview.ShapeableImageView
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
+import ru.fitsuli.doubletappapp.repository.OkHttpSingleton
 import ru.fitsuli.doubletappapp.ui.viewmodels.ListViewModel
 
 
@@ -42,6 +47,22 @@ class MainActivity : AppCompatActivity() {
                 }
                 else -> false
             }.also { binding.drawer.close() }
+        }
+
+        val imageLoader = ImageLoader.Builder(this)
+            .okHttpClient(OkHttpSingleton.getInstance())
+            .crossfade(true)
+            .build()
+
+        val avatar = binding.navView.getHeaderView(0).findViewById<ShapeableImageView>(R.id.avatar)
+
+        avatar.load(
+            "https://sushishef1.ru/upload/shop_3/4/1/5/item_415/item_415.png",
+            imageLoader = imageLoader
+        ) {
+            size(ViewSizeResolver(avatar))
+            placeholder(R.drawable.ic_round_downloading_24)
+            error(R.drawable.ic_round_error_outline_24)
         }
     }
 
