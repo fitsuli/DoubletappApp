@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity() {
         val navController = binding.navHostFragment.getFragment<NavHostFragment>().navController
         appBarConfiguration = AppBarConfiguration(navController.graph, binding.drawer)
         setupActionBarWithNavController(navController, appBarConfiguration)
-        binding.navView.setNavigationItemSelectedListener {
-            when (it.itemId) {
+        binding.navView.setNavigationItemSelectedListener { item ->
+            when (item.itemId) {
                 R.id.action_home -> {
                     navController.navigate(R.id.MainFragment)
                     true
