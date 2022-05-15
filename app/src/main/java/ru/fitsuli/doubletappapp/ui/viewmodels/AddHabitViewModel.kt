@@ -12,7 +12,7 @@ import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 import ru.fitsuli.doubletappapp.repository.HabitNetworkRepository
 
 class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
-    private val _repo = HabitLocalRepository(application.applicationContext)
+    private val _local = HabitLocalRepository(application.applicationContext)
     private val _network = HabitNetworkRepository()
     private val _selectedItem: MutableLiveData<HabitItem?> = MutableLiveData()
     val selectedItem: LiveData<HabitItem?> = _selectedItem
@@ -20,7 +20,7 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
 
     fun runFindItemById(id: String) {
         viewModelScope.launch(IO) {
-            _repo.findById(id) {
+            _local.findById(id) {
                 _selectedItem.postValue(it)
             }
         }
@@ -29,7 +29,9 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
     fun addWithRemote(habit: HabitItem) {
         viewModelScope.launch {
             _network.add(habit, onSuccess = { uid ->
-                _repo.add(habit.copy(id = uid))
+                _local.add(habit.copy(id = uid))
+            }, onError = {
+                _local.add(habit.copy(isUploadPending = true))
             })
         }
     }
@@ -37,7 +39,9 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
     fun updateWithRemote(habit: HabitItem) {
         viewModelScope.launch {
             _network.update(habit, onSuccess = {
-                _repo.update(habit)
+                _local.update(habit)
+            }, onError = {
+                _local.update(habit.copy(isUpdatePending = true))
             })
         }
     }
@@ -45,7 +49,9 @@ class AddHabitViewModel(application: Application) : AndroidViewModel(application
     fun deleteWithRemote(habit: HabitItem) {
         viewModelScope.launch {
             _network.delete(habit, onSuccess = {
-                _repo.remove(habit)
+                _local.remove(habit)
+            }, onError = {
+                //
             })
         }
     }

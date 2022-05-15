@@ -35,5 +35,6 @@
     <string name="update_list">Обновить список</string>
 
     <string name="offline_hint">Нет интернета</string>
+    <string name="network_error">Произошла ошибка сети</string>
 
 </resources>

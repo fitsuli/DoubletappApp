@@ -37,6 +37,12 @@ enum class Type(@StringRes val stringResId: Int, @IdRes val buttonResId: Int) :
 @Parcelize
 enum class SortBy : Parcelable { ASCENDING, DESCENDING, NONE }
 
+@Keep
+enum class FetchingErrorReason(@StringRes val hintStringResId: Int) {
+    OFFLINE(R.string.offline_hint), REQUEST_ERROR(
+        R.string.network_error
+    )
+}
 
 class Utils {
     companion object {
@@ -64,11 +70,13 @@ fun Context.openLink(url: String) {
 }
 
 fun Context.shortToast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+fun Context.shortToast(@StringRes stringResId: Int) =
+    Toast.makeText(this, stringResId, Toast.LENGTH_SHORT).show()
 
 suspend inline fun <T : Any, U : Any> executeWithConfiguredRetry(
-    times: Int = 10,
-    initialDelay: Long = 1000, // 2s
-    maxDelay: Long = 10000, // 10s
+    times: Int = 3,
+    initialDelay: Long = 300, // ms
+    maxDelay: Long = 1500,
     factor: Double = 2.0,
     @Suppress("REDUNDANT_INLINE_SUSPEND_FUNCTION_TYPE")
     block: suspend () -> NetworkResponse<T, U>

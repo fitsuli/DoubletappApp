@@ -2,9 +2,13 @@ package ru.fitsuli.doubletappapp.ui.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ru.fitsuli.doubletappapp.FetchingErrorReason
 import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
+import ru.fitsuli.doubletappapp.isOnline
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
 import ru.fitsuli.doubletappapp.repository.HabitNetworkRepository
@@ -56,13 +60,43 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun updateHabitsFromNet() = viewModelScope.launch {
+    fun updateHabitsFromNet(
+        onFetchingError: suspend (FetchingErrorReason) -> Unit = {},
+        onHabitUploaded: suspend (HabitItem) -> Unit = {},
+        onHabitUpdated: suspend (HabitItem) -> Unit = {}
+    ) = viewModelScope.launch {
         _isLoading.postValue(true)
 
-        _net.fetchAllHabits(onSuccess = {
-            _local.removeAll()
-            _local.addAll(it)
-        })
+        _local.content.value?.forEach { habit ->
+            if (habit.isUploadPending) {
+                _net.add(habit, onSuccess = { uid ->
+                    _local.remove(habit)
+                    _local.add(habit.copy(id = uid, isUpdatePending = false))
+                    withContext(Main) { onHabitUploaded(habit) }
+                })
+
+                return@forEach
+            }
+
+            if (habit.isUpdatePending) {
+                _net.update(habit, onSuccess = {
+                    withContext(Main) { onHabitUpdated(habit) }
+                })
+
+                return@forEach
+            }
+        }
+
+        if (getApplication<Application>().applicationContext.isOnline) {
+            _net.fetchAllHabits(onSuccess = {
+                _local.removeAll()
+                _local.addAll(it)
+            }, onError = {
+                withContext(Main) { onFetchingError(FetchingErrorReason.REQUEST_ERROR) }
+            })
+        } else {
+            withContext(Main) { onFetchingError(FetchingErrorReason.OFFLINE) }
+        }
 
         _isLoading.postValue(false)
     }

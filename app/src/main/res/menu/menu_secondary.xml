@@ -6,5 +6,6 @@
         android:id="@+id/action_update"
         android:icon="@drawable/ic_round_update_24"
         android:title="@string/update_list"
+        app:iconTint="?attr/colorOnSurface"
         app:showAsAction="always" />
 </menu>

@@ -34,7 +34,6 @@ class HabitNetworkRepository {
                     AUTH_TOKEN, habit.copy(id = "") // required by the API
                 )
             }()?.let {
-                fetchAllHabits()
                 onSuccess(it.uid)
             } ?: onError()
         }
@@ -46,7 +45,6 @@ class HabitNetworkRepository {
     ) =
         withContext(IO) {
             executeWithConfiguredRetry { habitApi.add(AUTH_TOKEN, habit) }()?.let {
-                fetchAllHabits()
                 onSuccess(it.uid)
             } ?: onError()
         }

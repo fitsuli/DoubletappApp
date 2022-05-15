@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import ru.fitsuli.doubletappapp.Priority
 import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.repository.DateTimeUTCSerializer
@@ -44,5 +45,11 @@ data class HabitItem(
     @PrimaryKey val id: String,
 
     @SerialName("done_dates")
-    val doneDates: List<Int> = listOf()
+    val doneDates: List<Int> = listOf(),
+
+    @Transient
+    val isUploadPending: Boolean = false,
+
+    @Transient
+    val isUpdatePending: Boolean = false
 )

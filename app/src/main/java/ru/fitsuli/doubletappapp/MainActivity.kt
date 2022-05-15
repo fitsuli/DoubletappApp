@@ -65,8 +65,6 @@ class MainActivity : AppCompatActivity() {
             error(R.drawable.ic_round_error_outline_24)
         }
 
-        // TODO: send event in a viewmodel
-        if (!isOnline) shortToast(getString(R.string.offline_hint))
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -78,7 +76,15 @@ class MainActivity : AppCompatActivity() {
         val viewModel = ViewModelProvider(this)[ListViewModel::class.java]
         when (item.itemId) {
             R.id.action_update -> {
-                viewModel.updateHabitsFromNet()
+                viewModel.updateHabitsFromNet(
+                    onFetchingError = { reason ->
+                        shortToast(reason.hintStringResId)
+                    },
+                    onHabitUploaded = {
+                        shortToast("${it.name} uploaded")
+                    }, onHabitUpdated = {
+                        shortToast("${it.name} updated")
+                    })
                 return true
             }
         }

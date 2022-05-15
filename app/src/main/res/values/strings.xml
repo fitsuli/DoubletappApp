@@ -37,4 +37,5 @@
     <string name="update_list">Update list</string>
 
     <string name="offline_hint">You are offline</string>
+    <string name="network_error">Network error occurred</string>
 </resources>
