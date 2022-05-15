@@ -26,6 +26,8 @@
     <string name="every">Каждый(-ые)</string>
     <string name="days">дня</string>
     <string name="every_x">Каждый(-ую) %1$s</string>
+    <string name="times">%1$d раз</string>
+
     <string name="developed_by">Разработано fitsuli</string>
     <string name="link_open_error">Не получается открыть ссылку</string>
     <string name="no_changes_made">Не было внесено изменений</string>

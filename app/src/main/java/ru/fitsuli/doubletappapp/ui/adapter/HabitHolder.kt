@@ -31,8 +31,9 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
             description.isVisible = it.isNotEmpty()
         }
         priority.text = context.getString(habit.priority.stringResId)
-        count.text =
-            habit.count.toString().also { count.isVisible = it.isNotEmpty() }
+        count.text = context.getString(R.string.times,
+            habit.count.also { count.isVisible = it.toString().isNotEmpty() }
+        )
 
         period.text = context.getString(
             R.string.every_x,

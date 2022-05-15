@@ -27,6 +27,7 @@
     <string name="every">Every</string>
     <string name="days">days</string>
     <string name="every_x">Every %1$s days</string>
+    <string name="times">%1$d times</string>
 
     <string name="developed_by">Developed by fitsuli</string>
     <string name="link_open_error">Can\'t open the link</string>
