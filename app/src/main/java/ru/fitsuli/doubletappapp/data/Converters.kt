@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.repository
+package ru.fitsuli.doubletappapp.data
 
 import androidx.room.TypeConverter
 import java.time.OffsetDateTime

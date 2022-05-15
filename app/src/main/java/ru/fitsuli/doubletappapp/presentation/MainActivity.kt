@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp
+package ru.fitsuli.doubletappapp.presentation
 
 import android.os.Bundle
 import android.view.Menu
@@ -15,9 +15,11 @@ import coil.ImageLoader
 import coil.load
 import coil.size.ViewSizeResolver
 import com.google.android.material.imageview.ShapeableImageView
+import ru.fitsuli.doubletappapp.R
+import ru.fitsuli.doubletappapp.data.OkHttpSingleton
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
-import ru.fitsuli.doubletappapp.repository.OkHttpSingleton
-import ru.fitsuli.doubletappapp.ui.viewmodels.ListViewModel
+import ru.fitsuli.doubletappapp.presentation.viewmodels.ListViewModel
+import ru.fitsuli.doubletappapp.shortToast
 
 
 class MainActivity : AppCompatActivity() {

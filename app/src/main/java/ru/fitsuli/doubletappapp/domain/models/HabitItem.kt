@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.model
+package ru.fitsuli.doubletappapp.domain.models
 
 import androidx.annotation.ColorInt
 import androidx.annotation.Keep
@@ -9,7 +9,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import ru.fitsuli.doubletappapp.Priority
 import ru.fitsuli.doubletappapp.Type
-import ru.fitsuli.doubletappapp.repository.DateTimeUTCSerializer
+import ru.fitsuli.doubletappapp.data.DateTimeUTCSerializer
 import java.time.OffsetDateTime
 
 @Keep

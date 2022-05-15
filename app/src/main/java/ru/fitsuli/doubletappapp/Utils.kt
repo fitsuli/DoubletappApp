@@ -18,8 +18,8 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.haroldadmin.cnradapter.executeWithRetry
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
-import ru.fitsuli.doubletappapp.repository.PrioritySerializer
-import ru.fitsuli.doubletappapp.repository.TypeSerializer
+import ru.fitsuli.doubletappapp.data.PrioritySerializer
+import ru.fitsuli.doubletappapp.data.TypeSerializer
 
 @Keep
 @Parcelize

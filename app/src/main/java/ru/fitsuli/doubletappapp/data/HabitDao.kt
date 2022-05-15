@@ -1,10 +1,10 @@
-package ru.fitsuli.doubletappapp.repository
+package ru.fitsuli.doubletappapp.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
-import ru.fitsuli.doubletappapp.model.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 @Dao
 interface HabitDao {

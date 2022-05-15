@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.ui.viewmodels
+package ru.fitsuli.doubletappapp.presentation.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
@@ -8,10 +8,10 @@ import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.FetchingErrorReason
 import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
+import ru.fitsuli.doubletappapp.data.LocalRepository
+import ru.fitsuli.doubletappapp.data.NetworkRepository
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
 import ru.fitsuli.doubletappapp.isOnline
-import ru.fitsuli.doubletappapp.model.HabitItem
-import ru.fitsuli.doubletappapp.repository.LocalRepository
-import ru.fitsuli.doubletappapp.repository.NetworkRepository
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
     private val _local = LocalRepository(application.applicationContext)

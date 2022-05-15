@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.repository
+package ru.fitsuli.doubletappapp.data
 
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory

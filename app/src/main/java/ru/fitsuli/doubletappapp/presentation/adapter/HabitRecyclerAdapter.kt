@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.ui.adapter
+package ru.fitsuli.doubletappapp.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.ListAdapter
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.model.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 class HabitRecyclerAdapter(
     private val context: Context,

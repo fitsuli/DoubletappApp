@@ -1,7 +1,7 @@
-package ru.fitsuli.doubletappapp.ui.adapter
+package ru.fitsuli.doubletappapp.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import ru.fitsuli.doubletappapp.model.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 class HabitCallback : DiffUtil.ItemCallback<HabitItem>() {
 

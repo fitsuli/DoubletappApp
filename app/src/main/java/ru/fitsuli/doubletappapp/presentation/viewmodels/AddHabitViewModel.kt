@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.ui.viewmodels
+package ru.fitsuli.doubletappapp.presentation.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import ru.fitsuli.doubletappapp.model.HabitItem
-import ru.fitsuli.doubletappapp.repository.LocalRepository
-import ru.fitsuli.doubletappapp.repository.NetworkRepository
+import ru.fitsuli.doubletappapp.data.LocalRepository
+import ru.fitsuli.doubletappapp.data.NetworkRepository
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
     private val _local = LocalRepository(application.applicationContext)

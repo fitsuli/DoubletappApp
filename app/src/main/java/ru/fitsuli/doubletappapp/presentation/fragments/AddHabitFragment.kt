@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.ui.fragments
+package ru.fitsuli.doubletappapp.presentation.fragments
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -23,9 +23,9 @@ import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
-import ru.fitsuli.doubletappapp.model.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.presentation.viewmodels.AddHabitViewModel
 import ru.fitsuli.doubletappapp.shortToast
-import ru.fitsuli.doubletappapp.ui.viewmodels.AddHabitViewModel
 import java.time.OffsetDateTime
 import java.util.*
 

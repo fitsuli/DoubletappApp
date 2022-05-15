@@ -1,10 +1,10 @@
-package ru.fitsuli.doubletappapp.repository
+package ru.fitsuli.doubletappapp.data
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.SortBy
-import ru.fitsuli.doubletappapp.model.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 class LocalRepository(context: Context) {
     private val db = AppDatabase.getInstance(context)

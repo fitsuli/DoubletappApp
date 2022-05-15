@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.ui.fragments
+package ru.fitsuli.doubletappapp.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
@@ -13,8 +13,8 @@ import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.Utils
 import ru.fitsuli.doubletappapp.databinding.FragmentMainBinding
-import ru.fitsuli.doubletappapp.ui.adapter.HomePagerAdapter
-import ru.fitsuli.doubletappapp.ui.viewmodels.ListViewModel
+import ru.fitsuli.doubletappapp.presentation.adapter.HomePagerAdapter
+import ru.fitsuli.doubletappapp.presentation.viewmodels.ListViewModel
 import java.util.*
 
 // Contains ViewPager's fragments

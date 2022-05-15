@@ -1,12 +1,12 @@
-package ru.fitsuli.doubletappapp.repository
+package ru.fitsuli.doubletappapp.data
 
 import com.haroldadmin.cnradapter.invoke
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.Utils.Companion.AUTH_TOKEN
+import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitUid
 import ru.fitsuli.doubletappapp.executeWithConfiguredRetry
-import ru.fitsuli.doubletappapp.model.HabitItem
-import ru.fitsuli.doubletappapp.model.HabitUid
 
 class NetworkRepository {
     private val habitApi = RetrofitRequestApi.getInstance()

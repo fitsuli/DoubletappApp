@@ -10,4 +10,4 @@
     android:orientation="vertical"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.fragments.RecyclerFragment" />
+    tools:context=".presentation.fragments.RecyclerFragment" />

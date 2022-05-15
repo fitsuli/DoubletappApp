@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.ui.fragments
+package ru.fitsuli.doubletappapp.presentation.fragments
 
 import android.os.Bundle
 import android.view.View
