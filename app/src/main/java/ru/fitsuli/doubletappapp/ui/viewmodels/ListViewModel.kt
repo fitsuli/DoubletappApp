@@ -10,12 +10,12 @@ import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.isOnline
 import ru.fitsuli.doubletappapp.model.HabitItem
-import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
-import ru.fitsuli.doubletappapp.repository.HabitNetworkRepository
+import ru.fitsuli.doubletappapp.repository.LocalRepository
+import ru.fitsuli.doubletappapp.repository.NetworkRepository
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _local = HabitLocalRepository(application.applicationContext)
-    private val _net = HabitNetworkRepository()
+    private val _local = LocalRepository(application.applicationContext)
+    private val _net = NetworkRepository()
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)

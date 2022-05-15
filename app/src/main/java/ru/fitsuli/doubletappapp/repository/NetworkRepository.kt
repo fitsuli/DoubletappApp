@@ -8,7 +8,7 @@ import ru.fitsuli.doubletappapp.executeWithConfiguredRetry
 import ru.fitsuli.doubletappapp.model.HabitItem
 import ru.fitsuli.doubletappapp.model.HabitUid
 
-class HabitNetworkRepository {
+class NetworkRepository {
     private val habitApi = RetrofitRequestApi.getInstance()
 
     suspend fun fetchAllHabits(

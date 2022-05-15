@@ -6,7 +6,7 @@ import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.model.HabitItem
 
-class HabitLocalRepository(context: Context) {
+class LocalRepository(context: Context) {
     private val db = AppDatabase.getInstance(context)
     val content = db.habitDao().getAll()
 

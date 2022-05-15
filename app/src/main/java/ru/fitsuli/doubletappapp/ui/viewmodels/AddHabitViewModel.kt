@@ -8,12 +8,12 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import ru.fitsuli.doubletappapp.model.HabitItem
-import ru.fitsuli.doubletappapp.repository.HabitLocalRepository
-import ru.fitsuli.doubletappapp.repository.HabitNetworkRepository
+import ru.fitsuli.doubletappapp.repository.LocalRepository
+import ru.fitsuli.doubletappapp.repository.NetworkRepository
 
 class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
-    private val _local = HabitLocalRepository(application.applicationContext)
-    private val _network = HabitNetworkRepository()
+    private val _local = LocalRepository(application.applicationContext)
+    private val _network = NetworkRepository()
     private val _selectedItem: MutableLiveData<HabitItem?> = MutableLiveData()
     val selectedItem: LiveData<HabitItem?> = _selectedItem
 
