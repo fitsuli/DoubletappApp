@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.data
+package ru.fitsuli.doubletappapp.data.storage.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

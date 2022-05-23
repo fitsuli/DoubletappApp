@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.domain.models
+package ru.fitsuli.doubletappapp.data.storage.network.models
 
 import androidx.annotation.Keep
 import kotlinx.serialization.SerialName

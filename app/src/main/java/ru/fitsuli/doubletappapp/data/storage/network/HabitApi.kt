@@ -1,11 +1,11 @@
-package ru.fitsuli.doubletappapp.data
+package ru.fitsuli.doubletappapp.data.storage.network
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import retrofit2.http.*
-import ru.fitsuli.doubletappapp.domain.models.ErrorResponse
-import ru.fitsuli.doubletappapp.domain.models.HabitDoneBody
+import ru.fitsuli.doubletappapp.data.storage.network.models.ErrorResponse
+import ru.fitsuli.doubletappapp.data.storage.network.models.HabitDoneBody
+import ru.fitsuli.doubletappapp.data.storage.network.models.HabitUid
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
-import ru.fitsuli.doubletappapp.domain.models.HabitUid
 
 interface HabitApi {
     @GET("habit")

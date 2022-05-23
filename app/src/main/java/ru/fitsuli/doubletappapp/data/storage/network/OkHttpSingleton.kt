@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp.data
+package ru.fitsuli.doubletappapp.data.storage.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

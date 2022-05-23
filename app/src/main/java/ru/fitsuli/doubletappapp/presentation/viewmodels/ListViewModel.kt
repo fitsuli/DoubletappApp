@@ -8,14 +8,14 @@ import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.FetchingErrorReason
 import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
-import ru.fitsuli.doubletappapp.data.LocalRepository
-import ru.fitsuli.doubletappapp.data.NetworkRepository
+import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
+import ru.fitsuli.doubletappapp.data.storage.network.NetworkStorage
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
 import ru.fitsuli.doubletappapp.isOnline
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _local = LocalRepository(application.applicationContext)
-    private val _net = NetworkRepository()
+    private val _local = LocalStorage(application.applicationContext)
+    private val _net = NetworkStorage()
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
@@ -69,31 +69,29 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
         _local.content.value?.forEach { habit ->
             if (habit.isUploadPending) {
-                _net.add(habit, onSuccess = { uid ->
-                    _local.remove(habit)
-                    _local.add(habit.copy(id = uid, isUpdatePending = false))
+                _net.add(habit)?.let { uid ->
+                    _local.delete(habit)
+                    _local.add(habit.copy(id = uid.uid, isUpdatePending = false))
                     withContext(Main) { onHabitUploaded(habit) }
-                })
+                }
 
                 return@forEach
             }
 
             if (habit.isUpdatePending) {
-                _net.update(habit, onSuccess = {
+                _net.update(habit)?.let {
                     withContext(Main) { onHabitUpdated(habit) }
-                })
+                }
 
                 return@forEach
             }
         }
 
         if (getApplication<Application>().applicationContext.isOnline) {
-            _net.fetchAllHabits(onSuccess = {
-                _local.removeAll()
+            _net.getAll()?.let {
+                _local.deleteAll()
                 _local.addAll(it)
-            }, onError = {
-                withContext(Main) { onFetchingError(FetchingErrorReason.REQUEST_ERROR) }
-            })
+            } ?: withContext(Main) { onFetchingError(FetchingErrorReason.REQUEST_ERROR) }
         } else {
             withContext(Main) { onFetchingError(FetchingErrorReason.OFFLINE) }
         }

@@ -16,7 +16,7 @@ import coil.load
 import coil.size.ViewSizeResolver
 import com.google.android.material.imageview.ShapeableImageView
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.data.OkHttpSingleton
+import ru.fitsuli.doubletappapp.data.storage.network.OkHttpSingleton
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
 import ru.fitsuli.doubletappapp.presentation.viewmodels.ListViewModel
 import ru.fitsuli.doubletappapp.shortToast
