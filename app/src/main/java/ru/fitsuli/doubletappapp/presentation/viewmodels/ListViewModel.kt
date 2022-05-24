@@ -8,14 +8,24 @@ import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.FetchingErrorReason
 import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.Type
+import ru.fitsuli.doubletappapp.data.repository.HabitRepositoryImpl
 import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
 import ru.fitsuli.doubletappapp.data.storage.network.NetworkStorage
+import ru.fitsuli.doubletappapp.data.storage.network.RemoteDataSource
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.usecases.GetHabitsUseCase
+import ru.fitsuli.doubletappapp.domain.usecases.MarkAsDoneUseCase
+import ru.fitsuli.doubletappapp.domain.usecases.UpdateFromNetUseCase
 import ru.fitsuli.doubletappapp.isOnline
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
     private val _local = LocalStorage(application.applicationContext)
-    private val _net = NetworkStorage()
+    private val _net: RemoteDataSource = NetworkStorage()
+    private val _repoImpl = HabitRepositoryImpl(_local, _net)
+
+    private val _getAllHabits = GetHabitsUseCase(_repoImpl)
+    private val _markDoneHabit = MarkAsDoneUseCase(_repoImpl)
+    private val _updateNetHabits = UpdateFromNetUseCase(_repoImpl)
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
@@ -27,7 +37,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         mediator.apply {
-            addSource(_local.content) {
+            addSource(_getAllHabits.execute()) {
                 viewModelScope.launch {
                     postValue(
                         _local.getFilteredSortedList(
@@ -61,37 +71,13 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun updateHabitsFromNet(
-        onFetchingError: suspend (FetchingErrorReason) -> Unit = {},
-        onHabitUploaded: suspend (HabitItem) -> Unit = {},
-        onHabitUpdated: suspend (HabitItem) -> Unit = {}
+        onFetchingError: suspend (FetchingErrorReason) -> Unit = {}
     ) = viewModelScope.launch {
         _isLoading.postValue(true)
 
-        _local.content.value?.forEach { habit ->
-            if (habit.isUploadPending) {
-                _net.add(habit)?.let { uid ->
-                    _local.delete(habit)
-                    _local.add(habit.copy(id = uid.uid, isUpdatePending = false))
-                    withContext(Main) { onHabitUploaded(habit) }
-                }
-
-                return@forEach
-            }
-
-            if (habit.isUpdatePending) {
-                _net.update(habit)?.let {
-                    withContext(Main) { onHabitUpdated(habit) }
-                }
-
-                return@forEach
-            }
-        }
-
         if (getApplication<Application>().applicationContext.isOnline) {
-            _net.getAll()?.let {
-                _local.deleteAll()
-                _local.addAll(it)
-            } ?: withContext(Main) { onFetchingError(FetchingErrorReason.REQUEST_ERROR) }
+            _updateNetHabits.execute()
+                ?: withContext(Main) { onFetchingError(FetchingErrorReason.REQUEST_ERROR) }
         } else {
             withContext(Main) { onFetchingError(FetchingErrorReason.OFFLINE) }
         }

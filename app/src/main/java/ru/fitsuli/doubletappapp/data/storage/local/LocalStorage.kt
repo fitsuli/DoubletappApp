@@ -8,9 +8,9 @@ import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 class LocalStorage(context: Context) : LocalDataSource {
     private val db = AppDatabase.getInstance(context)
-    val content = db.habitDao().getAll()
+    private val content = db.habitDao().getAll()
 
-    override suspend fun getAll() = content.value.orEmpty()
+    override fun getAll() = content
 
     suspend fun getFilteredSortedList(searchStr: String, sortBy: SortBy) =
         withContext(IO) {

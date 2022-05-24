@@ -139,15 +139,15 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     return@setOnClickListener
                 }
 
-                if (isInEditMode) viewModel.updateWithRemote(habit)
-                else viewModel.addWithRemote(habit)
+                if (isInEditMode) viewModel.update(habit)
+                else viewModel.add(habit)
 
                 findNavController().popBackStack()
             }
 
             removeButton.setOnClickListener {
                 if (prevHabit != null) {
-                    viewModel.deleteWithRemote(prevHabit!!)
+                    viewModel.delete(prevHabit!!)
                 }
                 findNavController().popBackStack()
             }

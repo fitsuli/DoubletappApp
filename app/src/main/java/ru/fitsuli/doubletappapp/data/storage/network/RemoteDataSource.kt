@@ -15,4 +15,6 @@ interface RemoteDataSource {
     suspend fun deleteAll(): Unit?
 
     suspend fun update(habit: HabitItem): HabitUid?
+
+    suspend fun markAsDone(habit: HabitItem): Unit?
 }

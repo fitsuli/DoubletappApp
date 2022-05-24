@@ -7,46 +7,52 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
+import ru.fitsuli.doubletappapp.data.repository.HabitRepositoryImpl
 import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
 import ru.fitsuli.doubletappapp.data.storage.network.NetworkStorage
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.usecases.AddHabitUseCase
+import ru.fitsuli.doubletappapp.domain.usecases.DeleteHabitUseCase
+import ru.fitsuli.doubletappapp.domain.usecases.FindHabitByIdUseCase
+import ru.fitsuli.doubletappapp.domain.usecases.UpdateHabitUseCase
 
 class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
     private val _local = LocalStorage(application.applicationContext)
     private val _network = NetworkStorage()
+    private val _repoImpl = HabitRepositoryImpl(_local, _network)
+
+    private val _addHabit = AddHabitUseCase(_repoImpl)
+    private val _deleteHabit = DeleteHabitUseCase(_repoImpl)
+    private val _updateHabit = UpdateHabitUseCase(_repoImpl)
+    private val _findHabit = FindHabitByIdUseCase(_repoImpl)
+
     private val _selectedItem: MutableLiveData<HabitItem?> = MutableLiveData()
     val selectedItem: LiveData<HabitItem?> = _selectedItem
 
 
     fun runFindItemById(id: String) {
         viewModelScope.launch(IO) {
-            _local.getById(id)?.let {
+            _findHabit.execute(id)?.let {
                 _selectedItem.postValue(it)
             }
         }
     }
 
-    fun addWithRemote(habit: HabitItem) {
+    fun add(habit: HabitItem) {
         viewModelScope.launch {
-            _network.add(habit)?.let { uid ->
-                _local.add(habit.copy(id = uid.uid))
-            } ?: _local.add(habit.copy(isUploadPending = true))
+            _addHabit.execute(habit)
         }
     }
 
-    fun updateWithRemote(habit: HabitItem) {
+    fun update(habit: HabitItem) {
         viewModelScope.launch {
-            _network.update(habit)?.let {
-                _local.update(habit)
-            } ?: _local.update(habit.copy(isUpdatePending = true))
+            _updateHabit.execute(habit)
         }
     }
 
-    fun deleteWithRemote(habit: HabitItem) {
+    fun delete(habit: HabitItem) {
         viewModelScope.launch {
-            _network.delete(habit)?.let {
-                _local.delete(habit)
-            } // ?: { }
+            _deleteHabit.execute(habit)
         }
     }
 

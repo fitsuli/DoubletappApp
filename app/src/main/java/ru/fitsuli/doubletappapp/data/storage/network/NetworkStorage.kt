@@ -4,6 +4,7 @@ import com.haroldadmin.cnradapter.invoke
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.Utils.Companion.AUTH_TOKEN
+import ru.fitsuli.doubletappapp.data.storage.network.models.HabitDoneBody
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitUid
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
 import ru.fitsuli.doubletappapp.executeWithConfiguredRetry
@@ -53,5 +54,14 @@ class NetworkStorage : RemoteDataSource {
         getAll()?.let { list ->
             list.forEach { delete(it) ?: return@withContext null }
         }
+    }
+
+    override suspend fun markAsDone(habit: HabitItem): Unit? = withContext(IO) {
+        executeWithConfiguredRetry {
+            habitApi.markAsDone(
+                AUTH_TOKEN,
+                HabitDoneBody(date = habit.modifiedDate, habitUid = habit.id)
+            )
+        }()
     }
 }

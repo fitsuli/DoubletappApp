@@ -34,4 +34,23 @@ class Converters {
     fun fromOffsetDateTime(date: OffsetDateTime?): String? {
         return date?.format(formatter)
     }
+
+    @TypeConverter
+    fun stringToDateTimeList(value: String): List<OffsetDateTime> {
+        if (value.isEmpty()) return emptyList()
+        val split = value.split("\\s*,\\s*")
+
+        return buildList {
+            split.forEach {
+                toOffsetDateTime(it)?.let { offset ->
+                    add(offset)
+                }
+            }
+        }
+    }
+
+    @TypeConverter
+    fun dateTimeListToString(dates: List<OffsetDateTime>) = buildString {
+        dates.forEach { append(fromOffsetDateTime(it)) }
+    }
 }

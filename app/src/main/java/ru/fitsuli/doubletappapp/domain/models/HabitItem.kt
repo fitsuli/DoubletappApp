@@ -1,3 +1,4 @@
+@file:UseSerializers(DateTimeUTCSerializer::class)
 package ru.fitsuli.doubletappapp.domain.models
 
 import androidx.annotation.ColorInt
@@ -7,6 +8,7 @@ import androidx.room.PrimaryKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlinx.serialization.UseSerializers
 import ru.fitsuli.doubletappapp.Priority
 import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.data.DateTimeUTCSerializer
@@ -38,14 +40,13 @@ data class HabitItem(
     @ColorInt val srgbColor: Int? = null,
 
     @SerialName("date")
-    @Serializable(with = DateTimeUTCSerializer::class)
     val modifiedDate: OffsetDateTime,
 
     @SerialName("uid")
     @PrimaryKey val id: String,
 
     @SerialName("done_dates")
-    val doneDates: List<Int> = listOf(),
+    val doneDates: List<OffsetDateTime> = emptyList(),
 
     @Transient
     val isUploadPending: Boolean = false,

@@ -1,9 +1,10 @@
 package ru.fitsuli.doubletappapp.data.storage.local
 
+import androidx.lifecycle.LiveData
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 interface LocalDataSource {
-    suspend fun getAll(): List<HabitItem>
+    fun getAll(): LiveData<List<HabitItem>>
 
     suspend fun getById(id: String): HabitItem?
 

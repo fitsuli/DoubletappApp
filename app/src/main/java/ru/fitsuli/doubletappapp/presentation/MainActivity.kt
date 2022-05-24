@@ -78,15 +78,9 @@ class MainActivity : AppCompatActivity() {
         val viewModel = ViewModelProvider(this)[ListViewModel::class.java]
         when (item.itemId) {
             R.id.action_update -> {
-                viewModel.updateHabitsFromNet(
-                    onFetchingError = { reason ->
-                        shortToast(reason.hintStringResId)
-                    },
-                    onHabitUploaded = {
-                        shortToast("${it.name} uploaded")
-                    }, onHabitUpdated = {
-                        shortToast("${it.name} updated")
-                    })
+                viewModel.updateHabitsFromNet { reason ->
+                    shortToast(reason.hintStringResId)
+                }
                 return true
             }
         }
