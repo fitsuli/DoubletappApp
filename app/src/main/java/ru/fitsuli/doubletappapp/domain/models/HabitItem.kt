@@ -9,16 +9,13 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.UseSerializers
-import ru.fitsuli.doubletappapp.Priority
-import ru.fitsuli.doubletappapp.Type
-import ru.fitsuli.doubletappapp.data.DateTimeUTCSerializer
 import java.time.OffsetDateTime
 
 @Keep
 @Serializable
 @Entity(tableName = "habits")
 data class HabitItem(
-    @SerialName("title")
+    @SerialName("title") // TODO: map to something
     val name: String,
 
     @SerialName("description")

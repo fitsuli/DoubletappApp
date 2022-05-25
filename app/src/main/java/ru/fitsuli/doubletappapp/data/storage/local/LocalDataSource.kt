@@ -1,10 +1,13 @@
 package ru.fitsuli.doubletappapp.data.storage.local
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 
 interface LocalDataSource {
-    fun getAll(): LiveData<List<HabitItem>>
+    fun getAll(): Flow<List<HabitItem>>
+
+    suspend fun getFilteredSorted(filter: SearchSortFilter): List<HabitItem>
 
     suspend fun getById(id: String): HabitItem?
 

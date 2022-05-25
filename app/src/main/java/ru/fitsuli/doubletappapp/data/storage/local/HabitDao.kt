@@ -1,15 +1,15 @@
 package ru.fitsuli.doubletappapp.data.storage.local
 
-import androidx.lifecycle.LiveData
 import androidx.room.*
-import ru.fitsuli.doubletappapp.SortBy
-import ru.fitsuli.doubletappapp.Type
+import kotlinx.coroutines.flow.Flow
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.SortBy
+import ru.fitsuli.doubletappapp.domain.models.Type
 
 @Dao
 interface HabitDao {
     @Query("SELECT * FROM habits")
-    fun getAll(): LiveData<List<HabitItem>>
+    fun getAll(): Flow<List<HabitItem>>
 
     @Query("SELECT * FROM habits WHERE id IN (:habitIds)")
     suspend fun loadAllByIds(habitIds: IntArray): List<HabitItem>

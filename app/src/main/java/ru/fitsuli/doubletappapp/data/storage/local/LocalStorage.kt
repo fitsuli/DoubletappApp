@@ -3,22 +3,21 @@ package ru.fitsuli.doubletappapp.data.storage.local
 import android.content.Context
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import ru.fitsuli.doubletappapp.SortBy
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 
 class LocalStorage(context: Context) : LocalDataSource {
     private val db = AppDatabase.getInstance(context)
-    private val content = db.habitDao().getAll()
 
-    override fun getAll() = content
+    override fun getAll() = db.habitDao().getAll()
 
-    suspend fun getFilteredSortedList(searchStr: String, sortBy: SortBy) =
+    override suspend fun getFilteredSorted(filter: SearchSortFilter) =
         withContext(IO) {
-            db.habitDao().filterAndSort(searchStr, sortBy)
+            db.habitDao().filterAndSort(filter.filterStr, filter.sortBy)
         }
 
-    override suspend fun getById(id: String): HabitItem? {
-        return db.habitDao().findById(id)
+    override suspend fun getById(id: String): HabitItem? = withContext(IO) {
+        db.habitDao().findById(id)
     }
 
     override suspend fun add(habit: HabitItem) = withContext(IO) {

@@ -7,10 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
 import ru.fitsuli.doubletappapp.databinding.FragmentRecyclerBinding
+import ru.fitsuli.doubletappapp.domain.models.Type
 import ru.fitsuli.doubletappapp.presentation.adapter.HabitRecyclerAdapter
 import ru.fitsuli.doubletappapp.presentation.viewmodels.ListViewModel
 

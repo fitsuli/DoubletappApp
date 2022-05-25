@@ -16,14 +16,14 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import ru.fitsuli.doubletappapp.Priority
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.Utils.Companion.EDIT_MODE_KEY
 import ru.fitsuli.doubletappapp.Utils.Companion.ITEM_ID_KEY
-import ru.fitsuli.doubletappapp.Utils.Companion.dpToPx
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.Priority
+import ru.fitsuli.doubletappapp.domain.models.Type
+import ru.fitsuli.doubletappapp.dpToPx
 import ru.fitsuli.doubletappapp.presentation.viewmodels.AddHabitViewModel
 import ru.fitsuli.doubletappapp.shortToast
 import java.time.OffsetDateTime

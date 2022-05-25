@@ -6,13 +6,16 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.FetchingErrorReason
-import ru.fitsuli.doubletappapp.SortBy
-import ru.fitsuli.doubletappapp.Type
 import ru.fitsuli.doubletappapp.data.repository.HabitRepositoryImpl
 import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
 import ru.fitsuli.doubletappapp.data.storage.network.NetworkStorage
 import ru.fitsuli.doubletappapp.data.storage.network.RemoteDataSource
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
+import ru.fitsuli.doubletappapp.domain.models.SortBy
+import ru.fitsuli.doubletappapp.domain.models.SortBy.Companion.orNone
+import ru.fitsuli.doubletappapp.domain.models.Type
+import ru.fitsuli.doubletappapp.domain.usecases.GetFilteredHabitsUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.GetHabitsUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.MarkAsDoneUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.UpdateFromNetUseCase
@@ -26,6 +29,7 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     private val _getAllHabits = GetHabitsUseCase(_repoImpl)
     private val _markDoneHabit = MarkAsDoneUseCase(_repoImpl)
     private val _updateNetHabits = UpdateFromNetUseCase(_repoImpl)
+    private val _getFilteredHabits = GetFilteredHabitsUseCase(_repoImpl)
 
     private val _searchStr: MutableLiveData<String> = MutableLiveData("")
     private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
@@ -37,12 +41,12 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         mediator.apply {
-            addSource(_getAllHabits.execute()) {
+            addSource(_getAllHabits.execute().asLiveData()) {
                 viewModelScope.launch {
-                    postValue(
-                        _local.getFilteredSortedList(
-                            _searchStr.value.orEmpty(),
-                            _sortBy.value ?: SortBy.NONE
+                    _getFilteredHabits.execute(
+                        SearchSortFilter(
+                            filterStr = _searchStr.value.orEmpty(),
+                            sortBy = _sortBy.value.orNone()
                         )
                     )
                 }
@@ -50,9 +54,11 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             addSource(_searchStr) { s ->
                 viewModelScope.launch {
                     postValue(
-                        _local.getFilteredSortedList(
-                            s,
-                            _sortBy.value ?: SortBy.NONE
+                        _getFilteredHabits.execute(
+                            SearchSortFilter(
+                                filterStr = s,
+                                sortBy = _sortBy.value.orNone()
+                            )
                         )
                     )
                 }
@@ -60,14 +66,29 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
             addSource(_sortBy) { sortBy ->
                 viewModelScope.launch {
                     postValue(
-                        _local.getFilteredSortedList(
-                            _searchStr.value.orEmpty(),
-                            sortBy
+                        _getFilteredHabits.execute(
+                            SearchSortFilter(
+                                filterStr = _searchStr.value.orEmpty(),
+                                sortBy = sortBy
+                            )
                         )
                     )
                 }
             }
         }
+/*
+        viewModelScope.launch {
+            _getAllHabits.execute().collect {
+                mediator.postValue(
+
+                    _local.getFilteredSorted(
+                        _searchStr.value.orEmpty(),
+                        _sortBy.value ?: SortBy.NONE
+                    )
+                )
+            }
+        }
+*/
     }
 
     fun updateHabitsFromNet(

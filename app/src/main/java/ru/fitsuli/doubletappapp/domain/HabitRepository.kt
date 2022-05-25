@@ -1,10 +1,13 @@
 package ru.fitsuli.doubletappapp.domain
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.flow.Flow
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 
 interface HabitRepository {
-    fun getHabits(): LiveData<List<HabitItem>>
+    fun getHabits(): Flow<List<HabitItem>>
+
+    suspend fun getFilteredHabits(filter: SearchSortFilter): List<HabitItem>
 
     suspend fun getById(id: String): HabitItem?
 
@@ -16,7 +19,7 @@ interface HabitRepository {
 
     suspend fun markAsDone(habit: HabitItem)
 
-    suspend fun actualizePending()
+    suspend fun actualizePending(): Unit?
 
     suspend fun actualizeDiff(): Unit?
 }
