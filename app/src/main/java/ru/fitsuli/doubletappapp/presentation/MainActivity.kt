@@ -19,7 +19,6 @@ import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.data.storage.network.OkHttpSingleton
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
 import ru.fitsuli.doubletappapp.presentation.viewmodels.ListViewModel
-import ru.fitsuli.doubletappapp.shortToast
 
 
 class MainActivity : AppCompatActivity() {

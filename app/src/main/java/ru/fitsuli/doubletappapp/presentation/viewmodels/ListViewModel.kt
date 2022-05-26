@@ -5,7 +5,6 @@ import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.fitsuli.doubletappapp.FetchingErrorReason
 import ru.fitsuli.doubletappapp.data.repository.HabitRepositoryImpl
 import ru.fitsuli.doubletappapp.data.storage.local.LocalDataSource
 import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
@@ -18,7 +17,8 @@ import ru.fitsuli.doubletappapp.domain.usecases.GetFilteredHabitsUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.MarkAsDoneUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.SaveFilterUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.UpdateFromNetUseCase
-import ru.fitsuli.doubletappapp.isOnline
+import ru.fitsuli.doubletappapp.presentation.FetchingErrorReason
+import ru.fitsuli.doubletappapp.presentation.isOnline
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
     private val _local: LocalDataSource = LocalStorage(application.applicationContext)

@@ -1,4 +1,4 @@
-package ru.fitsuli.doubletappapp
+package ru.fitsuli.doubletappapp.presentation
 
 import android.content.ActivityNotFoundException
 import android.content.Context
@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.annotation.StringRes
 import androidx.core.net.toUri
+import ru.fitsuli.doubletappapp.R
 
 @Keep
 enum class FetchingErrorReason(@StringRes val hintStringResId: Int) {

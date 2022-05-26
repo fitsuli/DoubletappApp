@@ -5,7 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.databinding.FragmentAboutAppBinding
-import ru.fitsuli.doubletappapp.openLink
+import ru.fitsuli.doubletappapp.presentation.openLink
 
 class AboutAppFragment : Fragment(R.layout.fragment_about_app) {
 
