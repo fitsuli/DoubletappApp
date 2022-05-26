@@ -21,11 +21,10 @@ class HabitRepositoryImpl(
     override fun getHabits() = local.getAll()
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getFilteredHabits(filter: SearchSortFilter) =
-        sortFlow
-            .flatMapLatest {
-                local.getFilteredSorted(it)
-            }
+    override fun getFilteredHabits() = sortFlow
+        .flatMapLatest {
+            local.getFilteredSorted(it)
+        }
 
     override fun setFilterBy(filter: SearchSortFilter) {
         sortFlow.value = filter
@@ -57,11 +56,24 @@ class HabitRepositoryImpl(
         val now = OffsetDateTime.now()
         val newDoneDates = habit.doneDates + now
         remote.markAsDone(habit)?.let {
-            local.update(
+            remote.update(
+                habit.copy(
+                    count = habit.count + 1
+                )
+            )?.let {
+                local.update(
+                    habit.copy(
+                        count = habit.count + 1,
+                        modifiedDate = now,
+                        doneDates = newDoneDates
+                    )
+                )
+            } ?: local.update(
                 habit.copy(
                     count = habit.count + 1,
                     modifiedDate = now,
-                    doneDates = newDoneDates
+                    doneDates = newDoneDates,
+                    isUpdatePending = true
                 )
             )
         } ?: local.update(

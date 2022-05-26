@@ -24,7 +24,7 @@ class ListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var filter = SearchSortFilter()
-    val filtered = _getFilteredHabits.execute(filter).asLiveData()
+    val filtered = _getFilteredHabits.execute().asLiveData()
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
