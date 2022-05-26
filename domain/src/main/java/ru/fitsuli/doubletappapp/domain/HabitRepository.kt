@@ -22,6 +22,4 @@ interface HabitRepository {
     suspend fun markAsDone(habit: HabitItem)
 
     suspend fun actualizePending(): Unit?
-
-    suspend fun actualizeDiff(): Unit?
 }

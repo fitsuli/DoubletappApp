@@ -54,11 +54,13 @@ class HabitRepositoryImpl(
     }
 
     override suspend fun markAsDone(habit: HabitItem) = withContext(IO) {
-        val newDoneDates = habit.doneDates + OffsetDateTime.now()
+        val now = OffsetDateTime.now()
+        val newDoneDates = habit.doneDates + now
         remote.markAsDone(habit)?.let {
             local.update(
                 habit.copy(
                     count = habit.count + 1,
+                    modifiedDate = now,
                     doneDates = newDoneDates
                 )
             )
@@ -66,6 +68,7 @@ class HabitRepositoryImpl(
             habit.copy(
                 count = habit.count + 1,
                 doneDates = newDoneDates,
+                modifiedDate = now,
                 isUpdatePending = true
             )
         )
@@ -78,7 +81,7 @@ class HabitRepositoryImpl(
                 remote.add(habit)?.let { uid ->
                     local.delete(habit)
                     local.add(habit.copy(id = uid.uid, isUpdatePending = false))
-                }
+                } ?: return@withContext // error
 
                 return@forEach
             }
@@ -86,15 +89,13 @@ class HabitRepositoryImpl(
             if (habit.isUpdatePending) {
                 remote.update(habit)?.let {
                     local.update(habit.copy(isUploadPending = false))
-                }
+                } ?: return@withContext // error
 
                 return@forEach
             }
         }
-    }
 
-    // reload everything from the remote and apply to the local
-    override suspend fun actualizeDiff() = withContext(IO) {
+        // reload everything from the remote and apply to the local
         remote.getAll()?.let {
             local.deleteAll()
             local.addAll(it)
