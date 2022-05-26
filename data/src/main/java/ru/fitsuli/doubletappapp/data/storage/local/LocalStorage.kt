@@ -11,10 +11,10 @@ class LocalStorage(context: Context) : LocalDataSource {
 
     override fun getAll() = db.habitDao().getAll()
 
-    override suspend fun getFilteredSorted(filter: SearchSortFilter) =
-        withContext(IO) {
-            db.habitDao().filterAndSort(filter.filterStr, filter.sortBy)
-        }
+    override suspend fun getOnce() = db.habitDao().getOnce()
+
+    override fun getFilteredSorted(filter: SearchSortFilter) =
+        db.habitDao().getFilteredAndSorted(filter.filterStr, filter.sortBy)
 
     override suspend fun getById(id: String): HabitItem? = withContext(IO) {
         db.habitDao().findById(id)

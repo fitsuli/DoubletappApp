@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
@@ -17,8 +18,12 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val priority: TextView = view.findViewById(R.id.priority)
     private val count: TextView = view.findViewById(R.id.count)
     private val period: TextView = view.findViewById(R.id.period)
+    private val doneButton: MaterialButton = view.findViewById(R.id.mark_done_button)
 
-    fun onBind(context: Context, habit: HabitItem, onClick: ((id: String) -> Unit)? = null) {
+    fun onBind(
+        context: Context, habit: HabitItem, onClick: ((id: String) -> Unit)? = null,
+        onButtonClick: ((id: String) -> Unit)? = null
+    ) {
         if (onClick != null) {
             parentCard.setOnClickListener {
                 onClick(habit.id)
@@ -39,5 +44,11 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
             R.string.every_x,
             habit.period.toString()
                 .also { period.isVisible = it.isNotEmpty() })
+
+        if (onButtonClick != null) {
+            doneButton.setOnClickListener {
+                onButtonClick(habit.id)
+            }
+        }
     }
 }

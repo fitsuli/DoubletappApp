@@ -49,18 +49,27 @@
             android:id="@+id/count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/period"
+            app:layout_constraintEnd_toStartOf="@+id/mark_done_button"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/desc"
             tools:text="Count" />
+
         <TextView
             android:id="@+id/period"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/count"
-            app:layout_constraintTop_toBottomOf="@id/desc"
+            app:layout_constraintEnd_toStartOf="@+id/mark_done_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/count"
             tools:text="Period" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/mark_done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mark_done"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

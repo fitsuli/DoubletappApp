@@ -7,7 +7,9 @@ import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 interface LocalDataSource {
     fun getAll(): Flow<List<HabitItem>>
 
-    suspend fun getFilteredSorted(filter: SearchSortFilter): List<HabitItem>
+    fun getFilteredSorted(filter: SearchSortFilter): Flow<List<HabitItem>>
+
+    suspend fun getOnce(): List<HabitItem>
 
     suspend fun getById(id: String): HabitItem?
 

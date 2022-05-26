@@ -41,16 +41,18 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
             }
         }
 
-        val adapter = HabitRecyclerAdapter(requireContext()) { itemId ->
-            findNavController().navigate(
-                R.id.action_main_to_add_habit, bundleOf(
-                    EDIT_MODE_KEY to true,
-                    ITEM_ID_KEY to itemId
+        val adapter = HabitRecyclerAdapter(requireContext(),
+            onCardClick = { itemId ->
+                findNavController().navigate(
+                    R.id.action_main_to_add_habit, bundleOf(
+                        EDIT_MODE_KEY to true,
+                        ITEM_ID_KEY to itemId
+                    )
                 )
-            )
-        }
+            }, onButtonClick = viewModel::markHabitAsDone
+        )
         binding.recycler.adapter = adapter
-        viewModel.mediator.observe(viewLifecycleOwner) {
+        viewModel.filtered.observe(viewLifecycleOwner) {
             adapter.submitList(viewModel.getFilteredByTypeList(type))
         }
     }

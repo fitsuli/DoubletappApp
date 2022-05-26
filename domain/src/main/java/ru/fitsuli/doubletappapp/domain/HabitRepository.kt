@@ -7,7 +7,9 @@ import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 interface HabitRepository {
     fun getHabits(): Flow<List<HabitItem>>
 
-    suspend fun getFilteredHabits(filter: SearchSortFilter): List<HabitItem>
+    fun getFilteredHabits(filter: SearchSortFilter): Flow<List<HabitItem>>
+
+    fun setFilterBy(filter: SearchSortFilter)
 
     suspend fun getById(id: String): HabitItem?
 

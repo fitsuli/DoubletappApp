@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="good">Хорошая</string>
+    <string name="bad">Плохая</string>
+    <string name="neutral">Нейтральная</string>
+
+    <string name="high">Высокий</string>
+    <string name="medium">Средний</string>
+    <string name="low">Низкий</string>
+
+</resources>

@@ -3,11 +3,9 @@ package ru.fitsuli.doubletappapp.data.storage.network
 import com.haroldadmin.cnradapter.invoke
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
-import ru.fitsuli.doubletappapp.Utils.Companion.AUTH_TOKEN
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitDoneBody
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitUid
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
-import ru.fitsuli.doubletappapp.executeWithConfiguredRetry
 
 class NetworkStorage : RemoteDataSource {
     private val habitApi = RetrofitRequestApi.getInstance()

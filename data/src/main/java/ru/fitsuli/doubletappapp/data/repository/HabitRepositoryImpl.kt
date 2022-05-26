@@ -1,7 +1,9 @@
 package ru.fitsuli.doubletappapp.data.repository
 
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.singleOrNull
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.data.storage.local.LocalDataSource
 import ru.fitsuli.doubletappapp.data.storage.network.RemoteDataSource
@@ -14,10 +16,20 @@ class HabitRepositoryImpl(
     private val local: LocalDataSource,
     private val remote: RemoteDataSource
 ) : HabitRepository {
+    private val sortFlow = MutableStateFlow(SearchSortFilter())
+
     override fun getHabits() = local.getAll()
 
-    override suspend fun getFilteredHabits(filter: SearchSortFilter) =
-        local.getFilteredSorted(filter)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getFilteredHabits(filter: SearchSortFilter) =
+        sortFlow
+            .flatMapLatest {
+                local.getFilteredSorted(it)
+            }
+
+    override fun setFilterBy(filter: SearchSortFilter) {
+        sortFlow.value = filter
+    }
 
     override suspend fun getById(id: String): HabitItem? {
         return local.getById(id)
@@ -61,7 +73,7 @@ class HabitRepositoryImpl(
 
     // upload pending operations
     override suspend fun actualizePending() = withContext(IO) {
-        getHabits().singleOrNull()?.forEach { habit ->
+        local.getOnce().forEach { habit ->
             if (habit.isUploadPending) {
                 remote.add(habit)?.let { uid ->
                     local.delete(habit)

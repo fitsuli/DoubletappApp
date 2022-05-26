@@ -2,7 +2,7 @@ package ru.fitsuli.doubletappapp.data.storage.network
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import ru.fitsuli.doubletappapp.BuildConfig
+import ru.fitsuli.doubletappapp.data.BuildConfig
 
 class OkHttpSingleton {
     companion object {

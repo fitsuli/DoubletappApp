@@ -11,6 +11,9 @@ interface HabitDao {
     @Query("SELECT * FROM habits")
     fun getAll(): Flow<List<HabitItem>>
 
+    @Query("SELECT * FROM habits")
+    fun getOnce(): List<HabitItem>
+
     @Query("SELECT * FROM habits WHERE id IN (:habitIds)")
     suspend fun loadAllByIds(habitIds: IntArray): List<HabitItem>
 
@@ -30,7 +33,7 @@ interface HabitDao {
                 "CASE WHEN :sortBy = 'ASCENDING' THEN name END ASC, " +
                 "CASE WHEN :sortBy = 'DESCENDING' THEN name END DESC "
     )
-    suspend fun filterAndSort(name: String, sortBy: SortBy): List<HabitItem>
+    fun getFilteredAndSorted(name: String, sortBy: SortBy): Flow<List<HabitItem>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(vararg habits: HabitItem)

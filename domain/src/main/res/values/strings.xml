@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="good">Good</string>
+    <string name="bad">Bad</string>
+    <string name="neutral">Neutral</string>
+
+    <string name="high">High</string>
+    <string name="medium">Medium</string>
+    <string name="low">Low</string>
+
+</resources>

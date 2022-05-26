@@ -7,89 +7,34 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ru.fitsuli.doubletappapp.FetchingErrorReason
 import ru.fitsuli.doubletappapp.data.repository.HabitRepositoryImpl
+import ru.fitsuli.doubletappapp.data.storage.local.LocalDataSource
 import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
 import ru.fitsuli.doubletappapp.data.storage.network.NetworkStorage
 import ru.fitsuli.doubletappapp.data.storage.network.RemoteDataSource
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
 import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 import ru.fitsuli.doubletappapp.domain.models.SortBy
-import ru.fitsuli.doubletappapp.domain.models.SortBy.Companion.orNone
 import ru.fitsuli.doubletappapp.domain.models.Type
 import ru.fitsuli.doubletappapp.domain.usecases.GetFilteredHabitsUseCase
-import ru.fitsuli.doubletappapp.domain.usecases.GetHabitsUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.MarkAsDoneUseCase
+import ru.fitsuli.doubletappapp.domain.usecases.SaveFilterUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.UpdateFromNetUseCase
 import ru.fitsuli.doubletappapp.isOnline
 
 class ListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _local = LocalStorage(application.applicationContext)
+    private val _local: LocalDataSource = LocalStorage(application.applicationContext)
     private val _net: RemoteDataSource = NetworkStorage()
     private val _repoImpl = HabitRepositoryImpl(_local, _net)
 
-    private val _getAllHabits = GetHabitsUseCase(_repoImpl)
     private val _markDoneHabit = MarkAsDoneUseCase(_repoImpl)
     private val _updateNetHabits = UpdateFromNetUseCase(_repoImpl)
     private val _getFilteredHabits = GetFilteredHabitsUseCase(_repoImpl)
+    private val _saveFilterSettings = SaveFilterUseCase(_repoImpl)
 
-    private val _searchStr: MutableLiveData<String> = MutableLiveData("")
-    private val _sortBy: MutableLiveData<SortBy> = MutableLiveData(SortBy.NONE)
+    private var filter = SearchSortFilter()
+    val filtered = _getFilteredHabits.execute(filter).asLiveData()
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData(false)
     val isLoading: LiveData<Boolean> = _isLoading
-
-    val mediator = MediatorLiveData<List<HabitItem>>()
-
-    init {
-        mediator.apply {
-            addSource(_getAllHabits.execute().asLiveData()) {
-                viewModelScope.launch {
-                    _getFilteredHabits.execute(
-                        SearchSortFilter(
-                            filterStr = _searchStr.value.orEmpty(),
-                            sortBy = _sortBy.value.orNone()
-                        )
-                    )
-                }
-            }
-            addSource(_searchStr) { s ->
-                viewModelScope.launch {
-                    postValue(
-                        _getFilteredHabits.execute(
-                            SearchSortFilter(
-                                filterStr = s,
-                                sortBy = _sortBy.value.orNone()
-                            )
-                        )
-                    )
-                }
-            }
-            addSource(_sortBy) { sortBy ->
-                viewModelScope.launch {
-                    postValue(
-                        _getFilteredHabits.execute(
-                            SearchSortFilter(
-                                filterStr = _searchStr.value.orEmpty(),
-                                sortBy = sortBy
-                            )
-                        )
-                    )
-                }
-            }
-        }
-/*
-        viewModelScope.launch {
-            _getAllHabits.execute().collect {
-                mediator.postValue(
-
-                    _local.getFilteredSorted(
-                        _searchStr.value.orEmpty(),
-                        _sortBy.value ?: SortBy.NONE
-                    )
-                )
-            }
-        }
-*/
-    }
 
     fun updateHabitsFromNet(
         onFetchingError: suspend (FetchingErrorReason) -> Unit = {}
@@ -106,13 +51,25 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
         _isLoading.postValue(false)
     }
 
-    fun getFilteredByTypeList(type: Type) = mediator.value?.filter { it.type == type }
+    fun getFilteredByTypeList(type: Type) = filtered.value?.filter { it.type == type }
 
     fun setSorting(sortBy: SortBy) {
-        _sortBy.value = sortBy
+        filter.copy(sortBy = sortBy).let {
+            _saveFilterSettings.execute(it)
+            filter = it
+        }
     }
 
     fun setFilterName(name: String) {
-        _searchStr.value = name
+        filter.copy(filterStr = name).let {
+            _saveFilterSettings.execute(it)
+            filter = it
+        }
+    }
+
+    fun markHabitAsDone(habitId: String) {
+        viewModelScope.launch {
+            _markDoneHabit.executeById(habitId)
+        }
     }
 }

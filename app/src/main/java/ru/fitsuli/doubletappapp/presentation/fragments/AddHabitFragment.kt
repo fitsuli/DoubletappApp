@@ -26,6 +26,7 @@ import ru.fitsuli.doubletappapp.domain.models.Type
 import ru.fitsuli.doubletappapp.dpToPx
 import ru.fitsuli.doubletappapp.presentation.viewmodels.AddHabitViewModel
 import ru.fitsuli.doubletappapp.shortToast
+import ru.fitsuli.doubletappapp.toIntOrZero
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -119,12 +120,14 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 val habit = HabitItem(
                     name = nameField.text.toString(),
                     description = descriptionField.text.toString(),
-                    priority = Priority.values().getOrNull(prioritySpinner.selectedItemPosition)
-                        ?: Priority.HIGH,
-                    type = Type.values().find { it.buttonResId == typeGroup.checkedRadioButtonId }
-                        ?: Type.GOOD,
-                    count = countField.text.toString().toIntOrNull() ?: 0,
-                    period = periodField.text.toString().toIntOrNull() ?: 0,
+                    priority = Priority.values()
+                        .getOrElse(prioritySpinner.selectedItemPosition) { Priority.HIGH },
+                    type = when (typeGroup.checkedRadioButtonId) {
+                        R.id.radio_good -> Type.GOOD
+                        else -> Type.BAD
+                    },
+                    count = countField.text.toString().toIntOrZero(),
+                    period = periodField.text.toString().toIntOrZero(),
                     srgbColor = itemRgb,
                     modifiedDate = OffsetDateTime.now(),
                     id = UUID.randomUUID().mostSignificantBits.toString().let { uuid ->
@@ -173,7 +176,12 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
         nameField.setText(item.name)
         descriptionField.setText(item.description)
         prioritySpinner.setSelection(item.priority.ordinal)
-        typeGroup.check(item.type.buttonResId)
+        typeGroup.check(
+            when (item.type) {
+                Type.GOOD -> R.id.radio_good
+                else -> R.id.radio_bad
+            }
+        )
         countField.setText(item.count.toString())
         periodField.setText(item.period.toString())
         item.srgbColor?.let { color ->
