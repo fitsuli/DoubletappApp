@@ -1,30 +1,26 @@
 package ru.fitsuli.doubletappapp.presentation.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import ru.fitsuli.doubletappapp.data.repository.HabitRepositoryImpl
-import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
-import ru.fitsuli.doubletappapp.data.storage.network.NetworkStorage
 import ru.fitsuli.doubletappapp.domain.models.HabitItem
 import ru.fitsuli.doubletappapp.domain.usecases.AddHabitUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.DeleteHabitUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.FindHabitByIdUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.UpdateHabitUseCase
+import javax.inject.Inject
 
-class AddHabitViewModel(application: Application) : AndroidViewModel(application) {
-    private val _local = LocalStorage(application.applicationContext)
-    private val _network = NetworkStorage()
-    private val _repoImpl = HabitRepositoryImpl(_local, _network)
-
-    private val _addHabit = AddHabitUseCase(_repoImpl)
-    private val _deleteHabit = DeleteHabitUseCase(_repoImpl)
-    private val _updateHabit = UpdateHabitUseCase(_repoImpl)
-    private val _findHabit = FindHabitByIdUseCase(_repoImpl)
+@HiltViewModel
+class AddHabitViewModel @Inject constructor(
+    private val _addHabit: AddHabitUseCase,
+    private val _deleteHabit: DeleteHabitUseCase,
+    private val _updateHabit: UpdateHabitUseCase,
+    private val _findHabit: FindHabitByIdUseCase
+) : ViewModel() {
 
     private val _selectedItem: MutableLiveData<HabitItem?> = MutableLiveData()
     val selectedItem: LiveData<HabitItem?> = _selectedItem

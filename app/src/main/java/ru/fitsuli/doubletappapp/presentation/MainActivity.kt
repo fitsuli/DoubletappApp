@@ -15,12 +15,14 @@ import coil.ImageLoader
 import coil.load
 import coil.size.ViewSizeResolver
 import com.google.android.material.imageview.ShapeableImageView
+import dagger.hilt.android.AndroidEntryPoint
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.data.storage.network.OkHttpSingleton
 import ru.fitsuli.doubletappapp.databinding.ActivityMainBinding
 import ru.fitsuli.doubletappapp.presentation.viewmodels.ListViewModel
 
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -74,11 +76,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val viewModel = ViewModelProvider(this)[ListViewModel::class.java]
+        val viewModel: ListViewModel = ViewModelProvider(this)[ListViewModel::class.java]
         when (item.itemId) {
             R.id.action_update -> {
-                viewModel.updateHabitsFromNet { reason ->
-                    shortToast(reason.hintStringResId)
+                if (isOnline) {
+                    viewModel.updateHabitsFromNet { reason ->
+                        shortToast(reason.hintStringResId)
+                    }
+                } else {
+                    shortToast(FetchingErrorReason.OFFLINE.hintStringResId)
                 }
                 return true
             }

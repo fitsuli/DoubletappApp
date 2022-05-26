@@ -1,15 +1,10 @@
 package ru.fitsuli.doubletappapp.presentation.viewmodels
 
-import android.app.Application
 import androidx.lifecycle.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.fitsuli.doubletappapp.data.repository.HabitRepositoryImpl
-import ru.fitsuli.doubletappapp.data.storage.local.LocalDataSource
-import ru.fitsuli.doubletappapp.data.storage.local.LocalStorage
-import ru.fitsuli.doubletappapp.data.storage.network.NetworkStorage
-import ru.fitsuli.doubletappapp.data.storage.network.RemoteDataSource
 import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 import ru.fitsuli.doubletappapp.domain.models.SortBy
 import ru.fitsuli.doubletappapp.domain.models.Type
@@ -18,17 +13,15 @@ import ru.fitsuli.doubletappapp.domain.usecases.MarkAsDoneUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.SaveFilterUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.UpdateFromNetUseCase
 import ru.fitsuli.doubletappapp.presentation.FetchingErrorReason
-import ru.fitsuli.doubletappapp.presentation.isOnline
+import javax.inject.Inject
 
-class ListViewModel(application: Application) : AndroidViewModel(application) {
-    private val _local: LocalDataSource = LocalStorage(application.applicationContext)
-    private val _net: RemoteDataSource = NetworkStorage()
-    private val _repoImpl = HabitRepositoryImpl(_local, _net)
-
-    private val _markDoneHabit = MarkAsDoneUseCase(_repoImpl)
-    private val _updateNetHabits = UpdateFromNetUseCase(_repoImpl)
-    private val _getFilteredHabits = GetFilteredHabitsUseCase(_repoImpl)
-    private val _saveFilterSettings = SaveFilterUseCase(_repoImpl)
+@HiltViewModel
+class ListViewModel @Inject constructor(
+    private val _markDoneHabit: MarkAsDoneUseCase,
+    private val _updateNetHabits: UpdateFromNetUseCase,
+    private val _getFilteredHabits: GetFilteredHabitsUseCase,
+    private val _saveFilterSettings: SaveFilterUseCase,
+) : ViewModel() {
 
     private var filter = SearchSortFilter()
     val filtered = _getFilteredHabits.execute(filter).asLiveData()
@@ -41,12 +34,8 @@ class ListViewModel(application: Application) : AndroidViewModel(application) {
     ) = viewModelScope.launch {
         _isLoading.postValue(true)
 
-        if (getApplication<Application>().applicationContext.isOnline) {
-            _updateNetHabits.execute()
-                ?: withContext(Main) { onFetchingError(FetchingErrorReason.REQUEST_ERROR) }
-        } else {
-            withContext(Main) { onFetchingError(FetchingErrorReason.OFFLINE) }
-        }
+        _updateNetHabits.execute()
+            ?: withContext(Main) { onFetchingError(FetchingErrorReason.REQUEST_ERROR) }
 
         _isLoading.postValue(false)
     }
