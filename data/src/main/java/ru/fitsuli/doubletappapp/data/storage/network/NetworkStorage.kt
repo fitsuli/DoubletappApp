@@ -8,7 +8,7 @@ import ru.fitsuli.doubletappapp.data.storage.network.models.HabitDoneBody
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitUid
 
 class NetworkStorage : RemoteDataSource {
-    private val habitApi = RetrofitRequestApi.getInstance()
+    private val habitApi = RetrofitRequestApi.instance
 
     override suspend fun getAll(): List<HabitData>? =
         withContext(IO) {

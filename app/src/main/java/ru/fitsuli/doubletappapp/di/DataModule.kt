@@ -32,6 +32,6 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideLRemoteDataSource(): RemoteDataSource =
+    fun provideRemoteDataSource(): RemoteDataSource =
         NetworkStorage()
 }

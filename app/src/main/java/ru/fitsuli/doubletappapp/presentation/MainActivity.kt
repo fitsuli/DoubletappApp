@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val imageLoader = ImageLoader.Builder(this)
-            .okHttpClient(OkHttpSingleton.getInstance())
+            .okHttpClient(OkHttpSingleton.instance)
             .crossfade(true)
             .build()
 

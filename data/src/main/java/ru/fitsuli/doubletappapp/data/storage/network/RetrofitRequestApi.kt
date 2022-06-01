@@ -10,22 +10,23 @@ import retrofit2.Retrofit
 const val BASE_URL = "https://droid-test-server.doubletapp.ru/api/"
 
 class RetrofitRequestApi {
+
     companion object {
-        private var apiInstance: HabitApi? = null
 
         @OptIn(ExperimentalSerializationApi::class)
-        fun getInstance(): HabitApi {
-            if (apiInstance == null) {
-                val contentType = "application/json".toMediaType()
-                val retrofit = Retrofit.Builder()
-                    .baseUrl(BASE_URL)
-                    .client(OkHttpSingleton.getInstance())
-                    .addCallAdapterFactory(NetworkResponseAdapterFactory())
-                    .addConverterFactory(Json.asConverterFactory(contentType))
-                    .build()
-                apiInstance = retrofit.create(HabitApi::class.java)
-            }
-            return apiInstance!!
+        private val retrofit: Retrofit by lazy {
+
+            val contentType = "application/json".toMediaType()
+            Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .client(OkHttpSingleton.instance)
+                .addCallAdapterFactory(NetworkResponseAdapterFactory())
+                .addConverterFactory(Json.asConverterFactory(contentType))
+                .build()
+        }
+
+        val instance: HabitApi by lazy {
+            retrofit.create(HabitApi::class.java)
         }
     }
 }

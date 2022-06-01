@@ -6,24 +6,16 @@ import ru.fitsuli.doubletappapp.data.BuildConfig
 
 class OkHttpSingleton {
     companion object {
-        private var apiInstance: OkHttpClient? = null
-
-        private fun getOkHttpClient(): OkHttpClient {
-            val interceptor = HttpLoggingInterceptor().apply {
+        private val interceptor by lazy {
+            HttpLoggingInterceptor().apply {
                 level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
                 else HttpLoggingInterceptor.Level.NONE
             }
-
-            return OkHttpClient.Builder()
+        }
+        val instance: OkHttpClient by lazy {
+            OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build()
-        }
-
-        fun getInstance(): OkHttpClient {
-            if (apiInstance == null) {
-                apiInstance = getOkHttpClient()
-            }
-            return apiInstance!!
         }
     }
 }
