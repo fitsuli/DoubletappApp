@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitDomain
 import ru.fitsuli.doubletappapp.domain.usecases.AddHabitUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.DeleteHabitUseCase
 import ru.fitsuli.doubletappapp.domain.usecases.FindHabitByIdUseCase
@@ -22,8 +22,8 @@ class AddHabitViewModel @Inject constructor(
     private val _findHabit: FindHabitByIdUseCase
 ) : ViewModel() {
 
-    private val _selectedItem: MutableLiveData<HabitItem?> = MutableLiveData()
-    val selectedItem: LiveData<HabitItem?> = _selectedItem
+    private val _selectedItem: MutableLiveData<HabitDomain?> = MutableLiveData()
+    val selectedItem: LiveData<HabitDomain?> = _selectedItem
 
 
     fun runFindItemById(id: String) {
@@ -34,19 +34,19 @@ class AddHabitViewModel @Inject constructor(
         }
     }
 
-    fun add(habit: HabitItem) {
+    fun add(habit: HabitDomain) {
         viewModelScope.launch {
             _addHabit.execute(habit)
         }
     }
 
-    fun update(habit: HabitItem) {
+    fun update(habit: HabitDomain) {
         viewModelScope.launch {
             _updateHabit.execute(habit)
         }
     }
 
-    fun delete(habit: HabitItem) {
+    fun delete(habit: HabitDomain) {
         viewModelScope.launch {
             _deleteHabit.execute(habit)
         }

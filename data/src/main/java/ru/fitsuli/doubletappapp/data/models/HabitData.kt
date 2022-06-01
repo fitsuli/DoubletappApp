@@ -1,5 +1,6 @@
 @file:UseSerializers(DateTimeUTCSerializer::class)
-package ru.fitsuli.doubletappapp.domain.models
+
+package ru.fitsuli.doubletappapp.data.models
 
 import androidx.annotation.ColorInt
 import androidx.annotation.Keep
@@ -9,13 +10,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
 import kotlinx.serialization.UseSerializers
+import ru.fitsuli.doubletappapp.domain.models.DateTimeUTCSerializer
+import ru.fitsuli.doubletappapp.domain.models.Priority
+import ru.fitsuli.doubletappapp.domain.models.Type
 import java.time.OffsetDateTime
 
 @Keep
 @Serializable
 @Entity(tableName = "habits")
-data class HabitItem(
-    @SerialName("title") // TODO: map to something
+data class HabitData(
+    @SerialName("title")
     val name: String,
 
     @SerialName("description")

@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.data.models.HabitData
 
 private const val DB_NAME = "habits"
 
-@Database(entities = [HabitItem::class], version = 8)
+@Database(entities = [HabitData::class], version = 8)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun habitDao(): HabitDao

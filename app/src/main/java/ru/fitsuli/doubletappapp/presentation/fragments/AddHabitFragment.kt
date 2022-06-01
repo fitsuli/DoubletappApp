@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.fitsuli.doubletappapp.R
 import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitDomain
 import ru.fitsuli.doubletappapp.domain.models.Priority
 import ru.fitsuli.doubletappapp.domain.models.Type
 import ru.fitsuli.doubletappapp.presentation.Utils.Companion.EDIT_MODE_KEY
@@ -43,7 +43,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
         val ctx = requireContext()
         with(binding) {
-            var prevHabit: HabitItem? = null
+            var prevHabit: HabitDomain? = null
 
             val isInEditMode = arguments?.getBoolean(EDIT_MODE_KEY, false) == true
             if (isInEditMode) {
@@ -117,7 +117,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                     return@setOnClickListener
                 }
 
-                val habit = HabitItem(
+                val habit = HabitDomain(
                     name = nameField.text.toString(),
                     description = descriptionField.text.toString(),
                     priority = Priority.values()
@@ -172,7 +172,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
         )
     }
 
-    private fun restoreFromItem(item: HabitItem) = with(binding) {
+    private fun restoreFromItem(item: HabitDomain) = with(binding) {
         nameField.setText(item.name)
         descriptionField.setText(item.description)
         prioritySpinner.setSelection(item.priority.ordinal)

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitDomain
 
 class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val parentCard: MaterialCardView = view.findViewById(R.id.card_view)
@@ -21,7 +21,7 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val doneButton: MaterialButton = view.findViewById(R.id.mark_done_button)
 
     fun onBind(
-        context: Context, habit: HabitItem, onClick: ((id: String) -> Unit)? = null,
+        context: Context, habit: HabitDomain, onClick: ((id: String) -> Unit)? = null,
         onButtonClick: ((id: String) -> Unit)? = null
     ) {
         if (onClick != null) {

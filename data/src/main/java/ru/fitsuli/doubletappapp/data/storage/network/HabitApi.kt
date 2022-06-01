@@ -2,19 +2,19 @@ package ru.fitsuli.doubletappapp.data.storage.network
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import retrofit2.http.*
+import ru.fitsuli.doubletappapp.data.models.HabitData
 import ru.fitsuli.doubletappapp.data.storage.network.models.ErrorResponse
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitDoneBody
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitUid
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 interface HabitApi {
     @GET("habit")
-    suspend fun getAll(@Header("Authorization") authorization: String): NetworkResponse<List<HabitItem>, ErrorResponse>
+    suspend fun getAll(@Header("Authorization") authorization: String): NetworkResponse<List<HabitData>, ErrorResponse>
 
     @PUT("habit")
     suspend fun add(
         @Header("Authorization") authorization: String,
-        @Body habitItem: HabitItem
+        @Body habitData: HabitData
     ): NetworkResponse<HabitUid, ErrorResponse>
 
     // DELETE with body is ambiguous

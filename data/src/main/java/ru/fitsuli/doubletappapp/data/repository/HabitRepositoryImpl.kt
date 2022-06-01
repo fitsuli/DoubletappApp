@@ -4,11 +4,13 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
+import ru.fitsuli.doubletappapp.data.models.HabitData
 import ru.fitsuli.doubletappapp.data.storage.local.LocalDataSource
 import ru.fitsuli.doubletappapp.data.storage.network.RemoteDataSource
 import ru.fitsuli.doubletappapp.domain.HabitRepository
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitDomain
 import ru.fitsuli.doubletappapp.domain.models.SearchSortFilter
 import java.time.OffsetDateTime
 
@@ -18,67 +20,80 @@ class HabitRepositoryImpl(
 ) : HabitRepository {
     private val sortFlow = MutableStateFlow(SearchSortFilter())
 
-    override fun getHabits() = local.getAll()
-
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getFilteredHabits() = sortFlow
-        .flatMapLatest {
-            local.getFilteredSorted(it)
+        .flatMapLatest { filter ->
+            local.getFilteredSorted(filter)
+                .map { // check me please
+                    buildList {
+                        it.forEach {
+                            add(it.toDomainHabit())
+                        }
+                    }
+                }
         }
 
     override fun setFilterBy(filter: SearchSortFilter) {
         sortFlow.value = filter
     }
 
-    override suspend fun getById(id: String): HabitItem? {
-        return local.getById(id)
+    override suspend fun getById(id: String): HabitDomain? {
+        return local.getById(id)?.toDomainHabit()
     }
 
-    override suspend fun add(habit: HabitItem) {
-        remote.add(habit)?.let { uid ->
-            local.add(habit.copy(id = uid.uid))
-        } ?: local.add(habit.copy(isUploadPending = true))
+    override suspend fun add(habit: HabitDomain) {
+        val habitData = habit.toDataHabit()
+
+        remote.add(habitData)?.let { uid ->
+            local.add(habitData.copy(id = uid.uid))
+        } ?: local.add(habitData.copy(isUploadPending = true))
     }
 
-    override suspend fun update(habit: HabitItem) = withContext(IO) {
-        remote.update(habit)?.let {
-            local.update(habit)
-        } ?: local.update(habit.copy(isUpdatePending = true))
+    override suspend fun update(habit: HabitDomain) = withContext(IO) {
+        val habitData = habit.toDataHabit()
+
+        remote.update(habitData)?.let {
+            local.update(habitData)
+        } ?: local.update(habitData.copy(isUpdatePending = true))
     }
 
-    override suspend fun delete(habit: HabitItem): Unit = withContext(IO) {
-        remote.delete(habit)?.let {
-            local.delete(habit)
+    override suspend fun delete(habit: HabitDomain): Unit = withContext(IO) {
+        val habitData = habit.toDataHabit()
+
+        remote.delete(habitData)?.let {
+            local.delete(habitData)
         }
     }
 
-    override suspend fun markAsDone(habit: HabitItem) = withContext(IO) {
+    override suspend fun markAsDone(habit: HabitDomain) = withContext(IO) {
+        val habitData = habit.toDataHabit()
+
         val now = OffsetDateTime.now()
-        val newDoneDates = habit.doneDates + now
-        remote.markAsDone(habit)?.let {
+        val newDoneDates = habitData.doneDates + now
+        remote.markAsDone(habitData)?.let {
             remote.update(
-                habit.copy(
-                    count = habit.count + 1
+                habitData.copy(
+                    count = habitData.count + 1
                 )
             )?.let {
                 local.update(
-                    habit.copy(
-                        count = habit.count + 1,
+                    habitData.copy(
+                        count = habitData.count + 1,
                         modifiedDate = now,
                         doneDates = newDoneDates
                     )
                 )
             } ?: local.update(
-                habit.copy(
-                    count = habit.count + 1,
+                habitData.copy(
+                    count = habitData.count + 1,
                     modifiedDate = now,
                     doneDates = newDoneDates,
                     isUpdatePending = true
                 )
             )
         } ?: local.update(
-            habit.copy(
-                count = habit.count + 1,
+            habitData.copy(
+                count = habitData.count + 1,
                 doneDates = newDoneDates,
                 modifiedDate = now,
                 isUpdatePending = true
@@ -113,4 +128,34 @@ class HabitRepositoryImpl(
             local.addAll(it)
         }
     }
+
+    private fun HabitDomain.toDataHabit() = HabitData(
+        name,
+        description,
+        priority,
+        type,
+        period,
+        count,
+        srgbColor,
+        modifiedDate,
+        id,
+        doneDates,
+        isUploadPending,
+        isUpdatePending
+    )
+
+    private fun HabitData.toDomainHabit() = HabitDomain(
+        name,
+        description,
+        priority,
+        type,
+        period,
+        count,
+        srgbColor,
+        modifiedDate,
+        id,
+        doneDates,
+        isUploadPending,
+        isUpdatePending
+    )
 }

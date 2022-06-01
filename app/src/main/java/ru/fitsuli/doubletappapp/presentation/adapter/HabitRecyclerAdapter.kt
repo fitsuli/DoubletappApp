@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncDifferConfig
 import androidx.recyclerview.widget.ListAdapter
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
+import ru.fitsuli.doubletappapp.domain.models.HabitDomain
 
 class HabitRecyclerAdapter(
     private val context: Context,
     private val onCardClick: ((id: String) -> Unit)? = null,
     private val onButtonClick: ((id: String) -> Unit)? = null
-) : ListAdapter<HabitItem, HabitHolder>(AsyncDifferConfig.Builder(HabitCallback()).build()) {
+) : ListAdapter<HabitDomain, HabitHolder>(AsyncDifferConfig.Builder(HabitCallback()).build()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         HabitHolder(

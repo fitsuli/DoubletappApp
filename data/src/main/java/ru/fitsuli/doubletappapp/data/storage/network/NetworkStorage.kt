@@ -3,14 +3,14 @@ package ru.fitsuli.doubletappapp.data.storage.network
 import com.haroldadmin.cnradapter.invoke
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
+import ru.fitsuli.doubletappapp.data.models.HabitData
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitDoneBody
 import ru.fitsuli.doubletappapp.data.storage.network.models.HabitUid
-import ru.fitsuli.doubletappapp.domain.models.HabitItem
 
 class NetworkStorage : RemoteDataSource {
     private val habitApi = RetrofitRequestApi.getInstance()
 
-    override suspend fun getAll(): List<HabitItem>? =
+    override suspend fun getAll(): List<HabitData>? =
         withContext(IO) {
             executeWithConfiguredRetry {
                 habitApi.getAll(AUTH_TOKEN)
@@ -18,7 +18,7 @@ class NetworkStorage : RemoteDataSource {
         }
 
     override suspend fun add(
-        habit: HabitItem
+        habit: HabitData
     ): HabitUid? =
         withContext(IO) {
             executeWithConfiguredRetry {
@@ -28,21 +28,21 @@ class NetworkStorage : RemoteDataSource {
             }()
         }
 
-    override suspend fun addAll(items: List<HabitItem>): Unit? = withContext(IO) {
+    override suspend fun addAll(items: List<HabitData>): Unit? = withContext(IO) {
         items.forEach {
             add(it) ?: return@withContext null // as error indicator
         }
     }
 
     override suspend fun update(
-        habit: HabitItem
+        habit: HabitData
     ): HabitUid? =
         withContext(IO) {
             executeWithConfiguredRetry { habitApi.add(AUTH_TOKEN, habit) }()
         }
 
     override suspend fun delete(
-        habit: HabitItem
+        habit: HabitData
     ): Unit? =
         withContext(IO) {
             executeWithConfiguredRetry { habitApi.delete(AUTH_TOKEN, HabitUid(habit.id)) }()
@@ -54,7 +54,7 @@ class NetworkStorage : RemoteDataSource {
         }
     }
 
-    override suspend fun markAsDone(habit: HabitItem): Unit? = withContext(IO) {
+    override suspend fun markAsDone(habit: HabitData): Unit? = withContext(IO) {
         executeWithConfiguredRetry {
             habitApi.markAsDone(
                 AUTH_TOKEN,

@@ -25,9 +25,6 @@ class DomainModule {
         GetFilteredHabitsUseCase(repository)
 
     @Provides
-    fun provideGetHabitsUseCase(repository: HabitRepository) = GetHabitsUseCase(repository)
-
-    @Provides
     fun provideMarkAsDoneUseCase(repository: HabitRepository) = MarkAsDoneUseCase(repository)
 
     @Provides
