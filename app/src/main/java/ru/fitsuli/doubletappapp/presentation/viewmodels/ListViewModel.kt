@@ -56,7 +56,10 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    fun markHabitAsDone(habitId: String) {
+    fun markHabitAsDone(
+        habitId: String, onGoodAllowedHabit: () -> Unit, onBadAllowedHabit: () -> Unit,
+        onGoodTooMuchHabit: () -> Unit, onBadTooMuchHabit: () -> Unit
+    ) {
         viewModelScope.launch {
             _markDoneHabit.executeById(habitId)
         }

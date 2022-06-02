@@ -49,8 +49,20 @@ class RecyclerFragment : Fragment(R.layout.fragment_recycler) {
                         ITEM_ID_KEY to itemId
                     )
                 )
-            }, onButtonClick = viewModel::markHabitAsDone
-        )
+            }, onButtonClick = {
+                viewModel.markHabitAsDone(
+                    habitId = it,
+                    onGoodAllowedHabit = {
+
+                    }, onGoodTooMuchHabit = {
+
+                    }, onBadAllowedHabit = {
+
+                    }, onBadTooMuchHabit = {
+
+                    }
+                )
+            })
         binding.recycler.adapter = adapter
         viewModel.filtered.observe(viewLifecycleOwner) {
             adapter.submitList(viewModel.getFilteredByTypeList(type))

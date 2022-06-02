@@ -2,6 +2,7 @@ package ru.fitsuli.doubletappapp.presentation.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.text.format.DateUtils
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -16,8 +17,8 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val name: TextView = view.findViewById(R.id.name)
     private val description: TextView = view.findViewById(R.id.desc)
     private val priority: TextView = view.findViewById(R.id.priority)
-    private val count: TextView = view.findViewById(R.id.count)
-    private val period: TextView = view.findViewById(R.id.period)
+    private val goal: TextView = view.findViewById(R.id.goal)
+    private val lastTimeDid: TextView = view.findViewById(R.id.last_time_did)
     private val doneButton: MaterialButton = view.findViewById(R.id.mark_done_button)
 
     fun onBind(
@@ -36,14 +37,20 @@ class HabitHolder(view: View) : RecyclerView.ViewHolder(view) {
             description.isVisible = it.isNotEmpty()
         }
         priority.text = context.getString(habit.priority.stringResId)
-        count.text = context.getString(R.string.times,
-            habit.count.also { count.isVisible = it.toString().isNotEmpty() }
+        goal.text = context.getString(
+            R.string.goal_n_times,
+            context.getString(R.string.n_times, habit.doneDates.size),
+            context.getString(R.string.n_times, habit.goalCount)
         )
 
-        period.text = context.getString(
-            R.string.every_x,
-            habit.period.toString()
-                .also { period.isVisible = it.isNotEmpty() })
+        lastTimeDid.text = context.getString(
+            R.string.did_last_time,
+            if (habit.doneDates.isEmpty()) context.getString(R.string.never)
+            else DateUtils.getRelativeTimeSpanString(
+                context,
+                habit.doneDates.last().toInstant().toEpochMilli()
+            )
+        )
 
         if (onButtonClick != null) {
             doneButton.setOnClickListener {

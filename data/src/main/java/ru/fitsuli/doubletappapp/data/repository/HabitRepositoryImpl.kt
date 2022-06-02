@@ -73,19 +73,18 @@ class HabitRepositoryImpl(
         remote.markAsDone(habitData)?.let {
             remote.update(
                 habitData.copy(
-                    count = habitData.count + 1
+                    modifiedDate = now,
+                    doneDates = newDoneDates,
                 )
             )?.let {
                 local.update(
                     habitData.copy(
-                        count = habitData.count + 1,
                         modifiedDate = now,
                         doneDates = newDoneDates
                     )
                 )
             } ?: local.update(
                 habitData.copy(
-                    count = habitData.count + 1,
                     modifiedDate = now,
                     doneDates = newDoneDates,
                     isUpdatePending = true
@@ -93,9 +92,8 @@ class HabitRepositoryImpl(
             )
         } ?: local.update(
             habitData.copy(
-                count = habitData.count + 1,
-                doneDates = newDoneDates,
                 modifiedDate = now,
+                doneDates = newDoneDates,
                 isUpdatePending = true
             )
         )
@@ -135,7 +133,7 @@ class HabitRepositoryImpl(
         priority,
         type,
         period,
-        count,
+        goalCount,
         srgbColor,
         modifiedDate,
         id,
@@ -150,7 +148,7 @@ class HabitRepositoryImpl(
         priority,
         type,
         period,
-        count,
+        goalCount,
         srgbColor,
         modifiedDate,
         id,

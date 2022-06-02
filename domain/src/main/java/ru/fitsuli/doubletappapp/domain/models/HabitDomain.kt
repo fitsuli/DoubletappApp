@@ -14,7 +14,7 @@ data class HabitDomain(
 
     val period: Int,
 
-    val count: Int,
+    val goalCount: Int,
 
     @ColorInt val srgbColor: Int? = null,
 

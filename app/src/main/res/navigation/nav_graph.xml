@@ -27,9 +27,9 @@
     </fragment>
     <fragment
         android:id="@+id/HabitFragment"
-        android:name="ru.fitsuli.doubletappapp.presentation.fragments.AddHabitFragment"
+        android:name="ru.fitsuli.doubletappapp.presentation.fragments.HabitDetailsFragment"
         android:label="@string/title_add_habit"
-        tools:layout="@layout/fragment_add_habit">
+        tools:layout="@layout/fragment_details_habit">
 
         <action
             android:id="@+id/action_add_habit_to_main"

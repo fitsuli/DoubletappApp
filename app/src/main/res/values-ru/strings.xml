@@ -7,8 +7,8 @@
     <string name="add">Добавить</string>
     <string name="change">Изменить</string>
     <string name="remove">Удалить</string>
-    <string name="habit_count">Количество выполнений</string>
-    <string name="habit_period">Периодичность</string>
+    <string name="goal">Количество выполнений</string>
+    <string name="period">Периодичность</string>
     <string name="habit_desc">Описание</string>
     <string name="enter_name_hint">Введите имя привычки</string>
     <string name="enter_desc_hint">Введите описание</string>
@@ -25,9 +25,13 @@
     <string name="cur_color">Выбранный цвет</string>
     <string name="every">Каждый(-ые)</string>
     <string name="days">дня</string>
-    <string name="every_x">Каждый(-ую) %1$s</string>
-    <string name="times">%1$d раз</string>
-    <string name="mark_done">Выполнил</string>
+    <string name="times">раз(-а)</string>
+    <string name="every_x_days">Каждый(-ую) %1$s</string>
+    <string name="did_last_time">Последний раз: %1$s</string>
+    <string name="never">никогда</string>
+    <string name="goal_n_times">Делал %1$s, цель: %2$s</string>
+    <string name="n_times">%1$d раз(-а)</string>
+    <string name="mark_done">Сделал</string>
 
     <string name="developed_by">Разработано fitsuli</string>
     <string name="link_open_error">Не получается открыть ссылку</string>

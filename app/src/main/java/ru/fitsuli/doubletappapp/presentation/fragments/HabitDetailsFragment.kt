@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import ru.fitsuli.doubletappapp.R
-import ru.fitsuli.doubletappapp.databinding.FragmentAddHabitBinding
+import ru.fitsuli.doubletappapp.databinding.FragmentDetailsHabitBinding
 import ru.fitsuli.doubletappapp.domain.models.HabitDomain
 import ru.fitsuli.doubletappapp.domain.models.Priority
 import ru.fitsuli.doubletappapp.domain.models.Type
@@ -30,15 +30,15 @@ import ru.fitsuli.doubletappapp.presentation.viewmodels.AddHabitViewModel
 import java.time.OffsetDateTime
 import java.util.*
 
-class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
+class HabitDetailsFragment : Fragment(R.layout.fragment_details_habit) {
 
-    private var _binding: FragmentAddHabitBinding? = null
+    private var _binding: FragmentDetailsHabitBinding? = null
     private val binding get() = _binding!!
     private var itemRgb: Int? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentAddHabitBinding.bind(view)
+        _binding = FragmentDetailsHabitBinding.bind(view)
         val viewModel = ViewModelProvider(requireActivity())[AddHabitViewModel::class.java]
 
         val ctx = requireContext()
@@ -126,7 +126,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                         R.id.radio_good -> Type.GOOD
                         else -> Type.BAD
                     },
-                    count = countField.text.toString().toIntOrZero(),
+                    goalCount = goalField.text.toString().toIntOrZero(),
                     period = periodField.text.toString().toIntOrZero(),
                     srgbColor = itemRgb,
                     modifiedDate = OffsetDateTime.now(),
@@ -182,7 +182,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 else -> R.id.radio_bad
             }
         )
-        countField.setText(item.count.toString())
+        goalField.setText(item.goalCount.toString())
         periodField.setText(item.period.toString())
         item.srgbColor?.let { color ->
             itemRgb = color
